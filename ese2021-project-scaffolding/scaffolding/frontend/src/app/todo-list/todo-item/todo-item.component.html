@@ -1,0 +1,10 @@
+<!-- Input field with item name -->
+<mat-form-field>
+  <input matInput placeholder="Item Name" [(ngModel)]="todoItem.name" name="name" (ngModelChange)="updateItem()">
+</mat-form-field>
+
+<!-- Checkbox for item status -->
+<mat-checkbox [(ngModel)]="todoItem.done" (ngModelChange)="updateItem()">Done</mat-checkbox>
+
+<!-- Button to delete item -->
+<button mat-flat-button color="warn" (click)="deleteItem()">Delete Item</button>

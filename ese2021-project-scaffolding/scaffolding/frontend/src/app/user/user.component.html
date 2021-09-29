@@ -1,0 +1,37 @@
+<mat-card>
+  <h3>Register</h3>
+  <mat-form-field>
+    <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="userToRegister.username">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToRegister.password">
+  </mat-form-field>
+  <button mat-flat-button color="primary" (click)="registerUser()">Register</button>
+</mat-card>
+
+<mat-card>
+  <h3>Login</h3>
+
+  <div *ngIf="!loggedIn">
+    <mat-form-field>
+      <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="userToLogin.username">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToLogin.password">
+    </mat-form-field>
+    <button mat-flat-button color="primary" (click)="loginUser()">Login</button>
+  </div>
+
+  <div *ngIf="loggedIn">
+    <button mat-flat-button color="warn" (click)="logoutUser()">Logout</button>
+  </div>
+</mat-card>
+
+<mat-card>
+  <h3>Secure Endpoints</h3>
+  <button mat-flat-button color="primary" (click)="accessUserEndpoint()">User Endpoint</button>
+  {{ endpointMsgUser }}
+  <hr>
+  <button mat-flat-button color="primary" (click)="accessAdminEndpoint()">Admin Endpoint</button>
+  {{ endpointMsgAdmin }}
+</mat-card>

@@ -1,0 +1,36 @@
+<mat-card>
+  <!-- Input field with list name -->
+  <mat-form-field>
+    <input matInput placeholder="List Name" [(ngModel)]="todoList.name" name="name" (ngModelChange)="updateList()">
+  </mat-form-field>
+  <!-- Button to delete list -->
+  <button mat-flat-button color="warn" (click)="deleteList()" [disabled]="todoList.todoItems.length != 0">
+    Delete list
+  </button>
+
+  <br>
+
+  <!-- Input field for new item name -->
+  <mat-form-field>
+    <input matInput placeholder="Item Name" [(ngModel)]="newTodoItemName">
+  </mat-form-field>
+  <!-- Button to create item -->
+  <button mat-flat-button color="primary" (click)="createItem()" [disabled]="newTodoItemName === ''">Create new item</button>
+
+  <hr>
+
+  <!-- List of TodoItemComponents displaying all items of list -->
+  <mat-list>
+    <mat-list-item *ngFor="let todoItem of todoList.todoItems">
+      <app-todo-item
+        [todoItem]="todoItem"
+        (update)="updateItem($event)"
+        (delete)="deleteItem($event)"
+      ></app-todo-item>
+    </mat-list-item>
+  </mat-list>
+
+  <div *ngIf="todoList.todoItems.length === 0">
+    No Todo Items available.
+  </div>
+</mat-card>

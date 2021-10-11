@@ -15,6 +15,11 @@ export class UserComponent {
 
   wrongPassword: boolean = false;
   wrongLogin: boolean = false;
+  passwordTooShort: boolean = false;
+  noSpecialChar: boolean = false;
+  noLowerCase: boolean = false;
+  noUpperCase: boolean = false;
+  noNumbers: boolean = false;
 
   user: User | undefined;
 
@@ -39,12 +44,34 @@ export class UserComponent {
   }
 
   registerUser(): void {
-    this.httpClient.post(environment.endpointURL + "user/register", {
-      userName: this.userToRegister.username,
-      password: this.userToRegister.password
-    }).subscribe(() => {
-      this.userToRegister.username = this.userToRegister.password = '';
-    });
+    if(this.checkPassword(this.userToRegister.password)){
+      
+      this.httpClient.post(environment.endpointURL + "user/register", {
+        userName: this.userToRegister.username,
+        password: this.userToRegister.password
+      }).subscribe(() => {
+        this.userToRegister.username = this.userToRegister.password = '';
+      });
+    }
+    
+  }
+
+  checkPassword(password: string): boolean {
+    this.noSpecialChar = this.noUpperCase = this.noLowerCase = this.passwordTooShort = this.noNumbers = false;
+    
+    if(password.length < 8) {this.passwordTooShort = true; return false;}
+    
+    var specialchar = /[!@#$%&*()_+\-=\[\]{}\\|\/?]/;
+    var uppercasechar = /[ABCDEFGHIJKLMNOPQRSTUVWXYZ]/;
+    var lowercasechar = /[abcdefghijklmnopqrstuvwxyz]/;
+    var numbers = /[1234567890]/;
+
+    if(!specialchar.test(password)){this.noSpecialChar = true; return false;}
+    if(!uppercasechar.test(password)){this.noUpperCase = true; return false;}
+    if(!lowercasechar.test(password)){this.noLowerCase = true; return false;}
+    if(!numbers.test(password)){this.noNumbers = true; return false;}
+
+    return true;
   }
 
   loginUser(): void {

@@ -7,6 +7,11 @@
     <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToRegister.password">
   </mat-form-field>
   <button mat-flat-button color="primary" (click)="registerUser()">Register</button>
+  <p style="color:red" *ngIf="passwordTooShort"> Password too Short </p>
+  <p style="color: red" *ngIf="noUpperCase"> Password does not contain Uppercase Character </p>
+  <p style="color: red" *ngIf="noLowerCase"> Password does not contain Lowercase Character </p>
+  <p style="color: red" *ngIf="noSpecialChar"> Password does not contain Special Character </p>
+  <p style="color: red" *ngIf="noNumbers"> Password does not contain Numbers </p>
 </mat-card>
 
 <mat-card>
@@ -20,7 +25,7 @@
       <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToLogin.password">
     </mat-form-field>
     
-    <p style="color:rgb(255, 238, 0)" *ngIf="wrongPassword"> Password incorrect </p>
+    <p style="color: red" *ngIf="wrongPassword"> Password incorrect </p>
     <p style="color: red" *ngIf="wrongLogin"> User not found </p>
 
     <button mat-flat-button color="primary" (click)="loginUser()">Login</button>

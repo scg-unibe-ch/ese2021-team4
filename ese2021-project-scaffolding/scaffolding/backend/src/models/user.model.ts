@@ -5,6 +5,15 @@ export interface UserAttributes {
     userId: number;
     userName: string;
     password: string;
+    userEmail: string;
+    firstName: string;
+    lastName: string;
+    street: string;
+    houseNr: string;
+    city: string;
+    zipCode: string;
+    birthday: Date;
+    phoneNr: string;
     admin: boolean;
 }
 
@@ -14,6 +23,15 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
     userId!: number;
     userName!: string;
     password!: string;
+    userEmail!: string;
+    firstName!: string;
+    lastName!: string;
+    street!: string;
+    houseNr!: string;
+    city!: string;
+    zipCode!: string;
+    birthday!: Date;
+    phoneNr!: string;
     admin!: boolean;
 
     public static initialize(sequelize: Sequelize) {
@@ -28,6 +46,42 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
                 allowNull: false
             },
             password: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            userEmail: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            firstName: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            lastName: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            street: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            houseNr: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            city: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            zipCode: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            birthday: {
+                type: DataTypes.DATE,
+                allowNull: false
+            },
+            phoneNr: {
                 type: DataTypes.STRING,
                 allowNull: false
             },

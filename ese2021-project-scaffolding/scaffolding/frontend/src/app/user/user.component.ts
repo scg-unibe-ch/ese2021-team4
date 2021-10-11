@@ -24,6 +24,15 @@ export class UserComponent {
   user: User | undefined;
 
   userToRegister: User = new User(0, '', '');
+  userEmail: string = '';
+  firstName: string = '';
+  lastName: string = '';
+  street: string = '';
+  houseNr: string = '';
+  city: string = '';
+  zipCode: string = '';
+  birthday: Date = new Date();
+  phoneNr: string = '';
 
   userToLogin: User = new User(0, '', '');
 
@@ -48,7 +57,16 @@ export class UserComponent {
       
       this.httpClient.post(environment.endpointURL + "user/register", {
         userName: this.userToRegister.username,
-        password: this.userToRegister.password
+        password: this.userToRegister.password,
+        userEmail: this.userEmail,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        street: this.street,
+        houseNr: this.houseNr,
+        city: this.city,
+        zipCode: this.zipCode,
+        birthday: this.birthday,
+        phoneNr: this.phoneNr
       }).subscribe(() => {
         this.userToRegister.username = this.userToRegister.password = '';
       });

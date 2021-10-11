@@ -19,6 +19,10 @@
     <mat-form-field>
       <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToLogin.password">
     </mat-form-field>
+    
+    <p style="color:rgb(255, 238, 0)" *ngIf="wrongPassword"> Password incorrect </p>
+    <p style="color: red" *ngIf="wrongLogin"> User not found </p>
+
     <button mat-flat-button color="primary" (click)="loginUser()">Login</button>
   </div>
 

@@ -13,6 +13,9 @@ export class UserComponent {
 
   loggedIn: boolean | undefined;
 
+  passwordWrong: boolean = false;
+  userNameWrong: boolean = false;
+
   user: User | undefined;
 
   userToRegister: User = new User(0, '', '');
@@ -56,6 +59,16 @@ export class UserComponent {
 
       this.userService.setLoggedIn(true);
       this.userService.setUser(new User(res.user.userId, res.user.userName, res.user.password));
+    
+    }, error => {
+      if (error.error.message.message === 'not authorized'){
+        this.passwordWrong = true;
+        this.userNameWrong = false;
+      } else {
+        this.userNameWrong = true;
+        this.passwordWrong = false;
+      }
+
     });
   }
 

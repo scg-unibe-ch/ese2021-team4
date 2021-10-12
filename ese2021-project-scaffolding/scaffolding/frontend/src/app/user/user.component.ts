@@ -16,11 +16,19 @@ export class UserComponent {
   passwordWrong: boolean = false;
   userNameWrong: boolean = false;
 
+  passwordLength: boolean = false;
+  passwordUpperCharacter: boolean = false;
+  passwordLowerCharacter: boolean = false;
+  passwordSpecialCharacter: boolean = false;
+  passwordNumber: boolean = false;
+
   user: User | undefined;
 
   userToRegister: User = new User(0, '', '');
 
   userToLogin: User = new User(0, '', '');
+
+  email: String = '';
 
   endpointMsgUser: string = '';
   endpointMsgAdmin: string = '';
@@ -47,6 +55,18 @@ export class UserComponent {
     });
   }
 
+  checkPassword(): boolean {
+    console.log(this.userToRegister.password);
+
+    this.passwordLength = this.userToRegister.password.length >= 8;
+    this.passwordNumber = !!this.userToRegister.password.match(/\d/);
+    this.passwordLowerCharacter = !!this.userToRegister.password.match(/[a-z]/);
+    this.passwordUpperCharacter = !!this.userToRegister.password.match(/[A-Z]/);
+    this.passwordSpecialCharacter = !!this.userToRegister.password.match(/[!@#$%&*()_+\-=\[\]{}\\|\/?~]/);
+
+    return this.passwordLength && this.passwordNumber && this.passwordLowerCharacter && this.passwordUpperCharacter && this.passwordSpecialCharacter;
+  }
+
   loginUser(): void {
     this.httpClient.post(environment.endpointURL + "user/login", {
       userName: this.userToLogin.username,
@@ -60,7 +80,7 @@ export class UserComponent {
       this.userService.setLoggedIn(true);
       this.userService.setUser(new User(res.user.userId, res.user.userName, res.user.password));
     
-    }, error => {
+    }, (error: any ) => {
       if (error.error.message.message === 'not authorized'){
         this.passwordWrong = true;
         this.userNameWrong = false;
@@ -96,3 +116,5 @@ export class UserComponent {
     });
   }
 }
+
+

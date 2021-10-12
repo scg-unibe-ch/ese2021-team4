@@ -4,9 +4,19 @@
     <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="userToRegister.username">
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToRegister.password">
+    <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToRegister.password" (ngModelChange)="checkPassword()">
   </mat-form-field>
-  <button mat-flat-button color="primary" (click)="registerUser()">Register</button>
+  <mat-form-field>
+    <input matInput type="email" placeholder="E-Mail" name="email" [(ngModel)]="email">
+  </mat-form-field>
+  <button mat-flat-button color="primary" (click)="registerUser()" [disabled]="!checkPassword()">Register</button>
+  <div>
+    <p *ngIf="!passwordLength">Length</p>
+    <p *ngIf="!passwordUpperCharacter">UpperCharacter</p>
+    <p *ngIf="!passwordLowerCharacter">LowerCharacter</p>
+    <p *ngIf="!passwordSpecialCharacter">SpecialCharacter</p>
+    <p *ngIf="!passwordNumber">NumberCharacter</p>
+  </div>
 </mat-card>
 
 <mat-card>

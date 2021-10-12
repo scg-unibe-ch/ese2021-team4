@@ -13,13 +13,14 @@ export class UserComponent {
 
   loggedIn: boolean | undefined;
 
-  wrongPassword: boolean = false;
-  wrongLogin: boolean = false;
-  passwordTooShort: boolean = false;
-  noSpecialChar: boolean = false;
-  noLowerCase: boolean = false;
-  noUpperCase: boolean = false;
-  noNumbers: boolean = false;
+  passwordWrong: boolean = false;
+  userNameWrong: boolean = false;
+
+  passwordLength: boolean = false;
+  passwordUpperCharacter: boolean = false;
+  passwordLowerCharacter: boolean = false;
+  passwordSpecialCharacter: boolean = false;
+  passwordNumber: boolean = false;
 
   user: User | undefined;
 
@@ -35,6 +36,8 @@ export class UserComponent {
   phoneNr: string = '';
 
   userToLogin: User = new User(0, '', '');
+
+  email: String = '';
 
   endpointMsgUser: string = '';
   endpointMsgAdmin: string = '';
@@ -52,44 +55,36 @@ export class UserComponent {
     this.user = userService.getUser();
   }
 
-  registerUser(): void {
-    if(this.checkPassword(this.userToRegister.password)){
-      
-      this.httpClient.post(environment.endpointURL + "user/register", {
-        userName: this.userToRegister.username,
-        password: this.userToRegister.password,
-        userEmail: this.userEmail,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        street: this.street,
-        houseNr: this.houseNr,
-        city: this.city,
-        zipCode: this.zipCode,
-        birthday: this.birthday,
-        phoneNr: this.phoneNr
-      }).subscribe(() => {
-        this.userToRegister.username = this.userToRegister.password = '';
-      });
-    }
+  registerUser(): void {  
+    this.httpClient.post(environment.endpointURL + "user/register", {
+      userName: this.userToRegister.username,
+      password: this.userToRegister.password,
+      userEmail: this.userEmail,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      street: this.street,
+      houseNr: this.houseNr,
+      city: this.city,
+      zipCode: this.zipCode,
+      birthday: this.birthday,
+      phoneNr: this.phoneNr
+    }).subscribe(() => {
+      this.userToRegister.username = this.userToRegister.password = '';
+    });
+    
     
   }
 
-  checkPassword(password: string): boolean {
-    this.noSpecialChar = this.noUpperCase = this.noLowerCase = this.passwordTooShort = this.noNumbers = false;
-    
-    if(password.length < 8) {this.passwordTooShort = true; return false;}
-    
-    var specialchar = /[!@#$%&*()_+\-=\[\]{}\\|\/?]/;
-    var uppercasechar = /[ABCDEFGHIJKLMNOPQRSTUVWXYZ]/;
-    var lowercasechar = /[abcdefghijklmnopqrstuvwxyz]/;
-    var numbers = /[1234567890]/;
+  checkPassword(): boolean {
+    console.log(this.userToRegister.password);
 
-    if(!specialchar.test(password)){this.noSpecialChar = true; return false;}
-    if(!uppercasechar.test(password)){this.noUpperCase = true; return false;}
-    if(!lowercasechar.test(password)){this.noLowerCase = true; return false;}
-    if(!numbers.test(password)){this.noNumbers = true; return false;}
+    this.passwordLength = this.userToRegister.password.length >= 8;
+    this.passwordNumber = !!this.userToRegister.password.match(/\d/);
+    this.passwordLowerCharacter = !!this.userToRegister.password.match(/[a-z]/);
+    this.passwordUpperCharacter = !!this.userToRegister.password.match(/[A-Z]/);
+    this.passwordSpecialCharacter = !!this.userToRegister.password.match(/[!@#$%&*()_+\-=\[\]{}\\|\/?~]/);
 
-    return true;
+    return this.passwordLength && this.passwordNumber && this.passwordLowerCharacter && this.passwordUpperCharacter && this.passwordSpecialCharacter;
   }
 
   loginUser(): void {
@@ -104,12 +99,16 @@ export class UserComponent {
 
       this.userService.setLoggedIn(true);
       this.userService.setUser(new User(res.user.userId, res.user.userName, res.user.password));
-    }, error => {
-      if (error.error.message.message == "not authorized") {
-        this.wrongPassword = true;
+    
+    }, (error: any ) => {
+      if (error.error.message.message === 'not authorized'){
+        this.passwordWrong = true;
+        this.userNameWrong = false;
       } else {
-        this.wrongLogin = true;
+        this.userNameWrong = true;
+        this.passwordWrong = false;
       }
+
     });
   }
 
@@ -137,3 +136,5 @@ export class UserComponent {
     });
   }
 }
+
+

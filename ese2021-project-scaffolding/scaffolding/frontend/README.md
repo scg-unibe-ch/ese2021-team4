@@ -26,11 +26,11 @@ The database comes with two pre-existing users that you can use:
 ````
 DEFAULT USER
 Username: Alice
-Password: 123
+Password: 123abcD!
 
 ADMIN USER
 Username: Bob
-Password: 321
+Password: 321abcD!
 ````
 
 ## Podcast

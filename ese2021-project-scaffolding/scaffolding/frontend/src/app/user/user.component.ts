@@ -37,8 +37,6 @@ export class UserComponent {
 
   userToLogin: User = new User(0, '', '');
 
-  email: String = '';
-
   endpointMsgUser: string = '';
   endpointMsgAdmin: string = '';
 
@@ -69,7 +67,8 @@ export class UserComponent {
       birthday: this.birthday,
       phoneNr: this.phoneNr
     }).subscribe(() => {
-      this.userToRegister.username = this.userToRegister.password = '';
+      this.userToRegister.username = this.userToRegister.password = this.userEmail = this.firstName = this.lastName = this.street = this.houseNr = this.city =this.zipCode = this.phoneNr ='';
+      this.birthday = new Date();
     });
     
     

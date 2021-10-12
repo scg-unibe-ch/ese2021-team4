@@ -33,9 +33,6 @@
   <mat-form-field>
     <input matInput type="text" placeholder="phone number" name="phone number" [(ngModel)]="phoneNr">
   </mat-form-field>
-  <mat-form-field>
-    <input matInput type="email" placeholder="E-Mail" name="email" [(ngModel)]="email">
-  </mat-form-field>
   <button mat-flat-button color="primary" (click)="registerUser()" [disabled]="!checkPassword()">Register</button>
   <div>
     <p *ngIf="!passwordLength">Length</p>

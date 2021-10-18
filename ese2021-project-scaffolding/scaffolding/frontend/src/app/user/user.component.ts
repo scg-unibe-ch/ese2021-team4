@@ -53,7 +53,7 @@ export class UserComponent {
     this.user = userService.getUser();
   }
 
-  registerUser(): void {  
+  registerUser(): void {
     this.httpClient.post(environment.endpointURL + "user/register", {
       userName: this.userToRegister.username,
       password: this.userToRegister.password,
@@ -69,9 +69,11 @@ export class UserComponent {
     }).subscribe(() => {
       this.userToRegister.username = this.userToRegister.password = this.userEmail = this.firstName = this.lastName = this.street = this.houseNr = this.city =this.zipCode = this.phoneNr ='';
       this.birthday = new Date();
+    }, error => {
+      console.log(error)
     });
-    
-    
+
+
   }
 
   checkPassword(): boolean {
@@ -98,7 +100,7 @@ export class UserComponent {
 
       this.userService.setLoggedIn(true);
       this.userService.setUser(new User(res.user.userId, res.user.userName, res.user.password));
-    
+
     }, (error: any ) => {
       if (error.error.message.message === 'not authorized'){
         this.passwordWrong = true;

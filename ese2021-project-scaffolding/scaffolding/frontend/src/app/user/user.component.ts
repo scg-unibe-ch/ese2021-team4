@@ -74,6 +74,7 @@ export class UserComponent {
       this.userToRegister.username = this.userToRegister.password = this.userEmail = this.firstName = this.lastName
         = this.street = this.houseNr = this.city =this.zipCode = this.phoneNr = this.emailMessage = this.usernameMessage = '';
       this.birthday = new Date();
+      this.checkPassword();
       this.registrationMessage = 'Registration successful. Please log in'
     }, err => {
       if(err.error.name == 'SequelizeUniqueConstraintError'){

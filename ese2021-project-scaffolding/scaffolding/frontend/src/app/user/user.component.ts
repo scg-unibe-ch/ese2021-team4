@@ -61,7 +61,7 @@ export class UserComponent {
     this.httpClient.post(environment.endpointURL + "user/register", {
       userName: this.userToRegister.username,
       password: this.userToRegister.password,
-      userEmail: this.userEmail,
+      userEmail: this.userEmail.toLowerCase(),
       firstName: this.firstName,
       lastName: this.lastName,
       street: this.street,

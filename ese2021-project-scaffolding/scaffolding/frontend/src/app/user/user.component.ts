@@ -22,6 +22,10 @@ export class UserComponent {
   passwordSpecialCharacter: boolean = false;
   passwordNumber: boolean = false;
 
+  usernameMessage: string = '';
+  emailMessage: string = '';
+  registrationMessage: string = '';
+
   user: User | undefined;
 
   userToRegister: User = new User(0, '', '');
@@ -67,10 +71,20 @@ export class UserComponent {
       birthday: this.birthday,
       phoneNr: this.phoneNr
     }).subscribe(() => {
-      this.userToRegister.username = this.userToRegister.password = this.userEmail = this.firstName = this.lastName = this.street = this.houseNr = this.city =this.zipCode = this.phoneNr ='';
+      this.userToRegister.username = this.userToRegister.password = this.userEmail = this.firstName = this.lastName
+        = this.street = this.houseNr = this.city =this.zipCode = this.phoneNr = this.emailMessage = this.usernameMessage = '';
       this.birthday = new Date();
-    }, error => {
-      console.log(error)
+      this.registrationMessage = 'Registration successful. Please log in'
+    }, err => {
+      if(err.error.name == 'SequelizeUniqueConstraintError'){
+        if(err.error.fields[0] == 'userName') {
+          this.usernameMessage = 'Username already taken.'
+        }
+        if(err.error.fields[0] == 'userEmail') {
+          this.emailMessage = 'E-mail already in use.'
+        }
+      }
+      console.log(err)
     });
 
 

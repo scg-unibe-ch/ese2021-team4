@@ -2,45 +2,53 @@
   <h3>Register</h3>
   <mat-form-field>
     <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="userToRegister.username">
+    <div><br>{{usernameMessage}}</div>
   </mat-form-field>
+  <mat-form-field>
+    <input matInput type="email" placeholder="E-Mail" name="email" [(ngModel)]="userEmail">
+    <div><br>{{emailMessage}}</div>
+  </mat-form-field>
+  <br>
   <mat-form-field>
     <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToRegister.password" (ngModelChange)="checkPassword()">
   </mat-form-field>
-  <mat-form-field>
-    <input matInput type="email" placeholder="email" name="email" [(ngModel)]="userEmail">
-  </mat-form-field>
+  <div>
+    <p *ngIf="!passwordLength">Your password must contain 8 or more characters.</p>
+    <p *ngIf="!passwordUpperCharacter">Your password must contain at least one uppercase character.</p>
+    <p *ngIf="!passwordLowerCharacter">Your password must contain at least one lowercase character.</p>
+    <p *ngIf="!passwordSpecialCharacter">Your password must contain at least one special character.</p>
+    <p *ngIf="!passwordNumber">Your password must contain at least one number.</p>
+  </div>
+  <br>
   <mat-form-field>
     <input matInput type="text" placeholder="first name" name="first name" [(ngModel)]="firstName">
   </mat-form-field>
   <mat-form-field>
     <input matInput type="text" placeholder="last name" name="last name" [(ngModel)]="lastName">
   </mat-form-field>
+  <br>
   <mat-form-field>
     <input matInput type="text" placeholder="street" name="street" [(ngModel)]="street">
   </mat-form-field>
   <mat-form-field>
     <input matInput type="text" placeholder="house number" name="house number" [(ngModel)]="houseNr">
   </mat-form-field>
+  <br>
   <mat-form-field>
     <input matInput type="text" placeholder="zip code" name="zip code" [(ngModel)]="zipCode">
   </mat-form-field>
   <mat-form-field>
     <input matInput type="text" placeholder="city" name="city" [(ngModel)]="city">
   </mat-form-field>
+  <br>
   <mat-form-field>
     <input matInput type="date" placeholder="birthday" name="date of birth" [(ngModel)]="birthday">
   </mat-form-field>
   <mat-form-field>
     <input matInput type="text" placeholder="phone number" name="phone number" [(ngModel)]="phoneNr">
   </mat-form-field>
+  <br>
   <button mat-flat-button color="primary" (click)="registerUser()" [disabled]="!checkPassword()">Register</button>
-  <div>
-    <p *ngIf="!passwordLength">Length</p>
-    <p *ngIf="!passwordUpperCharacter">UpperCharacter</p>
-    <p *ngIf="!passwordLowerCharacter">LowerCharacter</p>
-    <p *ngIf="!passwordSpecialCharacter">SpecialCharacter</p>
-    <p *ngIf="!passwordNumber">NumberCharacter</p>
-  </div>
 </mat-card>
 
 <mat-card>

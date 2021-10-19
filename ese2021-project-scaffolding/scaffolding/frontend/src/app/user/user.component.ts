@@ -79,10 +79,12 @@ export class UserComponent {
     }, err => {
       if(err.error.name == 'SequelizeUniqueConstraintError'){
         if(err.error.fields[0] == 'userName') {
-          this.usernameMessage = 'Username already taken.'
+          this.usernameMessage = 'Username already taken: ' + this.userToRegister.username;
+          this.userToRegister.username = '';
         }
         if(err.error.fields[0] == 'userEmail') {
-          this.emailMessage = 'E-mail already in use.'
+          this.emailMessage = 'E-mail already in use: ' + this.userEmail;
+          this.userEmail = ''
         }
       }
       console.log(err)

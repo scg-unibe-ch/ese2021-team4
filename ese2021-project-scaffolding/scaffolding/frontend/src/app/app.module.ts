@@ -19,6 +19,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UserComponent } from './user/user.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -30,7 +32,9 @@ const routes: Routes = [
     TodoListComponent,
     TodoItemComponent,
     UserComponent,
-    HomeComponent
+    HomeComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

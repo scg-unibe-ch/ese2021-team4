@@ -20,12 +20,15 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { ProfileComponent } from './profile/profile.component';
+import {MatIconModule} from "@angular/material/icon";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: '', redirectTo: '/home', pathMatch:'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent}
+  {path: 'register', component: RegisterComponent},
+  {path: 'profile', component: ProfileComponent}
 
 ];
 @NgModule({
@@ -35,7 +38,8 @@ const routes: Routes = [
     TodoItemComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +54,8 @@ const routes: Routes = [
     MatListModule,
     FormsModule,
     MatCheckboxModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    MatIconModule
   ],
   providers: [
     {

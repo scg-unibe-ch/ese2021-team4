@@ -13,6 +13,7 @@ import { User } from './models/user.model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+
   title = 'frontend';
 
   todoLists: TodoList[] = [];
@@ -88,4 +89,5 @@ export class AppComponent implements OnInit {
     this.userService.setLoggedIn(!!userToken);
 
   }
+
 }

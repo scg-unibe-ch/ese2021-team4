@@ -1,13 +1,13 @@
 
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <mat-icon><a routerLink="/home">home</a></mat-icon> <span class="example-spacer"></span> <a routerLink="/login">Login</a> <span class="example-spacer"> </span> <a routerLink="/register">Register </a><span class="example-spacer"> </span><mat-icon><a routerLink="/profile">face</a></mat-icon>
+    <mat-icon><a routerLink="/home">home</a></mat-icon> <span class="example-spacer"></span> <a routerLink="/login">Login</a> <span class="example-spacer"> </span> <a routerLink="/register">Register </a><span class="example-spacer"> </span><mat-icon *ngIf="loggedIn"><a routerLink="/profile">face</a></mat-icon>
   </mat-toolbar-row>
 </mat-toolbar>
 
 <router-outlet></router-outlet>
 
-
+<!--
 <mat-tab-group>
   <mat-tab label="Todo List Example">
     <mat-card>
@@ -29,4 +29,7 @@
   <mat-tab *ngIf="loggedIn" label="Profile Page">
     Profile Page
   </mat-tab>
+
+
 </mat-tab-group>
+-->

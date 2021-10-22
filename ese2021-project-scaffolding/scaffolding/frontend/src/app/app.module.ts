@@ -16,7 +16,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatListModule } from '@angular/material/list';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { UserComponent } from './user/user.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
@@ -31,7 +30,6 @@ const routes: Routes = [
     AppComponent,
     TodoListComponent,
     TodoItemComponent,
-    UserComponent,
     HomeComponent,
     LoginComponent,
     RegisterComponent

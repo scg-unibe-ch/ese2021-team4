@@ -22,6 +22,8 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import {MatIconModule} from "@angular/material/icon";
+import { PostFeedComponent } from './post-feed/post-feed.component';
+import { PostComponent } from './post-feed/post/post.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -39,7 +41,9 @@ const routes: Routes = [
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    ProfileComponent
+    ProfileComponent,
+    PostFeedComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,

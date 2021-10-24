@@ -1,0 +1,78 @@
+import {Optional, Model, Sequelize, DataTypes, Association} from 'sequelize';
+
+export interface PostAttributes {
+    postId: number;
+    title: string;
+    userId: number;
+    description: string;
+    imageId: number;
+    tags: string; // contains the categories as comma-seperated-values. E.g. "Restaurant,Activities"
+
+}
+
+
+// tells sequelize that todoItemId is not a required field
+export interface PostCreationAttributes extends Optional<Post, 'postId'> { }
+
+
+export class Post extends Model<PostAttributes, PostCreationAttributes> implements PostAttributes {
+
+    // public static associations: {
+    //     images: Association<TodoItem, ItemImage>
+    // };
+
+    postId!: number;
+    title!: string;
+    userId!: number;
+    description!: string;
+    imageId!: number;
+    tags!: string;
+
+
+    public static initialize(sequelize: Sequelize) { // definition for database
+        Post.init({
+            postId: {
+                type: DataTypes.INTEGER,
+                autoIncrement: true,
+                primaryKey: true
+            },
+            title: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            userId: {
+                type: DataTypes.INTEGER,
+                allowNull: false
+            },
+            description: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            imageId: {
+                type: DataTypes.INTEGER,
+                allowNull: true
+            },
+            tags: {
+                type: DataTypes.STRING,
+                allowNull: false
+            }
+        },
+        { sequelize, tableName: 'posts' }
+        );
+
+    }
+
+    // public static createAssociations() {
+    //     Post.belongsTo(PostFeed, {
+    //         targetKey: 'PostFeedId',
+    //         as: 'todoList',
+    //         onDelete: 'cascade',
+    //         foreignKey: 'todoListId'
+    //     });
+    //     TodoItem.hasMany(ItemImage, {
+    //         as: 'images',
+    //         foreignKey: 'todoItemId'
+    //     });
+    // }
+
+}

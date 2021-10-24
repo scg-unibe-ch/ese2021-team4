@@ -14,6 +14,7 @@ import cors from 'cors';
 import {AdminController} from './controllers/admin.controller';
 import {ItemImage} from './models/itemImage.model';
 import { Post } from './models/post.model';
+import { PostController } from './controllers/post.controller';
 
 
 export class Server {
@@ -69,6 +70,7 @@ export class Server {
             .use('/user', UserController)
             .use('/secured', SecuredController)
             .use('/admin', AdminController)
+            .use('/post', PostController)
             .options('*', cors(options))
             .use(express.static('./src/public'))
             // this is the message you get if you open http://localhost:3000/ when the server is running

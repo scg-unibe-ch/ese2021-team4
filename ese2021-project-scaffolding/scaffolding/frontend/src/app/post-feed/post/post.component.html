@@ -1,1 +1,21 @@
-<p>post works!</p>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    {{ post.title}}
+  </mat-toolbar-row>
+</mat-toolbar>
+
+
+<div>
+  <div>
+    {{post.description}}
+  </div>
+</div>
+
+<div *ngFor="let tag of taglist">
+  <div>
+    {{ post.tag }}
+  </div>
+</div>
+
+
+<button *ngIf="user != null && user.userId === post.userId " mat-flat-button color="warn" (click)="deletePost(post)">delete post</button>

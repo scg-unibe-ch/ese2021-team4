@@ -1,11 +1,11 @@
 <mat-card>
   <h3>Register</h3>
   <mat-form-field>
-    <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="userToRegister.username">
+    <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="userToRegister.username" (ngModelChange)="updateUsernameMessage()">
     <div><br>{{usernameMessage}}</div>
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="email" placeholder="E-Mail" name="email" [(ngModel)]="userEmail">
+    <input matInput type="email" placeholder="E-Mail" name="email" [(ngModel)]="userEmail" (ngModelChange)="updateEmailMessage()">
     <div><br>{{emailMessage}}</div>
   </mat-form-field>
   <br>
@@ -48,5 +48,5 @@
     <input matInput type="text" placeholder="phone number" name="phone number" [(ngModel)]="phoneNr">
   </mat-form-field>
   <br>
-  <button mat-flat-button color="primary" (click)="registerUser()" [disabled]="!checkPassword()">Register</button>
+  <button mat-flat-button color="primary" (click)="registerUser()" [disabled]="!checkPassword() || !isValidEmail() || !isValidUsername()">Register</button>
 </mat-card>

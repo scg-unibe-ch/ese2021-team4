@@ -1,6 +1,25 @@
+<mat-card>
+    <mat-form-field>
+        <input matInput placeholder="Post Title" [(ngModel)]="newPostTitle" title="title">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Post Description" [(ngModel)]="newPostDescription" title="description">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Post Tags, comma separated" [(ngModel)]="newPostTags" title="tags">
+    </mat-form-field>
+    <p *ngIf="loggedIn">
+        <button mat-flat-button color="primary" (click)="createPost()" [disabled]="newPostTitle === ''">Create new post</button>
+    </p>
+    <p *ngIf="!loggedIn">
+        <a routerLink="/login">Please Login to create Post</a>
+    </p>
+   
+  </mat-card>
 <div *ngFor="let post of postList">
     <div>
         {{post.title}}  {{post.description}}
         <p> Hallo asdlkgaslökdhgöaslk</p>
     </div>
+    <button *ngIf="user != null && user.userId === post.userId " mat-flat-button color="warn" (click)="deletePost(post)">delete post</button>
 </div>

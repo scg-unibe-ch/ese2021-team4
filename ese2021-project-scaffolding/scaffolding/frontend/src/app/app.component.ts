@@ -38,48 +38,48 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.readLists();
+    //this.readLists();
     this.checkUserStatus();
   }
 
-  // CREATE - TodoList
-  createList(): void {
-    this.httpClient.post(environment.endpointURL + "todolist", {
-      name: this.newTodoListName
-    }).subscribe((list: any) => {
-      this.todoLists.push(new TodoList(list.todoListId, list.name, []));
-      this.newTodoListName = '';
-    })
-  }
+  // // CREATE - TodoList
+  // createList(): void {
+  //   this.httpClient.post(environment.endpointURL + "todolist", {
+  //     name: this.newTodoListName
+  //   }).subscribe((list: any) => {
+  //     this.todoLists.push(new TodoList(list.todoListId, list.name, []));
+  //     this.newTodoListName = '';
+  //   })
+  // }
 
-  // READ - TodoList, TodoItem
-  readLists(): void {
-    this.httpClient.get(environment.endpointURL + "todolist").subscribe((lists: any) => {
-      lists.forEach((list: any) => {
-        const todoItems: TodoItem[] = [];
+  // // READ - TodoList, TodoItem
+  // readLists(): void {
+  //   this.httpClient.get(environment.endpointURL + "todolist").subscribe((lists: any) => {
+  //     lists.forEach((list: any) => {
+  //       const todoItems: TodoItem[] = [];
 
-        list.todoItems.forEach((item: any) => {
-          todoItems.push(new TodoItem(item.todoItemId, item.todoListId, item.name, item.itemImage, item.done));
-        });
+  //       list.todoItems.forEach((item: any) => {
+  //         todoItems.push(new TodoItem(item.todoItemId, item.todoListId, item.name, item.itemImage, item.done));
+  //       });
 
-        this.todoLists.push(new TodoList(list.todoListId, list.name, todoItems))
-      });
-    });
-  }
+  //       this.todoLists.push(new TodoList(list.todoListId, list.name, todoItems))
+  //     });
+  //   });
+  // }
 
-  // UPDATE - TodoList
-  updateList(todoList: TodoList): void {
-    this.httpClient.put(environment.endpointURL + "todolist/" + todoList.listId, {
-      name: todoList.name
-    }).subscribe();
-  }
+  // // UPDATE - TodoList
+  // updateList(todoList: TodoList): void {
+  //   this.httpClient.put(environment.endpointURL + "todolist/" + todoList.listId, {
+  //     name: todoList.name
+  //   }).subscribe();
+  // }
 
-  // DELETE - TodoList
-  deleteList(todoList: TodoList): void {
-    this.httpClient.delete(environment.endpointURL + "todolist/" + todoList.listId).subscribe(() => {
-      this.todoLists.splice(this.todoLists.indexOf(todoList), 1);
-    });
-  }
+  // // DELETE - TodoList
+  // deleteList(todoList: TodoList): void {
+  //   this.httpClient.delete(environment.endpointURL + "todolist/" + todoList.listId).subscribe(() => {
+  //     this.todoLists.splice(this.todoLists.indexOf(todoList), 1);
+  //   });
+  // }
 
   checkUserStatus(): void {
     // Get user data from local storage

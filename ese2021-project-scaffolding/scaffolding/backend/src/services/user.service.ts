@@ -2,7 +2,6 @@ import { UserAttributes, User } from '../models/user.model';
 import { LoginResponse, LoginRequest } from '../models/login.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { Op } from 'sequelize/types';
 
 export class UserService {
 
@@ -16,10 +15,7 @@ export class UserService {
         const secret = process.env.JWT_SECRET;
         return User.findOne({
             where: {
-                [Op.or]: [
-                    {userName: loginRequestee.userName},
-                    {userEmail: loginRequestee.userName}
-                ]
+                userName: loginRequestee.userName
             }
         })
         .then(user => {

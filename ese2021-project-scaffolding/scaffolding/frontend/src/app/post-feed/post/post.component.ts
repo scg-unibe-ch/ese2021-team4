@@ -30,31 +30,34 @@ export class PostComponent implements OnInit {
   }
   ngOnInit(): void {
   }
-
+  
   @Input()
   post: Post = new Post(0, '', 0, '', 0, '', 0, 0);
 
-  @Output()
-    update = new EventEmitter<Post>();
-
-  @Output()
-    delete = new EventEmitter<Post>();
-
-    updatePost(): void {
-      // Emits event to parent component that TodoItem got updated
-      this.update.emit(this.post);
+    updatePost(post: Post): void {
+    
+      this.httpClient.put(environment.endpointURL + "post/" + post.postId, {
+        title: post.title,
+        description: post.description,
+        upvotes: post.upvotes,
+        downvotes: post.downvotes,
+        imageId: post.imageId
+      }).subscribe();
     }
 
-    deletePost(): void {
-      // Emits event to parent component that TodoItem got deleted
-      this.delete.emit(this.post);
+    deletePost(post: Post): void {
+        this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {
+          
+        });
     }
 
     upvotePost(): void {
       this.post.upvotes += 1;
+      this.updatePost(this.post);
     }
 
     downvotePost(): void {
     this.post.downvotes += 1;
+    this.updatePost(this.post);
   }
 }

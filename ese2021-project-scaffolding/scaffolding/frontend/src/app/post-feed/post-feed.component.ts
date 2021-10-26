@@ -40,9 +40,6 @@ export class PostFeedComponent implements OnInit {
 
   // CREATE - Post
   createPost(): void {
-    console.log("hallo");
-
-
     if(this.user != null){ //user might not be instantiated, this is taken care of by the html
       this.httpClient.post(environment.endpointURL + "post", {
       title: this.newPostTitle,

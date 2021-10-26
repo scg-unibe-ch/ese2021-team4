@@ -17,13 +17,19 @@ export class PostComponent implements OnInit {
 
   user: User | undefined;
 
+  postId: number = 0;
+
+  @Input()
+  post: Post = new Post(0, '', 0, '', 0, '', 0, 0);
+
   constructor(
     public httpClient: HttpClient,
     public userService: UserService,
     private activatedRoute: ActivatedRoute) {
 
-    this.activatedRoute.queryParams.subscribe(params => {
-      console.log(params['type'])
+    this.activatedRoute.params.subscribe(params => {
+      this.postId = params.id,
+      console.log(this.postId)
     });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
@@ -32,13 +38,14 @@ export class PostComponent implements OnInit {
     // Current value
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
+
+    this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
+      this.post=post
+    });
   }
 
   ngOnInit(): void {
   }
-
-  @Input()
-  post: Post = new Post(0, '', 0, '', 0, '', 0, 0);
 
     updatePost(post: Post): void {
 

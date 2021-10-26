@@ -11,6 +11,18 @@ postController.get('/', (req: Request, res: Response) => {
         .catch(err => res.status(500).send(err));
 });
 
+postController.get('/:id', (req, res) => {
+    Post.findByPk(req.params.id)
+        .then(found => {
+            if (found != null) {
+                res.status(200).send(found);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(err => res.status(500).send(err));
+});
+
 // create
 postController.post('/', (req: Request, res: Response) => {
     Post.create(req.body).then(created => {

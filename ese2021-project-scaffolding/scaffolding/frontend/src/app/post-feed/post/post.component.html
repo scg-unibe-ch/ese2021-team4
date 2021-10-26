@@ -13,7 +13,7 @@
   <mat-card-actions>
     <button mat-flat-button color="primary" (click)="upvotePost()">UPVOTE</button>
     <button mat-flat-button color="primary" (click)="downvotePost()">DOWNVOTE</button>
-    <button *ngIf="user != null && user.userId === post.userId " mat-flat-button color="warn" (click)="deletePost(post)">delete post</button>
+  <a routerLink="/home"> <button *ngIf="user != null && user.userId === post.userId " mat-flat-button color="warn" (click)="deletePost(post)">delete post</button></a>
   </mat-card-actions>
 </mat-card>
 

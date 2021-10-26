@@ -4,6 +4,7 @@ import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-post',
@@ -18,8 +19,12 @@ export class PostComponent implements OnInit {
 
   constructor(
     public httpClient: HttpClient,
-    public userService: UserService
-  ) {
+    public userService: UserService,
+    private activatedRoute: ActivatedRoute) {
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      console.log(params['type'])
+    });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
     userService.user$.subscribe(res => this.user = res);
@@ -28,14 +33,15 @@ export class PostComponent implements OnInit {
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
   }
+
   ngOnInit(): void {
   }
-  
+
   @Input()
   post: Post = new Post(0, '', 0, '', 0, '', 0, 0);
 
     updatePost(post: Post): void {
-    
+
       this.httpClient.put(environment.endpointURL + "post/" + post.postId, {
         title: post.title,
         description: post.description,
@@ -47,7 +53,7 @@ export class PostComponent implements OnInit {
 
     deletePost(post: Post): void {
         this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {
-          
+
         });
     }
 

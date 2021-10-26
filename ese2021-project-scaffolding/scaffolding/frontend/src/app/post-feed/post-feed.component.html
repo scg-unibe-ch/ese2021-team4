@@ -17,9 +17,8 @@
 
   </mat-card>
 <div *ngFor="let post of postList">
-    <div>
+  <mat-card>
         {{post.title}}  {{post.description}} <br>
       <a [routerLink]="['post', post.postId]">Preview </a>
-    </div>
-
+  </mat-card>
 </div>

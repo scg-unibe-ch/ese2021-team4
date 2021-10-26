@@ -50,7 +50,7 @@ export class PostFeedComponent implements OnInit {
       this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags));
       this.newPostTitle = this.newPostDescription = this.newPostTags = '';
     })}
-    
+
   }
 
   // READ - Post
@@ -71,12 +71,16 @@ export class PostFeedComponent implements OnInit {
   }
   // DELETE - Post
   deletePost(post: Post): void {
-    
+
     if(post.userId == this.user?.userId){ //makes sure only the author is allowed to delete a post
       this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {
       this.postList.splice(this.postList.indexOf(post), 1);
     });
   }
-    
+
+  }
+
+  openPost(post: Post): void {
+
   }
 }

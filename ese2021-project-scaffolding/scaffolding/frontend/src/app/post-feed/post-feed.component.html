@@ -14,7 +14,7 @@
     <p *ngIf="!loggedIn">
         <a routerLink="/login">Please Login to create Post</a>
     </p>
-   
+
   </mat-card>
 <div *ngFor="let post of postList">
     <div>
@@ -22,4 +22,5 @@
         <p> Hallo asdlkgaslökdhgöaslk</p>
     </div>
     <button *ngIf="user != null && user.userId === post.userId " mat-flat-button color="warn" (click)="deletePost(post)">delete post</button>
+    <a [routerLink]="['post', post.postId]">open post</a>
 </div>

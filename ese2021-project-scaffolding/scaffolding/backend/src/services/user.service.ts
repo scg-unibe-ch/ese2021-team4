@@ -16,7 +16,10 @@ export class UserService {
         const { Op } = require('sequelize');
         return User.findOne({
             where: {
-                userName: loginRequestee.userName
+                [Op.or]: [
+                    {userName: loginRequestee.userName},
+                    {userEmail: loginRequestee.userName}
+                ]
             }
         })
         .then(user => {

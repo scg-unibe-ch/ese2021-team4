@@ -51,7 +51,9 @@ export class PostFeedComponent implements OnInit {
     }).subscribe((post: any) => {
       this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes));
       this.newPostTitle = this.newPostDescription = this.newPostTags = '';
-    })}
+    },
+        error => {console.log(error)})
+    }
 
   }
 

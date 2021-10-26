@@ -85,6 +85,33 @@ export class RegisterComponent {
 
   }
 
+  isValidEmail(): boolean {
+    return !!this.userEmail.match('@')
+  }
+
+  updateEmailMessage(): void {
+    if(!this.isValidEmail()){
+      this.emailMessage='Please enter a valid email address.';
+    }
+    else{
+      this.emailMessage=''
+    }
+  }
+
+
+  isValidUsername(): boolean{
+    return !this.userToRegister.username.match('@')
+  }
+
+  updateUsernameMessage(): void {
+    if(!this.isValidUsername()){
+     this.usernameMessage='You username must not contain an @-Symbol.'
+    }
+    else{
+      this.usernameMessage=''
+    }
+  }
+
   checkPassword(): boolean {
     console.log(this.userToRegister.password);
 

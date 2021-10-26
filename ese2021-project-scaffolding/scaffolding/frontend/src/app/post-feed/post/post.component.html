@@ -1,21 +1,20 @@
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-    {{ post.title}}
-  </mat-toolbar-row>
-</mat-toolbar>
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar></div>
+    <mat-card-title>{{post.title}}</mat-card-title>
+    <mat-card-subtitle>{{post.tags}}</mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo in Post">
+  <mat-card-content>
+    <p>
+      {{post.description}}
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-flat-button color="primary" (click)="upvotePost()">UPVOTE</button>
+    <button mat-flat-button color="primary" (click)="downvotePost()">DOWNVOTE</button>
+    <button *ngIf="user != null && user.userId === post.userId " mat-flat-button color="warn" (click)="deletePost()">delete post</button>
+  </mat-card-actions>
+</mat-card>
 
 
-<div>
-  <div>
-    {{post.description}}
-  </div>
-</div>
-
-<div *ngFor="let tag of taglist">
-  <div>
-    {{ post.tag }}
-  </div>
-</div>
-
-
-<button *ngIf="user != null && user.userId === post.userId " mat-flat-button color="warn" (click)="deletePost(post)">delete post</button>

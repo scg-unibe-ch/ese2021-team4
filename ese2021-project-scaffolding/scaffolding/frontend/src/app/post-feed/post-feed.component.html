@@ -19,8 +19,6 @@
 
 
 <div *ngFor="let post of postList">
-    <div>
-        {{post.title}}  {{post.description}}
-        <p> Hallo asdlkgaslökdhgöaslk</p>
-    </div>
+      <app-post [post]="post">
+    </app-post>
 </div>

@@ -40,14 +40,19 @@ export class PostFeedComponent implements OnInit {
 
   // CREATE - Post
   createPost(): void {
+    console.log("hallo");
+
+
     if(this.user != null){ //user might not be instantiated, this is taken care of by the html
       this.httpClient.post(environment.endpointURL + "post", {
       title: this.newPostTitle,
       description: this.newPostDescription,
       tags: this.newPostTags,
       userId: this.user.userId,
+      upvotes: 0,
+      downvotes: 0
     }).subscribe((post: any) => {
-      this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags));
+      this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes));
       this.newPostTitle = this.newPostDescription = this.newPostTags = '';
     })}
 
@@ -58,7 +63,7 @@ export class PostFeedComponent implements OnInit {
     this.httpClient.get(environment.endpointURL + "post").subscribe((posts: any) => {
 
       posts.forEach((post: any) => {
-        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags));
+        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes));
       });
     });
   }

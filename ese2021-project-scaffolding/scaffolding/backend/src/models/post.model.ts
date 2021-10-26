@@ -7,7 +7,8 @@ export interface PostAttributes {
     description: string;
     imageId: number;
     tags: string; // contains the categories as comma-seperated-values. E.g. "Restaurant,Activities"
-
+    upvotes: number;
+    downvotes: number;
 }
 
 
@@ -27,6 +28,8 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
     description!: string;
     imageId!: number;
     tags!: string;
+    upvotes!: number;
+    downvotes!: number;
 
 
     public static initialize(sequelize: Sequelize) { // definition for database
@@ -55,7 +58,18 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
             tags: {
                 type: DataTypes.STRING,
                 allowNull: false
-            }
+            },
+
+            upvotes: {
+                type: DataTypes.INTEGER,
+                allowNull: false
+            },
+
+
+            downvotes: {
+                type: DataTypes.INTEGER,
+                allowNull: false
+                }
         },
         { sequelize, tableName: 'posts' }
         );

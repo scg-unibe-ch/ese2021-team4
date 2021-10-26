@@ -32,7 +32,7 @@ export class PostComponent implements OnInit {
   }
 
   @Input()
-  post: Post = new Post(0, '', 0, '', 0, '');
+  post: Post = new Post(0, '', 0, '', 0, '', 0, 0);
 
   @Output()
     update = new EventEmitter<Post>();
@@ -49,4 +49,12 @@ export class PostComponent implements OnInit {
       // Emits event to parent component that TodoItem got deleted
       this.delete.emit(this.post);
     }
+
+    upvotePost(): void {
+      this.post.upvotes += 1;
+    }
+
+    downvotePost(): void {
+    this.post.downvotes += 1;
+  }
 }

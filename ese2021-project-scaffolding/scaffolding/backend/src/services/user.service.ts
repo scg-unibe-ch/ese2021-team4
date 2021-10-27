@@ -36,4 +36,12 @@ export class UserService {
     public getAll(): Promise<User[]> {
         return User.findAll();
     }
+
+    public get(name: string): Promise<User> {
+        return User.findOne({
+            where: {
+                userName: name
+            }
+        });
+    }
 }

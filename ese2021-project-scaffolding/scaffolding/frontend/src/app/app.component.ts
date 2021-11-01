@@ -41,6 +41,7 @@ export class AppComponent implements OnInit {
     const userToken = localStorage.getItem('userToken');
     const userName = localStorage.getItem('userName');
 
+    // Get user with currently stored username from database
     this.httpClient.get(environment.endpointURL + "user/" + userName).subscribe((user: any) => {
       this.userService.setUser(user)
     });

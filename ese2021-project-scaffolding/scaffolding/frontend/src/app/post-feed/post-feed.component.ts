@@ -66,4 +66,25 @@ export class PostFeedComponent implements OnInit {
       });
     });
   }
+
+  sortByTitle(): void {
+    this.postList = this.postList.sort((a, b) => this.compareTitles(a, b))
+  }
+
+  sortById(): void{
+    this.postList.sort((a,b) => this.compareId(a, b))
+  }
+
+  compareTitles(a: Post, b: Post): number {
+    if(a.title<b.title)
+      return -1
+    if(a.title>b.title)
+      return 1
+    else
+      return 0
+  }
+
+  compareId(a:Post, b:Post): number {
+    return a.postId-b.postId
+  }
 }

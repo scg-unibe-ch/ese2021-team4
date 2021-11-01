@@ -16,6 +16,11 @@
     </p>
 
   </mat-card>
+<div>
+  <h3>Sort by:</h3>
+  <button mat-flat-button color="primary" (click)="sortByTitle()" >Title</button>
+  <button mat-flat-button color="primary" (click)="sortById()" >ID</button>
+</div>
 <div *ngFor="let post of postList">
   <mat-card>
         {{post.title}} <span style="display: inline-block;">&nbsp;</span>  {{post.description}} <br>

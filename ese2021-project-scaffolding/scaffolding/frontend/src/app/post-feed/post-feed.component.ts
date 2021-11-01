@@ -64,7 +64,6 @@ export class PostFeedComponent implements OnInit {
     this.httpClient.get(environment.endpointURL + "post").subscribe((posts: any) => {
 
       posts.forEach((post: any) => {
-        console.log(post)
         this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt)));
       });
     });
@@ -76,7 +75,15 @@ export class PostFeedComponent implements OnInit {
         break;
       case "title": this.sortByTitle();
         break;
-      case "recent": this.sortByDateAscending();
+      case "recent": this.sortByRecentDate();
+        break;
+      case "oldest": this.sortByOldestDate();
+        break;
+      case "upvotes": this.sortByUpvotes();
+        break;
+      case "downvotes": this.sortByDownvotes();
+        break;
+      case "total": this.sortByTotalVotes();
         break;
       default: console.log('invalid sort')
 
@@ -90,7 +97,24 @@ export class PostFeedComponent implements OnInit {
     this.postList.sort((a,b) => a.postId-b.postId)
   }
 
-  sortByDateAscending(): void {
+  sortByRecentDate(): void {
     this.postList.sort((a, b) => b.createdAt.getTime()-a.createdAt.getTime())
   }
+
+  sortByOldestDate(): void {
+    this.postList.sort((a, b) => a.createdAt.getTime()-b.createdAt.getTime())
+  }
+
+  sortByUpvotes(): void {
+    this.postList.sort((a, b) => b.upvotes-a.upvotes)
+  }
+
+  sortByDownvotes(): void {
+    this.postList.sort((a, b) => b.downvotes-a.downvotes)
+  }
+
+  sortByTotalVotes(): void {
+    this.postList.sort((a, b) => (b.upvotes-b.downvotes)-(a.upvotes-a.downvotes))
+  }
+
 }

@@ -4,7 +4,7 @@ export interface PostAttributes {
     postId: number;
     title: string;
     userId: number;
-    description: string;
+    description: Text;
     imageId: number;
     tags: string; // contains the categories as comma-seperated-values. E.g. "Restaurant,Activities"
     upvotes: number;
@@ -12,7 +12,7 @@ export interface PostAttributes {
 }
 
 
-// tells sequelize that todoItemId is not a required field
+// tells sequelize that postId is not a required field
 export interface PostCreationAttributes extends Optional<Post, 'postId'> { }
 
 
@@ -25,7 +25,7 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
     postId!: number;
     title!: string;
     userId!: number;
-    description!: string;
+    description!: Text;
     imageId!: number;
     tags!: string;
     upvotes!: number;
@@ -48,7 +48,7 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
                 allowNull: false
             },
             description: {
-                type: DataTypes.STRING,
+                type: DataTypes.TEXT,
                 allowNull: true
             },
             imageId: {

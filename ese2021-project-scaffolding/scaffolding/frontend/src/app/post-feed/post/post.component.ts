@@ -20,7 +20,7 @@ export class PostComponent implements OnInit {
   postId: number = 0;
 
   @Input()
-  post: Post = new Post(0, '', 0, '', 0, '', 0, 0);
+  post: Post = new Post(0, '', 0, '', 0, '', 0, 0, new Date());
 
   constructor(
     public httpClient: HttpClient,
@@ -28,8 +28,7 @@ export class PostComponent implements OnInit {
     private activatedRoute: ActivatedRoute) {
 
     this.activatedRoute.params.subscribe(params => {
-      this.postId = params.id,
-      console.log(this.postId)
+      this.postId = params.id
     });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
@@ -40,7 +39,7 @@ export class PostComponent implements OnInit {
     this.user = userService.getUser();
 
     this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
-      this.post=post
+      this.post = new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt));
     });
   }
 

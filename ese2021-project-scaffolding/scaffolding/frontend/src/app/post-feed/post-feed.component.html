@@ -22,6 +22,7 @@
   <mat-select [(ngModel)]="sortBy"(ngModelChange)="sortPosts()">
     <mat-option value="title">Title</mat-option>
     <mat-option value="id">ID</mat-option>
+    <mat-option value="recent">most recent</mat-option>
   </mat-select>
 </mat-form-field>
 <div *ngFor="let post of postList">

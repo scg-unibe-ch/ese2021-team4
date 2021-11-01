@@ -51,7 +51,7 @@ export class PostFeedComponent implements OnInit {
       upvotes: 0,
       downvotes: 0
     }).subscribe((post: any) => {
-      this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes));
+      this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt)));
       this.newPostTitle = this.newPostDescription = this.newPostTags = '';
     },
         error => {console.log(error)})
@@ -64,7 +64,8 @@ export class PostFeedComponent implements OnInit {
     this.httpClient.get(environment.endpointURL + "post").subscribe((posts: any) => {
 
       posts.forEach((post: any) => {
-        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes));
+        console.log(post)
+        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt)));
       });
     });
   }
@@ -75,28 +76,21 @@ export class PostFeedComponent implements OnInit {
         break;
       case "title": this.sortByTitle();
         break;
+      case "recent": this.sortByDateAscending();
+        break;
       default: console.log('invalid sort')
 
     }
   }
   sortByTitle(): void {
-    this.postList.sort((a, b) => this.compareTitles(a, b))
+    this.postList.sort((a, b) => a.title.localeCompare(b.title))
   }
 
   sortById(): void{
     this.postList.sort((a,b) => a.postId-b.postId)
   }
 
-  compareTitles(a: Post, b: Post): number {
-    if(a.title<b.title)
-      return -1;
-    if(a.title>b.title)
-      return 1;
-    else
-      return 0
-  }
-
-  compareId(a:Post, b:Post): number {
-    return a.postId-b.postId
+  sortByDateAscending(): void {
+    this.postList.sort((a, b) => b.createdAt.getTime()-a.createdAt.getTime())
   }
 }

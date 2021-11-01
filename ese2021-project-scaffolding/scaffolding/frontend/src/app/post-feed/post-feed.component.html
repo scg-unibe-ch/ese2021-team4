@@ -10,6 +10,7 @@
     </mat-form-field>
     <p *ngIf="loggedIn">
         <button mat-flat-button color="primary" (click)="createPost()" [disabled]="newPostTitle === ''">Create new post</button>
+        <a routerLink="/editor"><button>Create Post</button></a>
     </p>
     <p *ngIf="!loggedIn">
         <a routerLink="/login">Please log in to create Post</a>

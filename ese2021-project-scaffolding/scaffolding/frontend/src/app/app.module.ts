@@ -25,6 +25,7 @@ import {MatIconModule} from "@angular/material/icon";
 import { PostFeedComponent } from './post-feed/post-feed.component';
 import { PostComponent } from './post-feed/post/post.component';
 import {MatSelectModule} from "@angular/material/select";
+import { PostEditorComponent } from './post-feed/post/post-editor/post-editor.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -32,7 +33,8 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
-  {path: 'home/post/:id', component: PostComponent}
+  {path: 'home/post/:id', component: PostComponent},
+  {path: 'editor', component: PostEditorComponent}
 
 ];
 @NgModule({
@@ -45,7 +47,8 @@ const routes: Routes = [
     RegisterComponent,
     ProfileComponent,
     PostFeedComponent,
-    PostComponent
+    PostComponent,
+    PostEditorComponent
   ],
   imports: [
     BrowserModule,

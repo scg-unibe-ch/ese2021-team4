@@ -17,6 +17,8 @@ export class PostFeedComponent implements OnInit {
   newPostDescription = '';
   newPostTags = '';
 
+  sortBy = '';
+
   loggedIn: boolean | undefined;
 
   user: User | undefined;
@@ -67,19 +69,29 @@ export class PostFeedComponent implements OnInit {
     });
   }
 
+  sortPosts(): void {
+    switch (this.sortBy) {
+      case "id": this.sortById();
+        break;
+      case "title": this.sortByTitle();
+        break;
+      default: console.log('invalid sort')
+
+    }
+  }
   sortByTitle(): void {
-    this.postList = this.postList.sort((a, b) => this.compareTitles(a, b))
+    this.postList.sort((a, b) => this.compareTitles(a, b))
   }
 
   sortById(): void{
-    this.postList.sort((a,b) => this.compareId(a, b))
+    this.postList.sort((a,b) => a.postId-b.postId)
   }
 
   compareTitles(a: Post, b: Post): number {
     if(a.title<b.title)
-      return -1
+      return -1;
     if(a.title>b.title)
-      return 1
+      return 1;
     else
       return 0
   }

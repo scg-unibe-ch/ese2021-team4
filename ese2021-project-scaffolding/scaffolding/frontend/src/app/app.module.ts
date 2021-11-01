@@ -24,6 +24,7 @@ import { ProfileComponent } from './profile/profile.component';
 import {MatIconModule} from "@angular/material/icon";
 import { PostFeedComponent } from './post-feed/post-feed.component';
 import { PostComponent } from './post-feed/post/post.component';
+import {MatSelectModule} from "@angular/material/select";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -60,7 +61,8 @@ const routes: Routes = [
     FormsModule,
     MatCheckboxModule,
     RouterModule.forRoot(routes),
-    MatIconModule
+    MatIconModule,
+    MatSelectModule
   ],
   providers: [
     {

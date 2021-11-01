@@ -16,11 +16,13 @@
     </p>
 
   </mat-card>
-<div>
-  <h3>Sort by:</h3>
-  <button mat-flat-button color="primary" (click)="sortByTitle()" >Title</button>
-  <button mat-flat-button color="primary" (click)="sortById()" >ID</button>
-</div>
+<mat-form-field appearance="fill">
+  <mat-label>Sort by:</mat-label>
+  <mat-select [(ngModel)]="sortBy"(ngModelChange)="sortPosts()">
+    <mat-option value="title">Title</mat-option>
+    <mat-option value="id">ID</mat-option>
+  </mat-select>
+</mat-form-field>
 <div *ngFor="let post of postList">
   <mat-card>
         {{post.title}} <span style="display: inline-block;">&nbsp;</span>  {{post.description}} <br>

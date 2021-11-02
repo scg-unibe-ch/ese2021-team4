@@ -48,6 +48,8 @@ export class RegisterComponent {
     // Current value
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
+
+    console.log('register constructor', this.user, this.loggedIn)
   }
 
   registerUser(): void {

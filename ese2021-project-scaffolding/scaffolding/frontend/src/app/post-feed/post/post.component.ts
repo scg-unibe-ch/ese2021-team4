@@ -28,23 +28,27 @@ export class PostComponent implements OnInit {
     private activatedRoute: ActivatedRoute) {
 
     this.activatedRoute.params.subscribe(params => {
-      this.postId = params.id,
+      this.postId = params.id;
       console.log(this.postId)
     });
-    // Listen for changes
-    userService.loggedIn$.subscribe(res => this.loggedIn = res);
-    userService.user$.subscribe(res => this.user = res);
-
-    // Current value
-    this.loggedIn = userService.getLoggedIn();
-    this.user = userService.getUser();
 
     this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
       this.post=post
     });
+
+    console.log('post constructor', this.user, this.loggedIn)
   }
 
   ngOnInit(): void {
+    // Listen for changes
+    this.userService.loggedIn$.subscribe(res => this.loggedIn = res);
+    this.userService.user$.subscribe(res => this.user = res);
+
+    // Current value
+    this.loggedIn = this.userService.getLoggedIn();
+    this.user = this.userService.getUser();
+
+    console.log('post init', this.user, this.loggedIn)
   }
 
     updatePost(post: Post): void {

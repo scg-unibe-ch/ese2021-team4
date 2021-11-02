@@ -37,6 +37,7 @@ export class PostFeedComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    console.log('post-feed constructor', this.user, this.loggedIn)
     this.readPosts();
   }
 
@@ -94,9 +95,5 @@ export class PostFeedComponent implements OnInit {
       return 1;
     else
       return 0
-  }
-
-  compareId(a:Post, b:Post): number {
-    return a.postId-b.postId
   }
 }

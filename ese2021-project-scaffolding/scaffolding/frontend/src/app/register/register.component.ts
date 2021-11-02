@@ -25,7 +25,7 @@ export class RegisterComponent {
 
   user: User | undefined;
 
-  userToRegister: User = new User(0, '', '');
+  userToRegister: User = new User(0, '', '', false);
   userEmail: string = '';
   firstName: string = '';
   lastName: string = '';

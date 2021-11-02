@@ -14,7 +14,7 @@ import { TodoListComponent } from './todo-list/todo-list.component';
 import { TodoItemComponent } from './todo-list/todo-item/todo-item.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatListModule } from '@angular/material/list';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { HomeComponent } from './home/home.component';
@@ -25,7 +25,7 @@ import {MatIconModule} from "@angular/material/icon";
 import { PostFeedComponent } from './post-feed/post-feed.component';
 import { PostComponent } from './post-feed/post/post.component';
 import {MatSelectModule} from "@angular/material/select";
-import { PostEditorComponent } from './post-feed/post/post-editor/post-editor.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -34,8 +34,6 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'home/post/:id', component: PostComponent},
-  {path: 'editor', component: PostEditorComponent}
-
 ];
 @NgModule({
   declarations: [
@@ -47,8 +45,7 @@ const routes: Routes = [
     RegisterComponent,
     ProfileComponent,
     PostFeedComponent,
-    PostComponent,
-    PostEditorComponent
+    PostComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +62,9 @@ const routes: Routes = [
     MatCheckboxModule,
     RouterModule.forRoot(routes),
     MatIconModule,
-    MatSelectModule
+    MatSelectModule,
+    AngularEditorModule,
+    ReactiveFormsModule
   ],
   providers: [
     {

@@ -1,20 +1,38 @@
-<mat-card>
-  <mat-card-header>
-    <div mat-card-avatar></div>
-    <mat-card-title>{{post.title}}</mat-card-title>
-    <mat-card-subtitle>{{post.tags}}</mat-card-subtitle>
-  </mat-card-header>
-  <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo in Post">
-  <mat-card-content>
-    <p>
-      {{post.description}}
+<div *ngIf="!editMode">
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar></div>
+      <mat-card-title>{{post.title}}</mat-card-title>
+      <mat-card-subtitle>{{post.tags}}</mat-card-subtitle>
+    </mat-card-header>
+    <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo in Post"> -->
+    <mat-card-content>
+        <div [innerHTML]="post.description"></div>
+
+        <!-- {{post.description}} -->
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-flat-button color="primary" (click)="upvotePost()">UPVOTE</button>
+      <button mat-flat-button color="primary" (click)="downvotePost()">DOWNVOTE</button>
+      <button *ngIf="user != null && user.userId === post.userId " mat-flat-button color="primary" (click)="editMode = true">EDIT</button>
+    <a routerLink="/home"> <button *ngIf="user != null && user.userId === post.userId " mat-flat-button color="warn" (click)="deletePost(post)">delete post</button></a>
+
+    </mat-card-actions>
+  </mat-card>
+</div>
+<div *ngIf="editMode">
+
+  <div class="container">
+    <br><br>
+    <angular-editor id="editor1" [(ngModel)]="post.description" [config]="config1" (ngModelChange)="onChange($event)"
+                    (blur)="onBlur($event)"></angular-editor>
+    <p class="html">
+      HTML Output:  {{ post.description }}
     </p>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-flat-button color="primary" (click)="upvotePost()">UPVOTE</button>
-    <button mat-flat-button color="primary" (click)="downvotePost()">DOWNVOTE</button>
-  <a routerLink="/home"> <button *ngIf="user != null && user.userId === post.userId " mat-flat-button color="warn" (click)="deletePost(post)">delete post</button></a>
-  </mat-card-actions>
-</mat-card>
 
+    <button *ngIf="existsInBackend" (click)="save()">Save</button>
+    <a routerLink="/home/"><button *ngIf="!existsInBackend" (click)="createPost()">Create</button></a>
 
+  </div>
+
+</div>

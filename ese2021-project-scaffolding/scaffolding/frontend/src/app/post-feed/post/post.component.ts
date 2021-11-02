@@ -5,6 +5,8 @@ import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-post',
@@ -19,17 +21,76 @@ export class PostComponent implements OnInit {
 
   postId: number = 0;
 
+  title = 'app';
+  // description = '';
+  tags = '';
+  existsInBackend : boolean;
+  form: FormGroup = new FormGroup({});
+  editMode: boolean = false; 
+
+  config1: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    minHeight: '5rem',
+    maxHeight: '15rem',
+    placeholder: 'Enter text here...',
+    translate: 'no',
+    sanitize: false,
+    // toolbarPosition: 'top',
+    outline: true,
+    defaultFontName: 'Arial',
+    defaultFontSize: '5',
+    // showToolbar: false,
+    defaultParagraphSeparator: 'p',
+    customClasses: [
+      {
+        name: 'quote',
+        class: 'quote',
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: 'titleText',
+        class: 'titleText',
+        tag: 'h1',
+      },
+    ],
+    toolbarHiddenButtons: [
+      [
+      'undo',
+      'redo',
+      'justifyLeft',
+      'justifyCenter',
+      'justifyRight',
+      'justifyFull',
+      ],
+      [
+        'insertVideo',
+        'backgroundColor',
+        'textColor',
+        'removeFormat',
+        'customClasses',
+        'insertHorizontalRule'
+      ]
+    ]
+  };
+
+
+
   @Input()
   post: Post = new Post(0, '', 0, '', 0, '', 0, 0);
 
   constructor(
+    private formBuilder: FormBuilder,
     public httpClient: HttpClient,
     public userService: UserService,
     private activatedRoute: ActivatedRoute) {
 
     this.activatedRoute.params.subscribe(params => {
-      this.postId = params.id,
-      console.log(this.postId)
+      this.postId = +params.id;
+      console.log(this.postId);
     });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
@@ -39,37 +100,81 @@ export class PostComponent implements OnInit {
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
 
-    this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
-      this.post=post
-    });
+    // if this.postId === -1, this means we are in editor mode and are looking to create a new post
+    if (this.postId === -1){
+      this.editMode = true;
+      this.existsInBackend = false;
+    } else {
+      this.existsInBackend = true;
+      this.editMode = false;
+      this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
+        this.post=post
+      });
+    }
+
   }
 
   ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      signature: [ '', Validators.required]
+    });
   }
 
-    updatePost(post: Post): void {
+  onChange(event : any) {
+    console.log('changed');
+  }
 
-      this.httpClient.put(environment.endpointURL + "post/" + post.postId, {
-        title: post.title,
-        description: post.description,
-        upvotes: post.upvotes,
-        downvotes: post.downvotes,
-        imageId: post.imageId
-      }).subscribe();
+  onBlur(event : any) {
+    console.log('blur ' + event);
+  }
+
+  save(){
+    this.updatePost(this.post);
+  }
+
+  // create(){
+  //   console.log("going to create");
+    
+  // }
+
+  createPost(): void {
+    if(this.user != null){ //user might not be instantiated, this is taken care of by the html
+      this.httpClient.post(environment.endpointURL + "post", {
+      title: this.title,
+      description: this.post.description,
+      tags: this.tags,
+      userId: this.user.userId,
+      upvotes: 0,
+      downvotes: 0
+    }).subscribe((post: any) => {
+      // this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes));
+      // this.title = this.newPostDescription = this.newPostTags = '';
+    },
+        error => {console.log(error)})
     }
+  }
 
-    deletePost(post: Post): void {
-        this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {
+  updatePost(post: Post): void {
+    this.httpClient.put(environment.endpointURL + "post/" + post.postId, {
+      title: post.title,
+      description: post.description,
+      upvotes: post.upvotes,
+      downvotes: post.downvotes,
+      imageId: post.imageId
+    }).subscribe();
+  }
 
-        });
-    }
+  deletePost(post: Post): void {
+    this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {
+    });
+  }
 
-    upvotePost(): void {
-      this.post.upvotes += 1;
-      this.updatePost(this.post);
-    }
+  upvotePost(): void {
+    this.post.upvotes += 1;
+    this.updatePost(this.post);
+  }
 
-    downvotePost(): void {
+  downvotePost(): void {
     this.post.downvotes += 1;
     this.updatePost(this.post);
   }

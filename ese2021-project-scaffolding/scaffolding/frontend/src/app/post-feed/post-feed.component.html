@@ -1,5 +1,5 @@
 <mat-card>
-    <mat-form-field>
+    <!-- <mat-form-field>
         <input matInput placeholder="Post Title" [(ngModel)]="newPostTitle" title="title">
     </mat-form-field>
     <mat-form-field>
@@ -7,10 +7,10 @@
     </mat-form-field>
     <mat-form-field>
         <input matInput placeholder="Post Tags, comma separated" [(ngModel)]="newPostTags" title="tags">
-    </mat-form-field>
+    </mat-form-field> -->
     <p *ngIf="loggedIn">
-        <button mat-flat-button color="primary" (click)="createPost()" [disabled]="newPostTitle === ''">Create new post</button>
-        <a routerLink="/editor"><button>Create Post</button></a>
+        <!-- <button mat-flat-button color="primary" (click)="createPost()" [disabled]="newPostTitle === ''">Create new post</button> -->
+        <a routerLink="/home/post/-1"><button>Create Post</button></a>
     </p>
     <p *ngIf="!loggedIn">
         <a routerLink="/login">Please log in to create Post</a>

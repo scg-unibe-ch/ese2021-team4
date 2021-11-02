@@ -64,7 +64,7 @@ const routes: Routes = [
     MatIconModule,
     MatSelectModule,
     AngularEditorModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
     {

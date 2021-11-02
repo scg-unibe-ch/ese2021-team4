@@ -9,7 +9,6 @@
         <input matInput placeholder="Post Tags, comma separated" [(ngModel)]="newPostTags" title="tags">
     </mat-form-field> -->
     <p *ngIf="loggedIn">
-        <!-- <button mat-flat-button color="primary" (click)="createPost()" [disabled]="newPostTitle === ''">Create new post</button> -->
         <a routerLink="/home/post/-1"><button>Create Post</button></a>
     </p>
     <p *ngIf="!loggedIn">

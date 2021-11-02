@@ -8,28 +8,41 @@
     <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo in Post"> -->
     <mat-card-content>
         <div [innerHTML]="post.description"></div>
-
-        <!-- {{post.description}} -->
     </mat-card-content>
     <mat-card-actions>
       <button mat-flat-button color="primary" (click)="upvotePost()">UPVOTE</button>
       <button mat-flat-button color="primary" (click)="downvotePost()">DOWNVOTE</button>
-      <button *ngIf="user != null && user.userId === post.userId " mat-flat-button color="primary" (click)="editMode = true">EDIT</button>
-    <a routerLink="/home"> <button *ngIf="user != null && user.userId === post.userId " mat-flat-button color="warn" (click)="deletePost(post)">delete post</button></a>
-
+      <span *ngIf="user != null && user.userId === post.userId">
+        <button  mat-flat-button color="primary" (click)="editMode = true">EDIT</button>
+        <a routerLink="/home"> <button mat-flat-button color="warn" (click)="deletePost(post)">delete post</button></a>
+      </span>
+      
     </mat-card-actions>
   </mat-card>
 </div>
+
+
 <div *ngIf="editMode">
 
   <div class="container">
+
+    <!-- TITLE -->
+    <form class="title-form">
+      <mat-form-field appearance="fill">
+        <mat-label>Title</mat-label>
+        <input matInput #message maxlength="256" [(ngModel)]="post.title" [ngModelOptions]="{standalone: true}">
+        <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+      </mat-form-field>
+    </form>
+
+    <!-- DESCRIPTION -->
     <br><br>
     <angular-editor id="editor1" [(ngModel)]="post.description" [config]="config1" (ngModelChange)="onChange($event)"
                     (blur)="onBlur($event)"></angular-editor>
     <p class="html">
       HTML Output:  {{ post.description }}
     </p>
-
+    
     <button *ngIf="existsInBackend" (click)="save()">Save</button>
     <a routerLink="/home/"><button *ngIf="!existsInBackend" (click)="createPost()">Create</button></a>
 

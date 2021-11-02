@@ -3,10 +3,13 @@ import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import { Component, OnInit, Input} from '@angular/core';
+import {  ActivatedRoute} from "@angular/router";
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+
+
 
 @Component({
   selector: 'app-post',
@@ -21,9 +24,6 @@ export class PostComponent implements OnInit {
 
   postId: number = 0;
 
-  title = 'app';
-  // description = '';
-  tags = '';
   existsInBackend : boolean;
   form: FormGroup = new FormGroup({});
   editMode: boolean = false; 
@@ -75,9 +75,11 @@ export class PostComponent implements OnInit {
         'insertHorizontalRule'
       ]
     ]
+
+
+
+
   };
-
-
 
   @Input()
   post: Post = new Post(0, '', 0, '', 0, '', 0, 0);
@@ -111,7 +113,7 @@ export class PostComponent implements OnInit {
         this.post=post
       });
     }
-
+    
   }
 
   ngOnInit(): void {
@@ -132,17 +134,12 @@ export class PostComponent implements OnInit {
     this.updatePost(this.post);
   }
 
-  // create(){
-  //   console.log("going to create");
-    
-  // }
-
   createPost(): void {
     if(this.user != null){ //user might not be instantiated, this is taken care of by the html
       this.httpClient.post(environment.endpointURL + "post", {
-      title: this.title,
+      title: this.post.title,
       description: this.post.description,
-      tags: this.tags,
+      tags: this.post.tags,
       userId: this.user.userId,
       upvotes: 0,
       downvotes: 0
@@ -178,4 +175,6 @@ export class PostComponent implements OnInit {
     this.post.downvotes += 1;
     this.updatePost(this.post);
   }
+
+
 }

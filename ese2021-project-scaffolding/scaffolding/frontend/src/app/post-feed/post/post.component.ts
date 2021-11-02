@@ -58,9 +58,10 @@ export class PostComponent implements OnInit {
     }
 
     deletePost(post: Post): void {
-        this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {
-
-        });
+     
+      if(this.user?.userId == post.userId || this.user?.isAdmin){
+        this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {});
+      }
     }
 
     upvotePost(): void {

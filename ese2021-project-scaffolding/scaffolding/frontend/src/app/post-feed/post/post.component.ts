@@ -116,7 +116,13 @@ export class PostComponent implements OnInit {
       this.existsInBackend = true;
       this.editMode = false;
       this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
-        this.post=post;
+        this.post=new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []);
+        this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
+          console.log(comments);
+          comments.forEach((comment: any) => {
+            this.post.comments.push(new Comment(comment.commentId, comment.postId, comment.userId, comment.description, comment.upvotes, comment.downvotes, new Date(comment.createdAt)));
+          });
+        });
         this.httpClient.get(environment.endpointURL + "user/" + post.userId).subscribe((user: any) => {
           this.authorName = user.userName;
         });
@@ -199,9 +205,12 @@ export class PostComponent implements OnInit {
     this.httpClient.post(environment.endpointURL + "comment", {
       description: this.newCommentDescription,
       postId: this.post.postId,
-      userId: this.user?.userId
+      userId: this.user?.userId,
+      upvotes: 0,
+      downvotes: 0
     }).subscribe((comment: any) => {
-      this.post.comments.push(new Comment(comment.commentId, this.post.postId, comment.userId, comment.description, 0, 0, new Date()));
+      console.log(this.post);
+      this.post.comments.push(new Comment(comment.commentId, this.post.postId, comment.userId, comment.description, 0, 0, new Date(comment.createdAt)));
       this.newCommentDescription = '';
     });
   }

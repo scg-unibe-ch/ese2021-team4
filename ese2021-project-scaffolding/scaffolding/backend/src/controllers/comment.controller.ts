@@ -13,10 +13,10 @@ commentController.post('/', (req: Request, res: Response) => {
 
 
 // get the filename of an image
-//todoItemController.get('/:id/image', (req: Request, res: Response) => {
-  //  itemService.getImageItem(Number(req.params.id)).then(products => res.send(products))
-  //      .catch(err => res.status(500).send(err));
-// });
+commentController.get('/:id', (req: Request, res: Response) => {
+  Comment.findByPk(Number(req.params.id)).then(products => res.send(products))
+        .catch(err => res.status(500).send(err));
+});
 
 
 commentController.put('/:id', (req: Request, res: Response) => {
@@ -41,6 +41,21 @@ commentController.delete('/:id', (req: Request, res: Response) => {
                 found.destroy().then(() => res.status(200).send());
             } else {
                 res.sendStatus(404);
+            }
+        })
+        .catch(err => res.status(500).send(err));
+});
+
+commentController.get('/forPost/:id', (req: Request, res: Response) => {
+    Comment.findAll({
+        where: {
+            postId: req.params.id
+        }
+    }).then(found => {
+            if (found != null) {
+                res.status(200).send(found);
+            } else {
+                res.sendStatus(404).send();
             }
         })
         .catch(err => res.status(500).send(err));

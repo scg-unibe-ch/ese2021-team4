@@ -10,10 +10,14 @@
     <mat-card-content>
         <div [innerHTML]="post.description"></div>
     </mat-card-content>
-   
+
     <mat-card-actions>
       <button mat-flat-button color="primary" (click)="upvotePost()">UPVOTES: {{post.upvotes}}</button>
       <button mat-flat-button color="primary" (click)="downvotePost()">DOWNVOTES: {{post.downvotes}}</button>
+
+      <input matInput type="text" placeholder="Comment" name="Comment" [(ngModel)]="newCommentDescription">
+      <button mat-flat-button color="primary" (click)="createComment()">CREATE COMMENT</button>
+
       <span *ngIf="user?.userId === post.userId || user?.isAdmin">
         <button  mat-flat-button color="primary" (click)="editMode = true">EDIT</button>
         <a routerLink="/home"> <button mat-flat-button color="warn" (click)="deletePost(post)">delete post</button></a>
@@ -21,6 +25,12 @@
     </mat-card-actions>
   </mat-card>
 </div>
+
+<mat-card>
+  <div *ngFor="let comment of post.comments">
+    <app-comment [comment]="comment"></app-comment>
+  </div>
+</mat-card>
 
 <div *ngIf="editMode">
 
@@ -42,7 +52,7 @@
     <p class="html">
       HTML Output:  {{ post.description }}
     </p>
-    
+
     <button *ngIf="existsInBackend" (click)="save()">Save</button>
     <a routerLink="/home/"><button *ngIf="!existsInBackend" (click)="createPost()">Create</button></a>
   </div>

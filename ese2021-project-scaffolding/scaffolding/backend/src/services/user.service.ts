@@ -37,11 +37,17 @@ export class UserService {
         return User.findAll();
     }
 
-    public get(name: string): Promise<User> {
+    public get(name: string, id: number): Promise<User> {
+        const { Op } = require('sequelize');
         return User.findOne({
             where: {
-                userName: name
+                [Op.or]: [
+                    {userName: name},
+                    {userId: id}
+                ]
             }
+
         });
     }
+
 }

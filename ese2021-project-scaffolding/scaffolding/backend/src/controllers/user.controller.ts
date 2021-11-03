@@ -24,9 +24,18 @@ userController.get('/', verifyToken, // you can add middleware on specific reque
     }
 );
 
-userController.get('/:name',
+userController.get('/:param',
+
     (req, res) => {
-        userService.get(req.params.name).then(user => res.send(user)).catch(err => res.status(500).send(err));
+        if (isNaN(+req.params.param)) {
+            userService.get(req.params.param, null).then(user => res.send(user)).catch(err => res.status(500).send(err));
+        } else if (typeof +req.params.param === 'number') {
+            console.log('get with userid!');
+            userService.get(null, +req.params.param).then(user => res.send(user)).catch(err => res.status(500).send(err));
+        } else {
+            res.status(500).send('faulty request');
+        }
+
     }
 );
 

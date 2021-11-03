@@ -81,7 +81,7 @@ export class PostComponent implements OnInit {
   };
 
   @Input()
-  post: Post = new Post(0, '', 0, '', 0, '', 0, 0, new Date());
+  post: Post = new Post(0, '', 0, '', 0, '', 0, 0, new Date(), []);
 
   @Output()
   update = new EventEmitter<Post>();
@@ -198,9 +198,10 @@ export class PostComponent implements OnInit {
   createComment(): void {
     this.httpClient.post(environment.endpointURL + "comment", {
       description: this.newCommentDescription,
-      postId: this.post.postId
-    }).subscribe((item: any) => {
-      this.post.comments.push(new Comment(comment.commentId, comment.postId, comment.userId, comment.description, 0, 0, new Date()));
+      postId: this.post.postId,
+      userId: this.user?.userId
+    }).subscribe((comment: any) => {
+      this.post.comments.push(new Comment(comment.commentId, this.post.postId, comment.userId, comment.description, 0, 0, new Date()));
       this.newCommentDescription = '';
     });
   }

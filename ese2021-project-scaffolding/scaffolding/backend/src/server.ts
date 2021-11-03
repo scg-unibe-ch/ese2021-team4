@@ -10,7 +10,6 @@ import { TodoList } from './models/todolist.model';
 import { TodoItem } from './models/todoitem.model';
 import { User } from './models/user.model';
 
-
 import cors from 'cors';
 import {AdminController} from './controllers/admin.controller';
 import {ItemImage} from './models/itemImage.model';

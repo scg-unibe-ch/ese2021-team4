@@ -27,6 +27,8 @@ export class ProfileComponent implements OnInit {
   phoneNr: string = '';
 
   updateMessage: string = '';
+  emailMessage: string = '';
+  usernameMessage: string = '';
 
   constructor(
     public httpClient: HttpClient,
@@ -58,25 +60,52 @@ export class ProfileComponent implements OnInit {
   }
 
   updateUser(user: User): void {
-    this.httpClient.put(environment.endpointURL + "user/" + user.userId, {
-      userId: this.changedUser.userId,
-      userName: this.changedUser.username,
-      password: this.changedUser.password,
-      userEmail: this.userEmail,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      street: this.street,
-      houseNr: this.houseNr,
-      city: this.city,
-      zipCode: this.zipCode,
-      birthday: this.birthday,
-      phoneNr: this.phoneNr
-    }).subscribe(() => {
-      this.updateMessage = 'Your Information has been updated.'
-      },
-      error => {
-      this.updateMessage = 'update failed';
-      console.log(error)
-    })
+    if(this.isValidUsername()&&this.isValidEmail()) {
+      this.httpClient.put(environment.endpointURL + "user/" + user.userId, {
+        userId: this.changedUser.userId,
+        userName: this.changedUser.username,
+        password: this.changedUser.password,
+        userEmail: this.userEmail,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        street: this.street,
+        houseNr: this.houseNr,
+        city: this.city,
+        zipCode: this.zipCode,
+        birthday: this.birthday,
+        phoneNr: this.phoneNr
+      }).subscribe(() => {
+        this.updateMessage = 'Your Information has been updated.';
+        this.emailMessage = this.usernameMessage = ''
+        },
+        error => {
+          this.updateMessage = 'update failed';
+          console.log(error)
+        })
+    }
+  }
+
+  updateUsernameMessage(): void {
+    if(!this.isValidUsername()){
+      this.usernameMessage='You username must not contain an @-Symbol.'
+    }
+    else{
+      this.usernameMessage=''
+    }
+  }
+  isValidUsername(): boolean{
+    return !this.changedUser.username.match('@')
+  }
+
+  updateEmailMessage(): void {
+    if(!this.isValidEmail()){
+      this.emailMessage='Please enter a valid email address.';
+    }
+    else{
+      this.emailMessage=''
+    }
+  }
+  isValidEmail(): boolean {
+    return !!this.userEmail.match('@')
   }
 }

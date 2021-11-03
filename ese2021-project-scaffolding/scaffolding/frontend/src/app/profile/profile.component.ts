@@ -15,7 +15,7 @@ export class ProfileComponent implements OnInit {
 
   loggedIn: boolean | undefined;
 
-  changedUser = new User(0, '', '');
+  changedUser = new User(0, '', '', false);
   userEmail: string = '';
   firstName: string = '';
   lastName: string = '';
@@ -41,7 +41,7 @@ export class ProfileComponent implements OnInit {
     this.user = userService.getUser();
 
     this.httpClient.get(environment.endpointURL + "user/" + localStorage.getItem('userName')).subscribe((user: any) => {
-      this.changedUser = new User(user.userId, user.userName, user.password);
+      this.changedUser = new User(user.userId, user.userName, user.password, user.admin);
       this.userEmail = user.userEmail;
       this.firstName = user.firstName;
       this.lastName = user.lastName;

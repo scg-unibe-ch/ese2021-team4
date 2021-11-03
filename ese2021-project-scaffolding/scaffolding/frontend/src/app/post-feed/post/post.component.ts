@@ -93,7 +93,7 @@ export class PostComponent implements OnInit {
     private activatedRoute: ActivatedRoute) {
 
     this.activatedRoute.params.subscribe(params => {
-      this.postId = params.id;
+      this.postId = +params.id;
     });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);

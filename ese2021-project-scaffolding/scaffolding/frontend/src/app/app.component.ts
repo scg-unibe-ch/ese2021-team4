@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
 
     // Get user with currently stored username from database
     this.httpClient.get(environment.endpointURL + "user/" + userName).subscribe((user: any) => {
-      this.userService.setUser(new User(user.userId, user.userName, user.password))
+      this.userService.setUser(new User(user.userId, user.userName, user.password, user.admin))
     });
     // Set boolean whether a user is logged in or not
     this.userService.setLoggedIn(!!userToken);

@@ -4,23 +4,23 @@
       <div mat-card-avatar></div>
       <mat-card-title>{{post.title}}</mat-card-title>
       <mat-card-subtitle>{{post.tags}}</mat-card-subtitle>
+      <mat-card-subtitle>Created At: {{createdAtString}} by {{authorName}}</mat-card-subtitle>
     </mat-card-header>
     <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo in Post"> -->
     <mat-card-content>
         <div [innerHTML]="post.description"></div>
     </mat-card-content>
+   
     <mat-card-actions>
-      <button mat-flat-button color="primary" (click)="upvotePost()">UPVOTE</button>
-      <button mat-flat-button color="primary" (click)="downvotePost()">DOWNVOTE</button>
-      <span *ngIf="user != null && user.userId === post.userId">
+      <button mat-flat-button color="primary" (click)="upvotePost()">UPVOTES: {{post.upvotes}}</button>
+      <button mat-flat-button color="primary" (click)="downvotePost()">DOWNVOTES: {{post.downvotes}}</button>
+      <span *ngIf="user?.userId === post.userId || user?.isAdmin">
         <button  mat-flat-button color="primary" (click)="editMode = true">EDIT</button>
         <a routerLink="/home"> <button mat-flat-button color="warn" (click)="deletePost(post)">delete post</button></a>
       </span>
-      
     </mat-card-actions>
   </mat-card>
 </div>
-
 
 <div *ngIf="editMode">
 
@@ -45,16 +45,6 @@
     
     <button *ngIf="existsInBackend" (click)="save()">Save</button>
     <a routerLink="/home/"><button *ngIf="!existsInBackend" (click)="createPost()">Create</button></a>
-  <!-- </mat-card-content> -->
-    <mat-card>
-      <mat-card-actions>
-        <button mat-flat-button color="primary" (click)="upvotePost()">UPVOTE</button>
-        <button mat-flat-button color="primary" (click)="downvotePost()">DOWNVOTE</button>
-        <p>{{post.createdAt.getDay()}}.{{post.createdAt.getMonth()}}.{{post.createdAt.getFullYear()}}</p>
-      <a routerLink="/home"> <button *ngIf="user?.userId === post.userId || user?.isAdmin" mat-flat-button color="warn" (click)="deletePost(post)">delete post</button></a>
-      </mat-card-actions>
-    </mat-card>
-
   </div>
 
 </div>

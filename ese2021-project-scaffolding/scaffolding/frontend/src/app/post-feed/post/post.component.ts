@@ -23,6 +23,8 @@ export class PostComponent implements OnInit {
   user: User | undefined;
 
   postId: number = 0;
+  createdAtString: string | undefined;
+  authorName: string | undefined;
 
   existsInBackend : boolean;
   form: FormGroup = new FormGroup({});
@@ -110,8 +112,15 @@ export class PostComponent implements OnInit {
       this.existsInBackend = true;
       this.editMode = false;
       this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
-        this.post=post
+        this.post=post;
+        this.httpClient.get(environment.endpointURL + "user/" + post.userId).subscribe((user: any) => {
+          this.authorName = user.userName;
+        });
+        
       });
+     
+      
+      this.createdAtString = this.post.createdAt.toDateString();
     }
     
   }
@@ -120,6 +129,7 @@ export class PostComponent implements OnInit {
     this.form = this.formBuilder.group({
       signature: [ '', Validators.required]
     });
+    
   }
 
   onChange(event : any) {
@@ -147,7 +157,8 @@ export class PostComponent implements OnInit {
       // this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes));
       // this.title = this.newPostDescription = this.newPostTags = '';
     },
-        error => {console.log(error)})
+      error => {console.log(error)});
+        
     }
   }
 

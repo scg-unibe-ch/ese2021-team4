@@ -10,7 +10,7 @@
     <mat-card-content>
         <div [innerHTML]="post.description"></div>
     </mat-card-content>
-   
+
     <mat-card-actions>
       <button mat-flat-button color="primary" (click)="upvotePost()">UPVOTES: {{post.upvotes}}</button>
       <button mat-flat-button color="primary" (click)="downvotePost()">DOWNVOTES: {{post.downvotes}}</button>
@@ -42,8 +42,8 @@
     <p class="html">
       HTML Output:  {{ post.description }}
     </p>
-    
-    <button *ngIf="existsInBackend" (click)="save()">Save</button>
+
+    <a routerLink="/home"><button *ngIf="existsInBackend" (click)="save()">Save</button></a>
     <a routerLink="/home/"><button *ngIf="!existsInBackend" (click)="createPost()">Create</button></a>
   </div>
 

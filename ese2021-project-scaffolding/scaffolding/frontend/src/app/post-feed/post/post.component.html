@@ -45,6 +45,15 @@
     
     <button *ngIf="existsInBackend" (click)="save()">Save</button>
     <a routerLink="/home/"><button *ngIf="!existsInBackend" (click)="createPost()">Create</button></a>
+  <!-- </mat-card-content> -->
+    <mat-card>
+      <mat-card-actions>
+        <button mat-flat-button color="primary" (click)="upvotePost()">UPVOTE</button>
+        <button mat-flat-button color="primary" (click)="downvotePost()">DOWNVOTE</button>
+        <p>{{post.createdAt.getDay()}}.{{post.createdAt.getMonth()}}.{{post.createdAt.getFullYear()}}</p>
+      <a routerLink="/home"> <button *ngIf="user?.userId === post.userId || user?.isAdmin" mat-flat-button color="warn" (click)="deletePost(post)">delete post</button></a>
+      </mat-card-actions>
+    </mat-card>
 
   </div>
 

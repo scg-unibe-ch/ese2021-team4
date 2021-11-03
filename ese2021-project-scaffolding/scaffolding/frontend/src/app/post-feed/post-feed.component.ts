@@ -51,7 +51,7 @@ export class PostFeedComponent implements OnInit {
       upvotes: 0,
       downvotes: 0
     }).subscribe((post: any) => {
-      this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes));
+      this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt)));
       this.newPostTitle = this.newPostDescription = this.newPostTags = '';
     },
         error => {console.log(error)})
@@ -64,7 +64,7 @@ export class PostFeedComponent implements OnInit {
     this.httpClient.get(environment.endpointURL + "post").subscribe((posts: any) => {
 
       posts.forEach((post: any) => {
-        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes));
+        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt)));
       });
     });
   }
@@ -75,28 +75,46 @@ export class PostFeedComponent implements OnInit {
         break;
       case "title": this.sortByTitle();
         break;
+      case "recent": this.sortByRecentDate();
+        break;
+      case "oldest": this.sortByOldestDate();
+        break;
+      case "upvotes": this.sortByUpvotes();
+        break;
+      case "downvotes": this.sortByDownvotes();
+        break;
+      case "total": this.sortByTotalVotes();
+        break;
       default: console.log('invalid sort')
 
     }
   }
   sortByTitle(): void {
-    this.postList.sort((a, b) => this.compareTitles(a, b))
+    this.postList.sort((a, b) => a.title.localeCompare(b.title))
   }
 
   sortById(): void{
     this.postList.sort((a,b) => a.postId-b.postId)
   }
 
-  compareTitles(a: Post, b: Post): number {
-    if(a.title<b.title)
-      return -1;
-    if(a.title>b.title)
-      return 1;
-    else
-      return 0
+  sortByRecentDate(): void {
+    this.postList.sort((a, b) => b.createdAt.getTime()-a.createdAt.getTime())
   }
 
-  compareId(a:Post, b:Post): number {
-    return a.postId-b.postId
+  sortByOldestDate(): void {
+    this.postList.sort((a, b) => a.createdAt.getTime()-b.createdAt.getTime())
   }
+
+  sortByUpvotes(): void {
+    this.postList.sort((a, b) => b.upvotes-a.upvotes)
+  }
+
+  sortByDownvotes(): void {
+    this.postList.sort((a, b) => b.downvotes-a.downvotes)
+  }
+
+  sortByTotalVotes(): void {
+    this.postList.sort((a, b) => (b.upvotes-b.downvotes)-(a.upvotes-a.downvotes))
+  }
+
 }

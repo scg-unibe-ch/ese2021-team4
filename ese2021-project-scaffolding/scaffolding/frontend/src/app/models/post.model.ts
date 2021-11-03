@@ -9,5 +9,6 @@ export class Post {
         public tags: string,
         public upvotes: number,
         public downvotes: number,
+        public createdAt: Date,
     ) {}
   }

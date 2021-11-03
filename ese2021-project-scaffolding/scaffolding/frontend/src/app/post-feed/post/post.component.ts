@@ -82,7 +82,7 @@ export class PostComponent implements OnInit {
   };
 
   @Input()
-  post: Post = new Post(0, '', 0, '', 0, '', 0, 0);
+  post: Post = new Post(0, '', 0, '', 0, '', 0, 0, new Date());
 
   constructor(
     private formBuilder: FormBuilder,
@@ -162,10 +162,12 @@ export class PostComponent implements OnInit {
   }
 
   deletePost(post: Post): void {
-    this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {
-    });
+     
+    if(this.user?.userId == post.userId || this.user?.isAdmin){
+      this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {});
+    }
   }
-
+  
   upvotePost(): void {
     this.post.upvotes += 1;
     this.updatePost(this.post);

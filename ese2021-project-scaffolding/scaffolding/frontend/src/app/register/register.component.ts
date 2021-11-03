@@ -48,8 +48,6 @@ export class RegisterComponent {
     // Current value
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
-
-    console.log('register constructor', this.user, this.loggedIn)
   }
 
   registerUser(): void {
@@ -115,7 +113,6 @@ export class RegisterComponent {
   }
 
   checkPassword(): boolean {
-    console.log(this.userToRegister.password);
 
     this.passwordLength = this.userToRegister.password.length >= 8;
     this.passwordNumber = !!this.userToRegister.password.match(/\d/);

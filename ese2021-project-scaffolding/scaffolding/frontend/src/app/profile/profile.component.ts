@@ -3,7 +3,6 @@ import {User} from "../models/user.model";
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "../services/user.service";
 import {environment} from "../../environments/environment";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-profile',
@@ -30,7 +29,6 @@ export class ProfileComponent implements OnInit {
   constructor(
     public httpClient: HttpClient,
     public userService: UserService,
-    private router: Router,
   ) {
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
@@ -40,10 +38,7 @@ export class ProfileComponent implements OnInit {
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
 
-    console.log('profile constructor', this.user?.username, this.loggedIn);
-
-    this.httpClient.get(environment.endpointURL + "user/" + this.user?.username).subscribe((user: any) => {
-      console.log('get response', user);
+    this.httpClient.get(environment.endpointURL + "user/" + localStorage.getItem('userName')).subscribe((user: any) => {
       this.changedUser = new User(user.userId, user.userName, user.password);
       this.userEmail = user.userEmail;
       this.firstName = user.firstName;
@@ -58,7 +53,6 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('profile init', this.user, this.loggedIn);
   }
 
 }

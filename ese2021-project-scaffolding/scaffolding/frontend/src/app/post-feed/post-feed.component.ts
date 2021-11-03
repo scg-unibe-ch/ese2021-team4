@@ -37,7 +37,6 @@ export class PostFeedComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    console.log('post-feed constructor', this.user, this.loggedIn)
     this.readPosts();
   }
 

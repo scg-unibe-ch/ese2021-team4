@@ -28,14 +28,11 @@ export class AppComponent implements OnInit {
 
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
-
-    console.log('app constructor', this.user)
   }
 
   ngOnInit() {
     //this.readLists();
     this.checkUserStatus();
-    console.log('app init', this.user, this.loggedIn)
   }
 
   checkUserStatus(): void {
@@ -49,8 +46,6 @@ export class AppComponent implements OnInit {
     });
     // Set boolean whether a user is logged in or not
     this.userService.setLoggedIn(!!userToken);
-
-    console.log('app', this.user, this.loggedIn)
 
   }
 

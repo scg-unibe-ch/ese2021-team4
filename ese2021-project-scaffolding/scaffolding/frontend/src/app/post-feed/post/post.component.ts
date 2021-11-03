@@ -3,12 +3,11 @@ import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {  ActivatedRoute} from "@angular/router";
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-
+import { Comment } from 'src/app/models/comment.model';
 
 
 @Component({
@@ -22,13 +21,15 @@ export class PostComponent implements OnInit {
 
   user: User | undefined;
 
+  newCommentDescription: string = '';
+
   postId: number = 0;
   createdAtString: string | undefined;
   authorName: string | undefined;
 
   existsInBackend : boolean;
   form: FormGroup = new FormGroup({});
-  editMode: boolean = false; 
+  editMode: boolean = false;
 
   config1: AngularEditorConfig = {
     editable: true,
@@ -77,14 +78,17 @@ export class PostComponent implements OnInit {
         'insertHorizontalRule'
       ]
     ]
-
-
-
-
   };
 
   @Input()
   post: Post = new Post(0, '', 0, '', 0, '', 0, 0, new Date());
+
+  @Output()
+  update = new EventEmitter<Post>();
+
+  @Output()
+  delete = new EventEmitter<Post>();
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -116,20 +120,20 @@ export class PostComponent implements OnInit {
         this.httpClient.get(environment.endpointURL + "user/" + post.userId).subscribe((user: any) => {
           this.authorName = user.userName;
         });
-        
+
       });
-     
-      
+
+
       this.createdAtString = this.post.createdAt.toDateString();
     }
-    
+
   }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       signature: [ '', Validators.required]
     });
-    
+
   }
 
   onChange(event : any) {
@@ -158,7 +162,7 @@ export class PostComponent implements OnInit {
       // this.title = this.newPostDescription = this.newPostTags = '';
     },
       error => {console.log(error)});
-        
+
     }
   }
 
@@ -173,12 +177,12 @@ export class PostComponent implements OnInit {
   }
 
   deletePost(post: Post): void {
-     
+
     if(this.user?.userId == post.userId || this.user?.isAdmin){
       this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {});
     }
   }
-  
+
   upvotePost(): void {
     this.post.upvotes += 1;
     this.updatePost(this.post);
@@ -189,5 +193,31 @@ export class PostComponent implements OnInit {
     this.updatePost(this.post);
   }
 
+
+  // CREATE - TodoItem
+  createComment(): void {
+    this.httpClient.post(environment.endpointURL + "comment", {
+      description: this.newCommentDescription,
+      postId: this.post.postId
+    }).subscribe((item: any) => {
+      this.post.comments.push(new Comment(comment.commentId, comment.postId, comment.userId, comment.description, 0, 0, new Date()));
+      this.newCommentDescription = '';
+    });
+  }
+
+  // UPDATE - TodoItem
+  updateComment(comment: Comment): void {
+    this.httpClient.put(environment.endpointURL + "comment/" + comment.commentId, {
+      description: comment.description,
+      postId: comment.postId
+    }).subscribe();
+  }
+
+  // DELETE - TodoItem
+  deleteComment(comment: Comment): void {
+    this.httpClient.delete(environment.endpointURL + "comment/" + comment.commentId).subscribe(() => {
+      this.post.comments.splice(this.post.comments.indexOf(comment), 1);
+    });
+  }
 
 }

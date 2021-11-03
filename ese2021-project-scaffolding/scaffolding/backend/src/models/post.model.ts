@@ -1,4 +1,5 @@
-import {Optional, Model, Sequelize, DataTypes, Association} from 'sequelize';
+import {Optional, Model, Sequelize, DataTypes, Association, HasManyGetAssociationsMixin, HasManyAddAssociationMixin} from 'sequelize';
+import { Comment } from './comment.model';
 
 export interface PostAttributes {
     postId: number;
@@ -15,12 +16,11 @@ export interface PostAttributes {
 // tells sequelize that postId is not a required field
 export interface PostCreationAttributes extends Optional<Post, 'postId'> { }
 
-
 export class Post extends Model<PostAttributes, PostCreationAttributes> implements PostAttributes {
 
-    // public static associations: {
-    //     images: Association<TodoItem, ItemImage>
-    // };
+    public static associations: {
+        comments: Association<Post, Comment>;
+    };
 
     postId!: number;
     title!: string;
@@ -30,6 +30,12 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
     tags!: string;
     upvotes!: number;
     downvotes!: number;
+
+
+    public getTodoItems!: HasManyGetAssociationsMixin<Comment>;
+    public addItem!: HasManyAddAssociationMixin<Comment, number>;
+
+    public readonly Comments?: Comment[];
 
 
     public static initialize(sequelize: Sequelize) { // definition for database
@@ -76,17 +82,11 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
 
     }
 
-    // public static createAssociations() {
-    //     Post.belongsTo(PostFeed, {
-    //         targetKey: 'PostFeedId',
-    //         as: 'todoList',
-    //         onDelete: 'cascade',
-    //         foreignKey: 'todoListId'
-    //     });
-    //     TodoItem.hasMany(ItemImage, {
-    //         as: 'images',
-    //         foreignKey: 'todoItemId'
-    //     });
-    // }
+    public static createAssociations() {
+        Post.hasMany(Comment, {
+            as: 'Comments',
+            foreignKey: 'postId'
+        });
+    }
 
 }

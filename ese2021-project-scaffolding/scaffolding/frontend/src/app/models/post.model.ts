@@ -10,5 +10,6 @@ export class Post {
         public upvotes: number,
         public downvotes: number,
         public createdAt: Date,
+        public comments: Comment[],
     ) {}
   }

@@ -4,6 +4,7 @@ import { TodoItemController } from './controllers/todoitem.controller';
 import { TodoListController } from './controllers/todolist.controller';
 import { UserController } from './controllers/user.controller';
 import { SecuredController } from './controllers/secured.controller';
+import { CommentController } from './controllers/comment.controller';
 import { Sequelize } from 'sequelize';
 import { TodoList } from './models/todolist.model';
 import { TodoItem } from './models/todoitem.model';
@@ -14,6 +15,7 @@ import cors from 'cors';
 import {AdminController} from './controllers/admin.controller';
 import {ItemImage} from './models/itemImage.model';
 import { Post } from './models/post.model';
+import { Comment } from './models/comment.model';
 import { PostController } from './controllers/post.controller';
 
 
@@ -31,11 +33,12 @@ export class Server {
         User.initialize(this.sequelize);
         ItemImage.initialize(this.sequelize);
         Post.initialize(this.sequelize);
+        Comment.initialize(this.sequelize);
         TodoItem.createAssociations();
         TodoList.createAssociations();
+        Post.createAssociations();
+        Comment.createAssociations();
         ItemImage.createAssociations();
-
-
 
 
         this.sequelize.sync().then(() => {                           // create connection to the database
@@ -71,6 +74,7 @@ export class Server {
             .use('/secured', SecuredController)
             .use('/admin', AdminController)
             .use('/post', PostController)
+            .use('/comment', CommentController)
             .options('*', cors(options))
             .use(express.static('./src/public'))
             // this is the message you get if you open http://localhost:3000/ when the server is running

@@ -26,6 +26,8 @@ export class ProfileComponent implements OnInit {
   birthday: Date = new Date();
   phoneNr: string = '';
 
+  updateMessage: string = '';
+
   constructor(
     public httpClient: HttpClient,
     public userService: UserService,
@@ -55,4 +57,26 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  updateUser(user: User): void {
+    this.httpClient.put(environment.endpointURL + "user/" + user.userId, {
+      userId: this.changedUser.userId,
+      userName: this.changedUser.username,
+      password: this.changedUser.password,
+      userEmail: this.userEmail,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      street: this.street,
+      houseNr: this.houseNr,
+      city: this.city,
+      zipCode: this.zipCode,
+      birthday: this.birthday,
+      phoneNr: this.phoneNr
+    }).subscribe(() => {
+      this.updateMessage = 'Your Information has been updated.'
+      },
+      error => {
+      this.updateMessage = 'update failed';
+      console.log(error)
+    })
+  }
 }

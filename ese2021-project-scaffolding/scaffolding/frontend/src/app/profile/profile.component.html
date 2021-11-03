@@ -35,5 +35,6 @@
     <input matInput type="text" placeholder="phone number" name="phone number" [(ngModel)]="phoneNr">
   </mat-form-field>
   <br>
-  <button mat-flat-button color="primary">Update User Data</button>
+  <button mat-flat-button color="primary" (click)="updateUser(changedUser)">Update User Data</button>
+  <p>{{updateMessage}}</p>
 </mat-card>

@@ -113,7 +113,6 @@ export class RegisterComponent {
   }
 
   checkPassword(): boolean {
-    console.log(this.userToRegister.password);
 
     this.passwordLength = this.userToRegister.password.length >= 8;
     this.passwordNumber = !!this.userToRegister.password.match(/\d/);

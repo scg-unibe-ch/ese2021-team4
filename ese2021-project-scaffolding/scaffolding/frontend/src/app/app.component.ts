@@ -26,7 +26,6 @@ export class AppComponent implements OnInit {
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
     userService.user$.subscribe(res => this.user = res);
 
-    // Current value
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
   }
@@ -43,7 +42,7 @@ export class AppComponent implements OnInit {
 
     // Get user with currently stored username from database
     this.httpClient.get(environment.endpointURL + "user/" + userName).subscribe((user: any) => {
-      this.userService.setUser(user)
+      this.userService.setUser(new User(user.userId, user.userName, user.password))
     });
     // Set boolean whether a user is logged in or not
     this.userService.setLoggedIn(!!userToken);

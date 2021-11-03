@@ -28,7 +28,7 @@ export class PostComponent implements OnInit {
 
   existsInBackend : boolean;
   form: FormGroup = new FormGroup({});
-  editMode: boolean = false; 
+  editMode: boolean = false;
 
   config1: AngularEditorConfig = {
     editable: true,
@@ -93,8 +93,7 @@ export class PostComponent implements OnInit {
     private activatedRoute: ActivatedRoute) {
 
     this.activatedRoute.params.subscribe(params => {
-      this.postId = +params.id;
-      console.log(this.postId);
+      this.postId = params.id;
     });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
@@ -116,20 +115,20 @@ export class PostComponent implements OnInit {
         this.httpClient.get(environment.endpointURL + "user/" + post.userId).subscribe((user: any) => {
           this.authorName = user.userName;
         });
-        
+
       });
-     
-      
+
+
       this.createdAtString = this.post.createdAt.toDateString();
     }
-    
+
   }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       signature: [ '', Validators.required]
     });
-    
+
   }
 
   onChange(event : any) {
@@ -158,7 +157,7 @@ export class PostComponent implements OnInit {
       // this.title = this.newPostDescription = this.newPostTags = '';
     },
       error => {console.log(error)});
-        
+
     }
   }
 
@@ -173,12 +172,12 @@ export class PostComponent implements OnInit {
   }
 
   deletePost(post: Post): void {
-     
+
     if(this.user?.userId == post.userId || this.user?.isAdmin){
       this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {});
     }
   }
-  
+
   upvotePost(): void {
     this.post.upvotes += 1;
     this.updatePost(this.post);
@@ -188,6 +187,4 @@ export class PostComponent implements OnInit {
     this.post.downvotes += 1;
     this.updatePost(this.post);
   }
-
-
 }

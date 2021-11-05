@@ -4,6 +4,8 @@ import { environment } from 'src/environments/environment';
 import { Post } from '../models/post.model';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
+import {MatGridListModule} from '@angular/material/grid-list';
+ 
 
 @Component({
   selector: 'app-post-feed',

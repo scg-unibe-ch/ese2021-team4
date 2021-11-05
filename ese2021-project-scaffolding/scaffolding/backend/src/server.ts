@@ -10,12 +10,15 @@ import { TodoList } from './models/todolist.model';
 import { TodoItem } from './models/todoitem.model';
 import { User } from './models/user.model';
 
+
 import cors from 'cors';
 import {AdminController} from './controllers/admin.controller';
 import {ItemImage} from './models/itemImage.model';
 import { Post } from './models/post.model';
 import { Comment } from './models/comment.model';
 import { PostController } from './controllers/post.controller';
+import { UserPostVote } from './models/user-post-vote.model';
+import { UserPostVoteController} from './controllers/user-post-vote.controller';
 
 
 export class Server {
@@ -33,11 +36,15 @@ export class Server {
         ItemImage.initialize(this.sequelize);
         Post.initialize(this.sequelize);
         Comment.initialize(this.sequelize);
+        UserPostVote.initialize(this.sequelize);
+        UserPostVote.createAssociations();
         TodoItem.createAssociations();
         TodoList.createAssociations();
         Post.createAssociations();
         Comment.createAssociations();
         ItemImage.createAssociations();
+
+
 
 
         this.sequelize.sync().then(() => {                           // create connection to the database
@@ -74,6 +81,7 @@ export class Server {
             .use('/admin', AdminController)
             .use('/post', PostController)
             .use('/comment', CommentController)
+            .use('/userpostvote', UserPostVoteController)
             .options('*', cors(options))
             .use(express.static('./src/public'))
             // this is the message you get if you open http://localhost:3000/ when the server is running

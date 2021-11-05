@@ -1,1 +1,40 @@
-<p>profile works!</p>
+<mat-card>
+  <h3>{{changedUser.username}}</h3>
+  <mat-form-field>
+    <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="changedUser.username">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="email" placeholder="E-Mail" name="email" [(ngModel)]="userEmail">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <input matInput type="text" placeholder="first name" name="first name" [(ngModel)]="firstName">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" placeholder="last name" name="last name" [(ngModel)]="lastName">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <input matInput type="text" placeholder="street" name="street" [(ngModel)]="street">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" placeholder="house number" name="house number" [(ngModel)]="houseNr">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <input matInput type="text" placeholder="zip code" name="zip code" [(ngModel)]="zipCode">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" placeholder="city" name="city" [(ngModel)]="city">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <input matInput type="date" placeholder="birthday" name="date of birth" [(ngModel)]="birthday">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" placeholder="phone number" name="phone number" [(ngModel)]="phoneNr">
+  </mat-form-field>
+  <br>
+  <button mat-flat-button color="primary" (click)="updateUser(changedUser)">Update User Data</button>
+  <p>{{updateMessage}}</p>
+</mat-card>

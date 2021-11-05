@@ -2,6 +2,8 @@
 import express, { Router, Request, Response } from 'express';
 import { UserService } from '../services/user.service';
 import { verifyToken } from '../middlewares/checkAuth';
+import {Post} from '../models/post.model';
+import {User} from '../models/user.model';
 
 const userController: Router = express.Router();
 const userService = new UserService();
@@ -30,7 +32,6 @@ userController.get('/:param',
         if (isNaN(+req.params.param)) {
             userService.get(req.params.param, null).then(user => res.send(user)).catch(err => res.status(500).send(err));
         } else if (typeof +req.params.param === 'number') {
-            console.log('get with userid!');
             userService.get(null, +req.params.param).then(user => res.send(user)).catch(err => res.status(500).send(err));
         } else {
             res.status(500).send('faulty request');
@@ -38,5 +39,20 @@ userController.get('/:param',
 
     }
 );
+
+userController.put('/:id', (req: Request, res: Response) => {
+    User.findByPk(req.params.id)
+        .then(found => {
+            if (found != null) {
+                found.update(req.body).then(updated => {
+                    res.status(200).send(updated);
+                });
+            } else {
+                res.sendStatus(404);
+            }
+
+        })
+        .catch(err => res.status(500).send(err));
+});
 
 export const UserController: Router = userController;

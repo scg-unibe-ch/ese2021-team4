@@ -1,5 +1,6 @@
 import {Optional, Model, Sequelize, DataTypes, Association, HasManyGetAssociationsMixin, HasManyAddAssociationMixin} from 'sequelize';
 import { Comment } from './comment.model';
+import { UserPostVote } from './user-post-vote.model';
 
 export interface PostAttributes {
     postId: number;
@@ -16,11 +17,12 @@ export interface PostAttributes {
 // tells sequelize that postId is not a required field
 export interface PostCreationAttributes extends Optional<Post, 'postId'> { }
 
+
 export class Post extends Model<PostAttributes, PostCreationAttributes> implements PostAttributes {
 
-    public static associations: {
-        comments: Association<Post, Comment>;
-    };
+    // public static associations: {
+    //     images: Association<TodoItem, ItemImage>
+    // };
 
     postId!: number;
     title!: string;
@@ -85,6 +87,10 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
     public static createAssociations() {
         Post.hasMany(Comment, {
             as: 'Comments',
+            foreignKey: 'postId'
+        });
+        Post.hasMany(UserPostVote, {
+            as: 'PostVote',
             foreignKey: 'postId'
         });
     }

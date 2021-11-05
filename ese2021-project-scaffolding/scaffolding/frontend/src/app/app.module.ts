@@ -21,11 +21,12 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
-import {MatIconModule} from "@angular/material/icon";
+import { MatIconModule } from "@angular/material/icon";
 import { PostFeedComponent } from './post-feed/post-feed.component';
 import { PostComponent } from './post-feed/post/post.component';
-import {MatSelectModule} from "@angular/material/select";
+import { MatSelectModule } from "@angular/material/select";
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -45,7 +46,7 @@ const routes: Routes = [
     RegisterComponent,
     ProfileComponent,
     PostFeedComponent,
-    PostComponent
+    PostComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +66,8 @@ const routes: Routes = [
     MatSelectModule,
     AngularEditorModule,
     ReactiveFormsModule,
+    MatGridListModule
+    // Component
   ],
   providers: [
     {

@@ -4,7 +4,7 @@ import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
 import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {  ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Comment } from 'src/app/models/comment.model';
@@ -16,6 +16,8 @@ import { Comment } from 'src/app/models/comment.model';
   styleUrls: ['./post.component.css']
 })
 export class PostComponent implements OnInit {
+
+
 
   loggedIn: boolean | undefined;
 
@@ -97,6 +99,7 @@ export class PostComponent implements OnInit {
 
 
   constructor(
+    private router: Router,
     private formBuilder: FormBuilder,
     public httpClient: HttpClient,
     public userService: UserService,
@@ -168,10 +171,23 @@ export class PostComponent implements OnInit {
   }
 
   save(){
+    if (this.post.title==''){
+      document.getElementById('setTitle')!.style.visibility='visible';
+    }
+    else{
+    document.getElementById('setTitle')!.style.visibility='hidden';
+    this.router.navigate(['/home']);
     this.updatePost(this.post);
+    }
   }
 
   createPost(): void {
+    if (this.post.title==''){
+      document.getElementById('setTitle')!.style.visibility='visible';
+    }
+    else{
+      this.router.navigate(['/home']);
+      document.getElementById('setTitle')!.style.visibility='hidden';
     if(this.user != null){ //user might not be instantiated, this is taken care of by the html
       this.httpClient.post(environment.endpointURL + "post", {
       title: this.post.title,
@@ -187,7 +203,7 @@ export class PostComponent implements OnInit {
       error => {console.log(error)});
 
     }
-  }
+  }}
 
   updatePost(post: Post): void {
     this.httpClient.put(environment.endpointURL + "post/" + post.postId, {

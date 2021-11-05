@@ -40,7 +40,7 @@
         <mat-label>Title</mat-label>
         <input matInput #message maxlength="256" [(ngModel)]="post.title" [ngModelOptions]="{standalone: true}">
         <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
-      </mat-form-field>
+      </mat-form-field><span id="setTitle" style="visibility: hidden">Please set a title</span>
     </form>
 
     <!-- DESCRIPTION -->
@@ -51,8 +51,8 @@
       HTML Output:  {{ post.description }}
     </p>
 
-    <a routerLink="/home"><button *ngIf="existsInBackend" (click)="save()">Save</button></a>
-    <a routerLink="/home/"><button *ngIf="!existsInBackend" (click)="createPost()">Create</button></a>
+    <button *ngIf="existsInBackend" (click)="save()">Save</button>
+    <button *ngIf="!existsInBackend" (click)="createPost()">Create</button>
   </div>
 
 </div>

@@ -1,4 +1,5 @@
 import {Optional, Model, Sequelize, DataTypes, Association} from 'sequelize';
+import { UserPostVote } from './user-post-vote.model';
 
 export interface PostAttributes {
     postId: number;
@@ -74,6 +75,12 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
         { sequelize, tableName: 'posts' }
         );
 
+    }
+    public static createAssociations() {
+        Post.hasMany(UserPostVote, {
+            as: 'PostVote',
+            foreignKey: 'postId'
+        });
     }
 
     // public static createAssociations() {

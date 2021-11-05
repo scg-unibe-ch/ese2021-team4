@@ -12,8 +12,8 @@
     </mat-card-content>
 
     <mat-card-actions>
-      <button mat-flat-button color="primary" (click)="upvotePost()">UPVOTES: {{post.upvotes}}</button>
-      <button mat-flat-button color="primary" (click)="downvotePost()">DOWNVOTES: {{post.downvotes}}</button>
+      <button mat-flat-button color="primary" (click)="votePost(1)" [disabled]="hasDownvoted">UPVOTES: {{post.upvotes}}</button>
+      <button mat-flat-button color="primary" (click)="votePost(-1)" [disabled]="hasUpvoted">DOWNVOTES: {{post.downvotes}}</button>
       <span *ngIf="user?.userId === post.userId || user?.isAdmin">
         <button  mat-flat-button color="primary" (click)="editMode = true">EDIT</button>
         <a routerLink="/home"> <button mat-flat-button color="warn" (click)="deletePost(post)">delete post</button></a>

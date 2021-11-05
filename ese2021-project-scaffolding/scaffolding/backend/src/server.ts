@@ -15,6 +15,8 @@ import {AdminController} from './controllers/admin.controller';
 import {ItemImage} from './models/itemImage.model';
 import { Post } from './models/post.model';
 import { PostController } from './controllers/post.controller';
+import { UserPostVote } from './models/user-post-vote.model';
+import { UserPostVoteController} from './controllers/user-post-vote.controller';
 
 
 export class Server {
@@ -31,6 +33,8 @@ export class Server {
         User.initialize(this.sequelize);
         ItemImage.initialize(this.sequelize);
         Post.initialize(this.sequelize);
+        UserPostVote.initialize(this.sequelize);
+        UserPostVote.createAssociations();
         TodoItem.createAssociations();
         TodoList.createAssociations();
         ItemImage.createAssociations();
@@ -71,6 +75,7 @@ export class Server {
             .use('/secured', SecuredController)
             .use('/admin', AdminController)
             .use('/post', PostController)
+            .use('/userpostvote', UserPostVoteController)
             .options('*', cors(options))
             .use(express.static('./src/public'))
             // this is the message you get if you open http://localhost:3000/ when the server is running

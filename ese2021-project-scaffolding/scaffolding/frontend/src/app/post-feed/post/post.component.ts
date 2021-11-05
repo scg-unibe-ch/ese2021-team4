@@ -11,6 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 
+
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
@@ -25,6 +26,8 @@ export class PostComponent implements OnInit {
   postId: number = 0;
   createdAtString: string | undefined;
   authorName: string | undefined;
+  hasUpvoted: boolean = false;
+  hasDownvoted: boolean = false;
 
   existsInBackend : boolean;
   form: FormGroup = new FormGroup({});
@@ -128,7 +131,18 @@ export class PostComponent implements OnInit {
     this.form = this.formBuilder.group({
       signature: [ '', Validators.required]
     });
+    setTimeout(()=>{this.checkVoteStatus()}, 500);
+  }
 
+  checkVoteStatus() {
+    this.httpClient.get(environment.endpointURL + "userpostvote/" + this.user?.userId + "+" + this.postId).subscribe((userPostVote: any) => {
+      if(userPostVote.vote == 1){
+        this.hasUpvoted = true;
+      } else if (userPostVote.vote == -1){
+        this.hasDownvoted = true;
+      }
+    });
+    
   }
 
   onChange(event : any) {
@@ -178,13 +192,38 @@ export class PostComponent implements OnInit {
     }
   }
 
-  upvotePost(): void {
-    this.post.upvotes += 1;
-    this.updatePost(this.post);
-  }
+  votePost(param: number): void {
+    if(!this.hasDownvoted && !this.hasUpvoted){
+      this.httpClient.post(environment.endpointURL + "userpostvote", {
+        userId: this.user?.userId,
+        postId: this.post.postId,
+        vote: param
+      }).subscribe((vote: any) => {
+        
+      }, error => {
+        console.log(error);
+      });
+      if(param == 1){
+        this.post.upvotes += 1;
+        this.hasUpvoted = true;
+      } else {
+        this.post.downvotes += 1;
+        this.hasDownvoted = true;
+      }
+    } else {
 
-  downvotePost(): void {
-    this.post.downvotes += 1;
+      this.httpClient.delete(environment.endpointURL + "userpostvote/" + this.user?.userId + "+" + this.postId).subscribe(()=>{
+        
+      });
+      if(param == 1){
+        this.post.upvotes = this.post.upvotes - 1;
+        this.hasUpvoted = false;
+      } else {
+        this.post.downvotes--;
+        this.hasDownvoted = false;
+      }
+    }
     this.updatePost(this.post);
+    this.checkVoteStatus();
   }
 }

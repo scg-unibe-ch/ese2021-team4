@@ -3,12 +3,11 @@ import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {  ActivatedRoute} from "@angular/router";
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-
+import { Comment } from 'src/app/models/comment.model';
 
 
 @Component({
@@ -22,13 +21,17 @@ export class PostComponent implements OnInit {
 
   user: User | undefined;
 
+  newCommentDescription: string = '';
+
   postId: number = 0;
   createdAtString: string | undefined;
   authorName: string | undefined;
+  hasUpvoted: boolean = false;
+  hasDownvoted: boolean = false;
 
   existsInBackend : boolean;
   form: FormGroup = new FormGroup({});
-  editMode: boolean = false; 
+  editMode: boolean = false;
 
   config1: AngularEditorConfig = {
     editable: true,
@@ -84,7 +87,14 @@ export class PostComponent implements OnInit {
   };
 
   @Input()
-  post: Post = new Post(0, '', 0, '', 0, '', 0, 0, new Date());
+  post: Post = new Post(0, '', 0, '', 0, '', 0, 0, new Date(), []);
+
+  @Output()
+  update = new EventEmitter<Post>();
+
+  @Output()
+  delete = new EventEmitter<Post>();
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -112,24 +122,41 @@ export class PostComponent implements OnInit {
       this.existsInBackend = true;
       this.editMode = false;
       this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
-        this.post=post;
+        this.post=new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []);
+        this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
+          console.log(comments);
+          comments.forEach((comment: any) => {
+            this.post.comments.push(new Comment(comment.commentId, comment.postId, comment.userId, comment.description, comment.upvotes, comment.downvotes, new Date(comment.createdAt)));
+          });
+        });
         this.httpClient.get(environment.endpointURL + "user/" + post.userId).subscribe((user: any) => {
           this.authorName = user.userName;
         });
-        
+
       });
-     
-      
+
+
       this.createdAtString = this.post.createdAt.toDateString();
     }
-    
+
   }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       signature: [ '', Validators.required]
     });
-    
+    setTimeout(()=>{this.checkVoteStatus()}, 500);
+  }
+
+  checkVoteStatus() {
+    this.httpClient.get(environment.endpointURL + "userpostvote/" + this.user?.userId + "+" + this.postId).subscribe((userPostVote: any) => {
+      if(userPostVote.vote == 1){
+        this.hasUpvoted = true;
+      } else if (userPostVote.vote == -1){
+        this.hasDownvoted = true;
+      }
+    });
+
   }
 
   onChange(event : any) {
@@ -158,7 +185,7 @@ export class PostComponent implements OnInit {
       // this.title = this.newPostDescription = this.newPostTags = '';
     },
       error => {console.log(error)});
-        
+
     }
   }
 
@@ -173,21 +200,76 @@ export class PostComponent implements OnInit {
   }
 
   deletePost(post: Post): void {
-     
+
     if(this.user?.userId == post.userId || this.user?.isAdmin){
       this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {});
     }
   }
-  
-  upvotePost(): void {
-    this.post.upvotes += 1;
+
+  votePost(param: number): void {
+    if(!this.hasDownvoted && !this.hasUpvoted){
+      this.httpClient.post(environment.endpointURL + "userpostvote", {
+        userId: this.user?.userId,
+        postId: this.post.postId,
+        vote: param
+      }).subscribe((vote: any) => {
+
+      }, error => {
+        console.log(error);
+      });
+      if(param == 1){
+        this.post.upvotes += 1;
+        this.hasUpvoted = true;
+      } else {
+        this.post.downvotes += 1;
+        this.hasDownvoted = true;
+      }
+    } else {
+
+      this.httpClient.delete(environment.endpointURL + "userpostvote/" + this.user?.userId + "+" + this.postId).subscribe(()=>{
+
+      });
+      if(param == 1){
+        this.post.upvotes = this.post.upvotes - 1;
+        this.hasUpvoted = false;
+      } else {
+        this.post.downvotes--;
+        this.hasDownvoted = false;
+      }
+    }
     this.updatePost(this.post);
+    this.checkVoteStatus();
   }
 
-  downvotePost(): void {
-    this.post.downvotes += 1;
-    this.updatePost(this.post);
+
+  // CREATE - TodoItem
+  createComment(): void {
+    this.httpClient.post(environment.endpointURL + "comment", {
+      description: this.newCommentDescription,
+      postId: this.post.postId,
+      userId: this.user?.userId,
+      upvotes: 0,
+      downvotes: 0
+    }).subscribe((comment: any) => {
+      console.log(this.post);
+      this.post.comments.push(new Comment(comment.commentId, this.post.postId, comment.userId, comment.description, 0, 0, new Date(comment.createdAt)));
+      this.newCommentDescription = '';
+    });
   }
 
+  // UPDATE - TodoItem
+  updateComment(comment: Comment): void {
+    this.httpClient.put(environment.endpointURL + "comment/" + comment.commentId, {
+      description: comment.description,
+      postId: comment.postId
+    }).subscribe();
+  }
+
+  // DELETE - TodoItem
+  deleteComment(comment: Comment): void {
+    this.httpClient.delete(environment.endpointURL + "comment/" + comment.commentId).subscribe(() => {
+      this.post.comments.splice(this.post.comments.indexOf(comment), 1);
+    });
+  }
 
 }

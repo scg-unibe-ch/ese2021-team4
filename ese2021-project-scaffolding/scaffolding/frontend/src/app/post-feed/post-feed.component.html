@@ -28,9 +28,23 @@
     <mat-option value="total">Total Votes</mat-option>
   </mat-select>
 </mat-form-field>
-<div *ngFor="let post of postList">
-  <mat-card>
-        {{post.title}} <span style="display: inline-block;">&nbsp;</span>  {{post.description}} <br>
-      <a [routerLink]="['post', post.postId]"> Preview </a>
-  </mat-card>
-</div>
+<mat-grid-list cols="2" rowHeight="2:1">
+  <mat-grid-tile *ngFor="let post of postList">
+
+    <!-- <mat-card> -->
+    <div>
+          {{post.title}} <span style="display: inline-block;">&nbsp;</span>
+        <a [routerLink]="['post', post.postId]"> Preview </a><br><br>
+    <mat-icon>thumb_up</mat-icon>{{post.upvotes}}<span style="margin-left: 20px"></span>
+    <mat-icon>thumb_down</mat-icon> {{post.downvotes}}
+    <!-- </mat-card> -->
+    </div>
+  </mat-grid-tile>
+
+</mat-grid-list>
+<!-- <mat-grid-list cols="2" rowHeight="2:1">
+  <mat-grid-tile>1</mat-grid-tile>
+  <mat-grid-tile>2</mat-grid-tile>
+  <mat-grid-tile>3</mat-grid-tile>
+  <mat-grid-tile>4</mat-grid-tile>
+</mat-grid-list> -->

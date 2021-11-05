@@ -26,6 +26,8 @@ import { PostFeedComponent } from './post-feed/post-feed.component';
 import { PostComponent } from './post-feed/post/post.component';
 import {MatSelectModule} from "@angular/material/select";
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { CommentComponent } from './post-feed/post/comment/comment.component';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -45,7 +47,8 @@ const routes: Routes = [
     RegisterComponent,
     ProfileComponent,
     PostFeedComponent,
-    PostComponent
+    PostComponent,
+    CommentComponent
   ],
   imports: [
     BrowserModule,
@@ -65,6 +68,8 @@ const routes: Routes = [
     MatSelectModule,
     AngularEditorModule,
     ReactiveFormsModule,
+    MatGridListModule
+    // Component
   ],
   providers: [
     {

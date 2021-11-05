@@ -1,4 +1,6 @@
-import {Optional, Model, Sequelize, DataTypes, Association} from 'sequelize';
+import {Optional, Model, Sequelize, DataTypes, Association, HasManyGetAssociationsMixin, HasManyAddAssociationMixin} from 'sequelize';
+import { Comment } from './comment.model';
+import { UserPostVote } from './user-post-vote.model';
 
 export interface PostAttributes {
     postId: number;
@@ -30,6 +32,12 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
     tags!: string;
     upvotes!: number;
     downvotes!: number;
+
+
+    public getComments!: HasManyGetAssociationsMixin<Comment>;
+    public addComment!: HasManyAddAssociationMixin<Comment, number>;
+
+    public readonly Comments?: Comment[];
 
 
     public static initialize(sequelize: Sequelize) { // definition for database
@@ -76,17 +84,15 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
 
     }
 
-    // public static createAssociations() {
-    //     Post.belongsTo(PostFeed, {
-    //         targetKey: 'PostFeedId',
-    //         as: 'todoList',
-    //         onDelete: 'cascade',
-    //         foreignKey: 'todoListId'
-    //     });
-    //     TodoItem.hasMany(ItemImage, {
-    //         as: 'images',
-    //         foreignKey: 'todoItemId'
-    //     });
-    // }
+    public static createAssociations() {
+        Post.hasMany(Comment, {
+            as: 'Comments',
+            foreignKey: 'postId'
+        });
+        Post.hasMany(UserPostVote, {
+            as: 'PostVote',
+            foreignKey: 'postId'
+        });
+    }
 
 }

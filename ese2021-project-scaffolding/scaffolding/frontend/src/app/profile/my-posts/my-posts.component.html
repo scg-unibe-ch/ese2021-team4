@@ -1,24 +1,31 @@
-<!--<div *ngIf="postList.length == 0">-->
-<!--<p>You have not yet created any Posts.</p>-->
-<!--<a routerLink="/home/post/-1"><button>Create Post</button></a>-->
-<!--</div>-->
-<!--<div *ngIf="postList.length > 0">-->
-<mat-form-field appearance="fill">
-  <mat-label>Sort by:</mat-label>
-  <mat-select [(ngModel)]="sortBy"(ngModelChange)="sortPosts()">
-    <mat-option value="title">Title</mat-option>
-    <mat-option value="id">ID</mat-option>
-    <mat-option value="recent">most recent</mat-option>
-    <mat-option value="oldest">oldest</mat-option>
-    <mat-option value="upvotes">Upvotes</mat-option>
-    <mat-option value="downvotes">Downvotes</mat-option>
-    <mat-option value="total">Total Votes</mat-option>
-  </mat-select>
-</mat-form-field>
-<div *ngFor="let post of postList">
-  <mat-card>
-    {{post.title}} <span style="display: inline-block;">&nbsp;</span>  {{post.description}} <br>
-    <a [routerLink]="['post', post.postId]"> Preview </a>
-  </mat-card>
+<div *ngIf="postsLoaded && postList.length == 0">
+  <p>You have not yet created any Posts.</p>
+  <a routerLink="/home/post/-1"><button>Create Post</button></a>
 </div>
-<!--</div>-->
+
+<div *ngIf="postList.length > 0">
+  <mat-form-field appearance="fill">
+    <mat-label>Sort by:</mat-label>
+    <mat-select [(ngModel)]="sortBy" (ngModelChange)="sortPosts()">
+      <mat-option value="title">Title</mat-option>
+      <mat-option value="id">ID</mat-option>
+      <mat-option value="recent">most recent</mat-option>
+      <mat-option value="oldest">oldest</mat-option>
+      <mat-option value="upvotes">Upvotes</mat-option>
+        <mat-option value="downvotes">Downvotes</mat-option>
+      <mat-option value="total">Total Votes</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-grid-list cols="2" rowHeight="2:1">
+    <mat-grid-tile *ngFor="let post of postList">
+      <div>
+        {{post.title}} <span style="display: inline-block;"></span>
+        <a [routerLink]="['post', post.postId]"> Preview </a><br><br>
+        <mat-icon>thumb_up</mat-icon>{{post.upvotes}}<span style="margin-left: 20px"></span>
+        <mat-icon>thumb_down</mat-icon> {{post.downvotes}}
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+</div>

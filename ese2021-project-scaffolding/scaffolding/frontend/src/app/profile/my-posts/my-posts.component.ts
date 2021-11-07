@@ -17,6 +17,8 @@ export class MyPostsComponent extends PostFeedComponent {
 
   user: User | undefined;
 
+  postsLoaded: boolean = false;
+
   constructor(
     public httpClient: HttpClient,
     public userService: UserService
@@ -24,13 +26,17 @@ export class MyPostsComponent extends PostFeedComponent {
     super(httpClient, userService);
   }
 
+  ngOnInit(): void {
+    setTimeout(() => this.readPosts(), 100);
+  }
+
   readPosts(): void {
-    this.httpClient.get(environment.endpointURL + "post/createdBy/" + this.user?.userId).subscribe((posts: any) => {
-      console.log(posts);
+    this.httpClient.get(environment.endpointURL + "post/" + "createdBy/" + this.user?.userId).subscribe((posts: any) => {
       posts.forEach((post: any) => {
-        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt)));
+        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []));
       });
     });
+    this.postsLoaded = true;
   }
 
 }

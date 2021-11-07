@@ -11,11 +11,11 @@ postController.get('/', (req: Request, res: Response) => {
         .catch(err => res.status(500).send(err));
 });
 
-postController.get('createdBy/:userId', (req, res) => {
-    console.log(req.params.userId);
+postController.get('/createdBy/:id', (req, res) => {
+    console.log('createdby');
     Post.findAll({
         where: {
-            userId: req.params.userId
+            userId: req.params.id
         }
     }).then((posts) => {
         res.status(200).send(posts);

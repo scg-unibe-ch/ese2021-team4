@@ -49,7 +49,7 @@ const routes: Routes = [
     ProfileComponent,
     PostFeedComponent,
     PostComponent,
-    CommentComponent
+    CommentComponent,
     PostComponent,
     MyPostsComponent
   ],

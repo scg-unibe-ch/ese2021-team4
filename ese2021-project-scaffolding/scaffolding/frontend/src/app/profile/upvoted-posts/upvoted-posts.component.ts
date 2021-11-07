@@ -35,6 +35,8 @@ export class UpvotedPostsComponent extends PostFeedComponent {
         }
       });
       this.postsLoaded = true;
+    }, error => {
+      console.log(error);
     });
   }
 

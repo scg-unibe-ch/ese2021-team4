@@ -12,6 +12,16 @@ userPostVoteController.get('/', (req: Request, res: Response) => {
         .catch(err => res.status(500).send(err));
 });
 
+userPostVoteController.get('/votedBy/:userId', (req, res) => {
+    UserPostVote.findAll({
+        where: {
+            userId: req.params.userId
+        }
+    })
+        .then(list => res.status(200).send(list))
+        .catch(err => res.status(500).send(err));
+});
+
 userPostVoteController.get('/:userId/:postId', (req, res) => {
     const paramUserId = +req.params.userId;
     const paramPostId = +req.params.postId;
@@ -28,16 +38,6 @@ userPostVoteController.get('/:userId/:postId', (req, res) => {
         res.status(200).send(found);
     })
     .catch(err => res.status(500).send(err));
-});
-
-userPostVoteController.get('/votedBy/:userId', (req, res) => {
-    UserPostVote.findAll({
-        where: {
-            userId: req.params.userId
-        }
-    })
-        .then(list => res.status(200).send(list))
-        .catch(err => res.status(500).send(err));
 });
 
 // create

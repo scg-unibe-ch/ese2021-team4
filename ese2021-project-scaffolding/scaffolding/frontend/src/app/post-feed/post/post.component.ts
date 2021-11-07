@@ -153,10 +153,12 @@ export class PostComponent implements OnInit {
 
   checkVoteStatus() {
     this.httpClient.get(environment.endpointURL + "userpostvote/" + this.user?.userId + "/" + this.postId).subscribe((userPostVote: any) => {
-      if(userPostVote.vote == 1){
-        this.hasUpvoted = true;
-      } else if (userPostVote.vote == -1){
-        this.hasDownvoted = true;
+      if(userPostVote !== null) {
+        if (userPostVote.vote == 1) {
+          this.hasUpvoted = true;
+        } else if (userPostVote.vote == -1) {
+          this.hasDownvoted = true;
+        }
       }
     });
 
@@ -229,32 +231,31 @@ export class PostComponent implements OnInit {
         postId: this.post.postId,
         vote: param
       }).subscribe((vote: any) => {
-
+        if(param == 1){
+          this.post.upvotes += 1;
+          this.hasUpvoted = true;
+        } else {
+          this.post.downvotes += 1;
+          this.hasDownvoted = true;
+        }
+        this.updatePost(this.post);
+        this.checkVoteStatus();
       }, error => {
         console.log(error);
       });
-      if(param == 1){
-        this.post.upvotes += 1;
-        this.hasUpvoted = true;
-      } else {
-        this.post.downvotes += 1;
-        this.hasDownvoted = true;
-      }
     } else {
-
       this.httpClient.delete(environment.endpointURL + "userpostvote/" + this.user?.userId + "/" + this.postId).subscribe(()=>{
-
+        if(param == 1){
+          this.post.upvotes = this.post.upvotes - 1;
+          this.hasUpvoted = false;
+        } else {
+          this.post.downvotes--;
+          this.hasDownvoted = false;
+        }
+        this.updatePost(this.post);
+        this.checkVoteStatus();
       });
-      if(param == 1){
-        this.post.upvotes = this.post.upvotes - 1;
-        this.hasUpvoted = false;
-      } else {
-        this.post.downvotes--;
-        this.hasDownvoted = false;
-      }
     }
-    this.updatePost(this.post);
-    this.checkVoteStatus();
   }
 
 

@@ -152,7 +152,7 @@ export class PostComponent implements OnInit {
   }
 
   checkVoteStatus() {
-    this.httpClient.get(environment.endpointURL + "userpostvote/" + this.user?.userId + "+" + this.postId).subscribe((userPostVote: any) => {
+    this.httpClient.get(environment.endpointURL + "userpostvote/" + this.user?.userId + "/" + this.postId).subscribe((userPostVote: any) => {
       if(userPostVote.vote == 1){
         this.hasUpvoted = true;
       } else if (userPostVote.vote == -1){
@@ -242,7 +242,7 @@ export class PostComponent implements OnInit {
       }
     } else {
 
-      this.httpClient.delete(environment.endpointURL + "userpostvote/" + this.user?.userId + "+" + this.postId).subscribe(()=>{
+      this.httpClient.delete(environment.endpointURL + "userpostvote/" + this.user?.userId + "/" + this.postId).subscribe(()=>{
 
       });
       if(param == 1){

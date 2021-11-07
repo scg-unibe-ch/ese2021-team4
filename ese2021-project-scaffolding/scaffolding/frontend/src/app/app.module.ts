@@ -29,6 +29,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { CommentComponent } from './post-feed/post/comment/comment.component';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { MyPostsComponent } from './profile/my-posts/my-posts.component';
+import { UpvotedPostsComponent } from './profile/upvoted-posts/upvoted-posts.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -37,6 +38,7 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'home/post/:id', component: PostComponent},
+  {path: 'profile/post/:id', component: PostComponent},
 ];
 @NgModule({
   declarations: [
@@ -51,7 +53,8 @@ const routes: Routes = [
     PostComponent,
     CommentComponent,
     PostComponent,
-    MyPostsComponent
+    MyPostsComponent,
+    UpvotedPostsComponent
   ],
   imports: [
     BrowserModule,

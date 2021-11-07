@@ -12,9 +12,19 @@ userPostVoteController.get('/', (req: Request, res: Response) => {
         .catch(err => res.status(500).send(err));
 });
 
-userPostVoteController.get('/:param', (req, res) => {
-    const paramUserId = +req.params.param.split('+', 1);
-    const paramPostId = +req.params.param.split('+')[1];
+userPostVoteController.get('/votedBy/:userId', (req, res) => {
+    UserPostVote.findAll({
+        where: {
+            userId: req.params.userId
+        }
+    })
+        .then(list => res.status(200).send(list))
+        .catch(err => res.status(500).send(err));
+});
+
+userPostVoteController.get('/:userId/:postId', (req, res) => {
+    const paramUserId = +req.params.userId;
+    const paramPostId = +req.params.postId;
     const { Op } = require('sequelize');
     return UserPostVote.findOne({
         where: {
@@ -43,9 +53,9 @@ userPostVoteController.post('/', (req: Request, res: Response) => {
 });
 
 // delete
-userPostVoteController.delete('/:param', (req, res) => {
-    const paramUserId = +req.params.param.split('+', 1);
-    const paramPostId = +req.params.param.split('+')[1];
+userPostVoteController.delete('/:userId/:postId', (req, res) => {
+    const paramUserId = +req.params.userId;
+    const paramPostId = +req.params.postId;
     const { Op } = require('sequelize');
     UserPostVote.findOne({
         where: {

@@ -1,5 +1,5 @@
 <mat-card>
-  <h3>{{changedUser.username}}</h3>
+  <h1>{{changedUser.username}}</h1>
   <mat-form-field>
     <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="changedUser.username" (ngModelChange)="updateUsernameMessage()">
     <div><br>{{usernameMessage}}</div>
@@ -39,4 +39,8 @@
   <br>
   <button mat-flat-button color="primary" (click)="updateUser(changedUser)">Update User Data</button>
   <p>{{updateMessage}}</p>
+</mat-card>
+<mat-card>
+  <h2>My Posts</h2>
+  <app-my-posts></app-my-posts>
 </mat-card>

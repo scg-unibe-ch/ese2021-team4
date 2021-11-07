@@ -11,6 +11,19 @@ postController.get('/', (req: Request, res: Response) => {
         .catch(err => res.status(500).send(err));
 });
 
+postController.get('createdBy/:userId', (req, res) => {
+    console.log(req.params.userId);
+    Post.findAll({
+        where: {
+            userId: req.params.userId
+        }
+    }).then((posts) => {
+        res.status(200).send(posts);
+    }).catch(err => {
+        res.sendStatus(500);
+    });
+});
+
 postController.get('/:id', (req, res) => {
     Post.findByPk(req.params.id)
         .then(found => {

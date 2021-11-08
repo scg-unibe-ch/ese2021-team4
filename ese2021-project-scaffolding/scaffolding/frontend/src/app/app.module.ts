@@ -30,6 +30,7 @@ import { CommentComponent } from './post-feed/post/comment/comment.component';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { MyPostsComponent } from './profile/my-posts/my-posts.component';
 import { UpvotedPostsComponent } from './profile/upvoted-posts/upvoted-posts.component';
+import {MatChipsModule} from "@angular/material/chips";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -56,27 +57,28 @@ const routes: Routes = [
     MyPostsComponent,
     UpvotedPostsComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    MatToolbarModule,
-    MatTabsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatListModule,
-    FormsModule,
-    MatCheckboxModule,
-    RouterModule.forRoot(routes),
-    MatIconModule,
-    MatSelectModule,
-    AngularEditorModule,
-    ReactiveFormsModule,
-    MatGridListModule
-    // Component
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        MatToolbarModule,
+        MatTabsModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatListModule,
+        FormsModule,
+        MatCheckboxModule,
+        RouterModule.forRoot(routes),
+        MatIconModule,
+        MatSelectModule,
+        AngularEditorModule,
+        ReactiveFormsModule,
+        MatGridListModule,
+        MatChipsModule,
+        // Component
+    ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

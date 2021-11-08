@@ -16,8 +16,22 @@
     </mat-select>
   </mat-form-field>
 
+  <mat-form-field appearance="fill">
+    <mat-label>Category:</mat-label>
+    <mat-select [(ngModel)]="selectedCategory" (ngModelChange)="selectPosts()">
+      <mat-option value="restaurant">Restaurant</mat-option>
+      <mat-option value="coffeeshop">Coffeeshop</mat-option>
+      <mat-option value="shopping">Shopping</mat-option>
+      <mat-option value="sightseeing">Sightseeing</mat-option>
+      <mat-option value="museum">Museum</mat-option>
+      <mat-option value="university">University</mat-option>
+      <mat-option value="bern">Bern</mat-option>
+      <mat-option value="all">Show All</mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <mat-grid-list cols="2" rowHeight="2:1">
-    <mat-grid-tile *ngFor="let post of postList">
+    <mat-grid-tile *ngFor="let post of selectedPosts">
       <div>
         {{post.title}} <span style="display: inline-block;"></span>
         <a [routerLink]="['post', post.postId]"> Preview </a><br><br>

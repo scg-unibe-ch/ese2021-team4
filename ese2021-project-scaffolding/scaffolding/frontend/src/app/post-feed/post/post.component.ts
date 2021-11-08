@@ -175,8 +175,13 @@ export class PostComponent implements OnInit {
     if (this.post.title==''){
       document.getElementById('setTitle')!.style.visibility='visible';
     }
+    else if (this.findCategory()==Category.Bern){
+      document.getElementById('setTitle')!.style.visibility='hidden';
+      document.getElementById('setCategory')!.style.visibility='visible';
+    }
     else{
     document.getElementById('setTitle')!.style.visibility='hidden';
+    document.getElementById('setCategory')!.style.visibility='hidden';
     this.router.navigate(['/home']);
     this.updatePost(this.post);
     }
@@ -190,7 +195,6 @@ export class PostComponent implements OnInit {
         break;
       case "shopping": return Category.Shopping
         break;
-
       case "sightseeing": return Category.Sightseeing;
         break;
       case "museum": return Category.Museum;
@@ -205,9 +209,14 @@ export class PostComponent implements OnInit {
     if (this.post.title==''){
       document.getElementById('setTitle')!.style.visibility='visible';
     }
-    else{
+    else if (this.findCategory()==Category.Bern){
+      document.getElementById('setTitle')!.style.visibility='hidden';
+      document.getElementById('setCategory')!.style.visibility='visible';
+    }
+    else {
       this.router.navigate(['/home']);
       document.getElementById('setTitle')!.style.visibility='hidden';
+      document.getElementById('setCategory')!.style.visibility='hidden';
     if(this.user != null){ //user might not be instantiated, this is taken care of by the html
       this.httpClient.post(environment.endpointURL + "post", {
       title: this.post.title,

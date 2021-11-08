@@ -35,8 +35,9 @@ export class MyPostsComponent extends PostFeedComponent {
       posts.forEach((post: any) => {
         this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []));
       });
+      this.postsLoaded = true;
+      this.selectedPosts = this.postList
     });
-    this.postsLoaded = true;
   }
 
 }

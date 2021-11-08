@@ -5,6 +5,7 @@ import { Post } from '../models/post.model';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {Category} from "../models/category.model";
 
 
 @Component({
@@ -20,6 +21,8 @@ export class PostFeedComponent implements OnInit {
   newPostTags = '';
 
   sortBy = '';
+  selectedCategory = '';
+  selectedPosts: Post[] = [];
 
   loggedIn: boolean | undefined;
 
@@ -68,6 +71,8 @@ export class PostFeedComponent implements OnInit {
       posts.forEach((post: any) => {
         this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []));
       });
+      this.selectedPosts = this.postList;
+
     });
   }
 
@@ -94,35 +99,64 @@ export class PostFeedComponent implements OnInit {
     }
   }
 
+  selectPosts(): void {
+    const tags = this.findCategory();
+    if (this.selectedCategory == 'all') {
+      this.selectedPosts = this.postList;
+    }
+    else{
+      this.selectedPosts = this.postList.filter(post => post.tags == tags)
+    }
+  }
+
+  findCategory(): Category{
+    switch (this.selectedCategory){
+      case "restaurant": return Category.Restaurant;
+        break;
+      case "coffeeshop": return Category.Coffeeshop;
+        break;
+      case "shopping": return Category.Shopping
+        break;
+
+      case "sightseeing": return Category.Sightseeing;
+        break;
+      case "museum": return Category.Museum;
+        break;
+      case "university": return Category.University;
+        break;
+    }
+    return Category.Bern;
+  }
+
   sortByTags():void{
-    this.postList.sort((a, b) => a.tags.localeCompare(b.tags))
+    this.selectedPosts.sort((a, b) => a.tags.localeCompare(b.tags))
   }
   sortByTitle(): void {
-    this.postList.sort((a, b) => a.title.localeCompare(b.title))
+    this.selectedPosts.sort((a, b) => a.title.localeCompare(b.title))
   }
 
   sortById(): void{
-    this.postList.sort((a,b) => a.postId-b.postId)
+    this.selectedPosts.sort((a,b) => a.postId-b.postId)
   }
 
   sortByRecentDate(): void {
-    this.postList.sort((a, b) => b.createdAt.getTime()-a.createdAt.getTime())
+    this.selectedPosts.sort((a, b) => b.createdAt.getTime()-a.createdAt.getTime())
   }
 
   sortByOldestDate(): void {
-    this.postList.sort((a, b) => a.createdAt.getTime()-b.createdAt.getTime())
+    this.selectedPosts.sort((a, b) => a.createdAt.getTime()-b.createdAt.getTime())
   }
 
   sortByUpvotes(): void {
-    this.postList.sort((a, b) => b.upvotes-a.upvotes)
+    this.selectedPosts.sort((a, b) => b.upvotes-a.upvotes)
   }
 
   sortByDownvotes(): void {
-    this.postList.sort((a, b) => b.downvotes-a.downvotes)
+    this.selectedPosts.sort((a, b) => b.downvotes-a.downvotes)
   }
 
   sortByTotalVotes(): void {
-    this.postList.sort((a, b) => (b.upvotes-b.downvotes)-(a.upvotes-a.downvotes))
+    this.selectedPosts.sort((a, b) => (b.upvotes-b.downvotes)-(a.upvotes-a.downvotes))
   }
 
 }

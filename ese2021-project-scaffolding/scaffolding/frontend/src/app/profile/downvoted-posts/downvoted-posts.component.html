@@ -25,14 +25,13 @@
       <mat-option value="sightseeing">Sightseeing</mat-option>
       <mat-option value="museum">Museum</mat-option>
       <mat-option value="university">University</mat-option>
-      <mat-option value="bern">Bern</mat-option>
       <mat-option value="all">Show All</mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-grid-list cols="2" rowHeight="2:1">
     <mat-grid-tile *ngFor="let post of selectedPosts">
-      <div>
+      <div><mat-chip-list><mat-chip>{{post.tags}}</mat-chip></mat-chip-list><br><br><br><br><br><br><br>
         {{post.title}} <span style="display: inline-block;"></span>
         <a [routerLink]="['post', post.postId]"> Preview </a><br><br>
         <mat-icon>thumb_up</mat-icon>{{post.upvotes}}<span style="margin-left: 20px"></span>

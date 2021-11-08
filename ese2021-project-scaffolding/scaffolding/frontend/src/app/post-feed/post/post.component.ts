@@ -289,16 +289,18 @@ export class PostComponent implements OnInit {
 
   // CREATE - TodoItem
   createComment(): void {
-    this.httpClient.post(environment.endpointURL + "comment", {
-      description: this.newCommentDescription,
-      postId: this.post.postId,
-      userId: this.user?.userId,
-      upvotes: 0,
-      downvotes: 0
-    }).subscribe((comment: any) => {
-      this.post.comments.push(new Comment(comment.commentId, this.post.postId, comment.userId, comment.description, 0, 0, new Date(comment.createdAt)));
-      this.newCommentDescription = '';
-    });
+    if (!(this.newCommentDescription == '')) {
+      this.httpClient.post(environment.endpointURL + "comment", {
+        description: this.newCommentDescription,
+        postId: this.post.postId,
+        userId: this.user?.userId,
+        upvotes: 0,
+        downvotes: 0
+      }).subscribe((comment: any) => {
+        this.post.comments.push(new Comment(comment.commentId, this.post.postId, comment.userId, comment.description, 0, 0, new Date(comment.createdAt)));
+        this.newCommentDescription = '';
+      });
+    }
   }
 
   // UPDATE - TodoItem

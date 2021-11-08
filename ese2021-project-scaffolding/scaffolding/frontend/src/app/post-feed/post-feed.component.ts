@@ -5,6 +5,7 @@ import { Post } from '../models/post.model';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {Category} from "../models/category.model";
 
 
 @Component({
@@ -92,6 +93,14 @@ export class PostFeedComponent implements OnInit {
       default: console.log('invalid sort')
 
     }
+  }
+
+  selectPosts(tags: Category): void {
+    this.postList.forEach( post => {
+      if(post.tags !== tags){
+        this.postList.filter(post => post.tags == tags)
+      }
+    })
   }
 
   sortByTags():void{

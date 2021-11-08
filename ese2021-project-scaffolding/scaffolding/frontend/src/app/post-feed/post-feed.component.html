@@ -25,7 +25,9 @@
     <mat-option value="oldest">oldest</mat-option>
     <mat-option value="upvotes">Upvotes</mat-option>
     <mat-option value="downvotes">Downvotes</mat-option>
+    <mat-option value="tags">Tags</mat-option>
     <mat-option value="total">Total Votes</mat-option>
+
   </mat-select>
 </mat-form-field>
 <mat-grid-list cols="2" rowHeight="2:1">
@@ -34,6 +36,7 @@
     <!-- <mat-card> -->
     <div>
           {{post.title}} <span style="display: inline-block;">&nbsp;</span>
+      {{post.tags}}
         <a [routerLink]="['post', post.postId]"> Preview </a><br><br>
     <mat-icon>thumb_up</mat-icon>{{post.upvotes}}<span style="margin-left: 20px"></span>
     <mat-icon>thumb_down</mat-icon> {{post.downvotes}}

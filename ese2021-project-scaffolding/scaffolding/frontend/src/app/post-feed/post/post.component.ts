@@ -229,6 +229,7 @@ export class PostComponent implements OnInit {
     this.httpClient.put(environment.endpointURL + "post/" + post.postId, {
       title: post.title,
       description: post.description,
+      tags: this.findCategory(),
       upvotes: post.upvotes,
       downvotes: post.downvotes,
       imageId: post.imageId

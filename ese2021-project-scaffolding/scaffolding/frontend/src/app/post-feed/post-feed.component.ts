@@ -85,11 +85,17 @@ export class PostFeedComponent implements OnInit {
         break;
       case "downvotes": this.sortByDownvotes();
         break;
+      case "tags": this.sortByTags();
+        break;
       case "total": this.sortByTotalVotes();
         break;
       default: console.log('invalid sort')
 
     }
+  }
+
+  sortByTags():void{
+    this.postList.sort((a, b) => a.tags.localeCompare(b.tags))
   }
   sortByTitle(): void {
     this.postList.sort((a, b) => a.title.localeCompare(b.title))

@@ -31,6 +31,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import { MyPostsComponent } from './profile/my-posts/my-posts.component';
 import { UpvotedPostsComponent } from './profile/upvoted-posts/upvoted-posts.component';
 import {MatChipsModule} from "@angular/material/chips";
+import { DownvotedPostsComponent } from './profile/downvoted-posts/downvoted-posts.component';
+import { CommentedPostsComponent } from './profile/commented-posts/commented-posts.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -55,7 +57,9 @@ const routes: Routes = [
     CommentComponent,
     PostComponent,
     MyPostsComponent,
-    UpvotedPostsComponent
+    UpvotedPostsComponent,
+    DownvotedPostsComponent,
+    CommentedPostsComponent
   ],
     imports: [
         BrowserModule,

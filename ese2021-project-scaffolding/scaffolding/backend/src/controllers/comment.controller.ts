@@ -18,6 +18,16 @@ commentController.get('/:id', (req: Request, res: Response) => {
         .catch(err => res.status(500).send(err));
 });
 
+commentController.get('/createdBy/:userId', (req, res) => {
+    return Comment.findAll({
+        where: {
+            userId: req.params.userId
+        }
+    })
+        .then(comments => res.status(200).send(comments))
+        .catch(err => res.status(500).send(err));
+});
+
 
 commentController.put('/:id', (req: Request, res: Response) => {
     Comment.findByPk(req.params.id)

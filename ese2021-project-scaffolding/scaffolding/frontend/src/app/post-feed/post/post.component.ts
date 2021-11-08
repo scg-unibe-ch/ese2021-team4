@@ -1,13 +1,14 @@
-import { HttpClient } from '@angular/common/http';
-import { Post } from 'src/app/models/post.model';
-import { User } from 'src/app/models/user.model';
-import { UserService } from 'src/app/services/user.service';
-import { environment } from 'src/environments/environment';
-import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Post} from 'src/app/models/post.model';
+import {User} from 'src/app/models/user.model';
+import {UserService} from 'src/app/services/user.service';
+import {environment} from 'src/environments/environment';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Comment } from 'src/app/models/comment.model';
+import {AngularEditorConfig} from '@kolkov/angular-editor';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Comment} from 'src/app/models/comment.model';
+import {Category} from "../../models/category.model";
 
 
 @Component({
@@ -17,7 +18,7 @@ import { Comment } from 'src/app/models/comment.model';
 })
 export class PostComponent implements OnInit {
 
-
+  selectCategory='';
 
   loggedIn: boolean | undefined;
 
@@ -89,7 +90,7 @@ export class PostComponent implements OnInit {
   };
 
   @Input()
-  post: Post = new Post(0, '', 0, '', 0, '', 0, 0, new Date(), []);
+  post: Post = new Post(0, '', 0, '', 0, Category.Bern, 0, 0, new Date(), []);
 
   @Output()
   update = new EventEmitter<Post>();
@@ -181,6 +182,25 @@ export class PostComponent implements OnInit {
     }
   }
 
+  findCategory(): Category{
+    switch (this.selectCategory){
+      case "restaurant": return Category.Restaurant;
+        break;
+      case "coffeeshop": return Category.Coffeeshop;
+        break;
+      case "shopping": return Category.Shopping
+        break;
+
+      case "sightseeing": return Category.Sightseeing;
+        break;
+      case "museum": return Category.Museum;
+        break;
+      case "university": return Category.University;
+        break;
+    }
+    return Category.Bern;
+  }
+
   createPost(): void {
     if (this.post.title==''){
       document.getElementById('setTitle')!.style.visibility='visible';
@@ -192,7 +212,7 @@ export class PostComponent implements OnInit {
       this.httpClient.post(environment.endpointURL + "post", {
       title: this.post.title,
       description: this.post.description,
-      tags: this.post.tags,
+      tags: this.findCategory(),
       userId: this.user.userId,
       upvotes: 0,
       downvotes: 0

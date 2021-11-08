@@ -1,4 +1,5 @@
 import { Comment } from 'src/app/models/comment.model';
+import { Category } from 'src/app/models/category.model';
 
 export class Post {
 
@@ -8,7 +9,7 @@ export class Post {
         public userId: number,
         public description: string,
         public imageId: number,
-        public tags: string,
+        public tags: Category,
         public upvotes: number,
         public downvotes: number,
         public createdAt: Date,

@@ -40,7 +40,19 @@
         <mat-label>Title</mat-label>
         <input matInput #message maxlength="256" [(ngModel)]="post.title" [ngModelOptions]="{standalone: true}">
         <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
-      </mat-form-field><span id="setTitle" style="visibility: hidden">Please set a title</span>
+      </mat-form-field><mat-form-field appearance="fill">
+      <mat-label>Category:</mat-label>
+      <mat-select [(ngModel)]="selectCategory"(ngModelChange)="findCategory()"[ngModelOptions]="{standalone: true}" >
+        <mat-option value="restaurant">Restaurant</mat-option>
+        <mat-option value="university">University</mat-option>
+        <mat-option value="coffeeshop">Coffeeshop</mat-option>
+        <mat-option value="sightseeing">Sightseeing</mat-option>
+        <mat-option value="shopping">Shopping</mat-option>
+        <mat-option value="bern">Bern</mat-option>
+        <mat-option value="museum">Museum</mat-option>
+      </mat-select>
+
+    </mat-form-field><span id="setTitle" style="visibility: hidden">Please set a title</span>
     </form>
 
     <!-- DESCRIPTION -->

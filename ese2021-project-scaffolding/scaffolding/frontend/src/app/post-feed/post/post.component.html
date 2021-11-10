@@ -18,15 +18,19 @@
         <button  mat-flat-button color="primary" (click)="editMode = true">EDIT</button>
         <a routerLink="/home"> <button mat-flat-button color="warn" (click)="deletePost(post)">delete post</button></a>
       </span>
-      <button mat-flat-button color="primary" (click)="createComment()">CREATE COMMENT</button><br><br>
+      <br><br>
       <input matInput type="text" placeholder="Comment" name="Comment" [(ngModel)]="newCommentDescription">
+      <br><br>
+      <button mat-flat-button color="primary" (click)="createComment()">COMMENT</button>
     </mat-card-actions>
   </mat-card>
 </div>
 
 <mat-card>
   <div *ngFor="let comment of post.comments">
-    <app-comment [comment]="comment"></app-comment>
+    <app-comment [comment]="comment"
+                 (delete)="deleteComment($event)">
+    </app-comment>
   </div>
 </mat-card>
 

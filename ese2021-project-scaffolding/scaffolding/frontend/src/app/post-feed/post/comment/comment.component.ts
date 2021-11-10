@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Comment } from 'src/app/models/comment.model';
+import {HttpClient} from "@angular/common/http";
+import {UserService} from "../../../services/user.service";
+import {User} from "../../../models/user.model";
+import {TodoItem} from "../../../models/todo-item.model";
 
 @Component({
   selector: 'app-comment',
@@ -7,6 +11,22 @@ import { Comment } from 'src/app/models/comment.model';
   styleUrls: ['./comment.component.css']
 })
 export class CommentComponent implements OnInit {
+
+  user: User|undefined;
+
+  loggedIn: boolean|undefined;
+
+  constructor(
+    public userService: UserService
+  ) {
+    // Listen for changes
+    userService.loggedIn$.subscribe(res => this.loggedIn = res);
+    userService.user$.subscribe(res => this.user = res);
+
+    // Current value
+    this.loggedIn = userService.getLoggedIn();
+    this.user = userService.getUser();
+  }
 
   ngOnInit(): void {
   }

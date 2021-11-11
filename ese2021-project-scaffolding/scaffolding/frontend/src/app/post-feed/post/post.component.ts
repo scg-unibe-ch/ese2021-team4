@@ -147,20 +147,23 @@ export class PostComponent implements OnInit {
     this.form = this.formBuilder.group({
       signature: [ '', Validators.required]
     });
-    setTimeout(()=>{this.checkVoteStatus()}, 500);
+    this.checkVoteStatus();
   }
 
   checkVoteStatus() {
-    this.httpClient.get(environment.endpointURL + "userpostvote/" + this.user?.userId + "/" + this.postId).subscribe((userPostVote: any) => {
-      if(userPostVote !== null) {
-        if (userPostVote.vote == 1) {
-          this.hasUpvoted = true;
-        } else if (userPostVote.vote == -1) {
-          this.hasDownvoted = true;
+   if(this.loggedIn === undefined || (this.loggedIn == true && this.user===undefined)){
+     setTimeout(()=>{this.checkVoteStatus()},10);
+   } else if (this.loggedIn == true){
+      this.httpClient.get(environment.endpointURL + "userpostvote/" + this.user?.userId + "/" + this.postId).subscribe((userPostVote: any) => {
+        if(userPostVote !== null) {
+          if (userPostVote.vote == 1) {
+            this.hasUpvoted = true;
+          } else if (userPostVote.vote == -1) {
+            this.hasDownvoted = true;
+          }
         }
-      }
-    });
-
+      });
+    }
   }
 
   onChange(event : any) {

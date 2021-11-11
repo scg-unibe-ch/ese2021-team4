@@ -23,23 +23,28 @@ export class CommentedPostsComponent extends PostFeedComponent {
   }
 
   ngOnInit(): void {
-    setTimeout(() => this.readPosts(), 100);
+    this.readPosts();
   }
 
   readPosts(): void {
-    this.httpClient.get(environment.endpointURL + "comment/" + "createdBy/" + this.user?.userId).subscribe((comments: any) => {
-      comments.forEach((comment: any) => {
-        this.httpClient.get(environment.endpointURL + "post/" + comment.postId).subscribe((post:any) => {
-          if(!this.postList.find(existingPost => existingPost.postId == post.postId)) {
-            this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []))
-          }
-          })
+    if(this.user === undefined) {
+      setTimeout(()=> this.readPosts(), 10);
+    } else {
+      this.httpClient.get(environment.endpointURL + "comment/" + "createdBy/" + this.user?.userId).subscribe((comments: any) => {
+        comments.forEach((comment: any) => {
+          this.httpClient.get(environment.endpointURL + "post/" + comment.postId).subscribe((post:any) => {
+            if(!this.postList.find(existingPost => existingPost.postId == post.postId)) {
+              this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []))
+            }
+            })
+        });
+        this.postsLoaded = true;
+        this.selectedPosts = this.postList
+      }, error => {
+        console.log(error);
       });
-      this.postsLoaded = true;
-      this.selectedPosts = this.postList
-    }, error => {
-      console.log(error);
-    });
+    }
+   
   }
 
 }

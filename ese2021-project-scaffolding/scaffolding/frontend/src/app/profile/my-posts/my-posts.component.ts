@@ -27,17 +27,21 @@ export class MyPostsComponent extends PostFeedComponent {
   }
 
   ngOnInit(): void {
-    setTimeout(() => this.readPosts(), 100);
+    this.readPosts();
   }
 
   readPosts(): void {
-    this.httpClient.get(environment.endpointURL + "post/" + "createdBy/" + this.user?.userId).subscribe((posts: any) => {
-      posts.forEach((post: any) => {
-        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []));
+    if(this.user === undefined) {
+      setTimeout(()=> this.readPosts(), 10);
+    } else {
+      this.httpClient.get(environment.endpointURL + "post/" + "createdBy/" + this.user?.userId).subscribe((posts: any) => {
+        posts.forEach((post: any) => {
+          this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []));
+        });
+        this.postsLoaded = true;
+        this.selectedPosts = this.postList
       });
-      this.postsLoaded = true;
-      this.selectedPosts = this.postList
-    });
+    }
   }
 
 }

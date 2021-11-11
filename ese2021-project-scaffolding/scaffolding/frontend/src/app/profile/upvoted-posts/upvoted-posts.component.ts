@@ -22,23 +22,27 @@ export class UpvotedPostsComponent extends PostFeedComponent {
   }
 
   ngOnInit(): void {
-    setTimeout(() => this.readPosts(), 100);
+    this.readPosts();
   }
 
   readPosts(): void {
-    this.httpClient.get(environment.endpointURL + "userpostvote/" + "votedBy/" + this.user?.userId).subscribe((votes: any) => {
-      votes.forEach((vote: any) => {
-        if(vote.vote == 1) {
-          this.httpClient.get(environment.endpointURL + "post/" + vote.postId).subscribe((post:any) => {
-            this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []));
-          })
-        }
+    if(this.user === undefined) {
+      setTimeout(()=> this.readPosts(), 10);
+    } else {
+      this.httpClient.get(environment.endpointURL + "userpostvote/" + "votedBy/" + this.user?.userId).subscribe((votes: any) => {
+        votes.forEach((vote: any) => {
+          if(vote.vote == 1) {
+            this.httpClient.get(environment.endpointURL + "post/" + vote.postId).subscribe((post:any) => {
+              this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []));
+            })
+          }
+        });
+        this.postsLoaded = true;
+        this.selectedPosts = this.postList
+      }, error => {
+        console.log(error);
       });
-      this.postsLoaded = true;
-      this.selectedPosts = this.postList
-    }, error => {
-      console.log(error);
-    });
+    }
   }
 
 }

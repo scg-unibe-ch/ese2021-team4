@@ -10,8 +10,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TodoListComponent } from './todo-list/todo-list.component';
-import { TodoItemComponent } from './todo-list/todo-item/todo-item.component';
+//import { TodoListComponent } from './todo-list/todo-list.component';
+// import { TodoItemComponent } from './todo-list/todo-item/todo-item.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatListModule } from '@angular/material/list';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -34,7 +34,7 @@ import {MatChipsModule} from "@angular/material/chips";
 import { DownvotedPostsComponent } from './profile/downvoted-posts/downvoted-posts.component';
 import { CommentedPostsComponent } from './profile/commented-posts/commented-posts.component';
 import { FanShopComponent } from './fan-shop/fan-shop.component';
-import { ProductComponent } from './product/product.component';
+import { ProductComponent } from './fan-shop/product/product.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -48,8 +48,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    TodoListComponent,
-    TodoItemComponent,
+    // TodoListComponent,
+    // TodoItemComponent,
     HomeComponent,
     LoginComponent,
     RegisterComponent,

@@ -3,7 +3,7 @@ import {Product} from 'src/app/models/product.model';
 import {User} from 'src/app/models/user.model';
 import {UserService} from 'src/app/services/user.service';
 import {environment} from 'src/environments/environment';
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AngularEditorConfig} from '@kolkov/angular-editor';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -83,11 +83,6 @@ export class ProductComponent implements OnInit {
   @Input()
   product: Product = new Product(0, '', '', 0, Category.Bern, 0);
 
-  @Output()
-  update = new EventEmitter<Product>();
-
-  @Output()
-  delete = new EventEmitter<Product>();
 
 
   constructor(
@@ -116,7 +111,7 @@ export class ProductComponent implements OnInit {
       this.existsInBackend = true;
       this.editMode = false;
       this.httpClient.get(environment.endpointURL + "product/" + this.productId).subscribe((products: any) => {
-        this.product=new Product(this.product.productId, this.product.title, this.product.description, this.product.price, this.product.category, this.product.imageId);
+        this.product=new Product(this.product.productId, this.product.title, this.product.description, this.product.price, this.product.tag, this.product.imageId);
         });
     }
   }

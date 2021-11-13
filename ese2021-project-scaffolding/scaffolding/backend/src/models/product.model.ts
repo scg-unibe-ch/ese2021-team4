@@ -54,8 +54,7 @@ export class Product extends Model<ProductAttributes, ProductCreationAttributes>
                 },
                 price: {
                     type: DataTypes.INTEGER,
-                    autoIncrement: true,
-                    primaryKey: true
+                    allowNull: false
                 }
             },
             { sequelize, tableName: 'products' }

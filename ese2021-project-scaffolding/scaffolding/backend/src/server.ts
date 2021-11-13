@@ -19,7 +19,8 @@ import { Comment } from './models/comment.model';
 import { PostController } from './controllers/post.controller';
 import { UserPostVote } from './models/user-post-vote.model';
 import { UserPostVoteController} from './controllers/user-post-vote.controller';
-
+import { Product } from './models/product.model';
+import { ProductController } from './controllers/product.controller';
 
 export class Server {
     private server: Application;
@@ -35,6 +36,7 @@ export class Server {
         User.initialize(this.sequelize);
         ItemImage.initialize(this.sequelize);
         Post.initialize(this.sequelize);
+        Product.initialize(this.sequelize);
         Comment.initialize(this.sequelize);
         UserPostVote.initialize(this.sequelize);
         UserPostVote.createAssociations();
@@ -81,6 +83,7 @@ export class Server {
             .use('/admin', AdminController)
             .use('/post', PostController)
             .use('/comment', CommentController)
+            .use('/product', ProductController)
             .use('/userpostvote', UserPostVoteController)
             .options('*', cors(options))
             .use(express.static('./src/public'))

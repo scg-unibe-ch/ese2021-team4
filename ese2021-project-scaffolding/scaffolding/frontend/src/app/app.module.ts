@@ -33,6 +33,8 @@ import { UpvotedPostsComponent } from './profile/upvoted-posts/upvoted-posts.com
 import {MatChipsModule} from "@angular/material/chips";
 import { DownvotedPostsComponent } from './profile/downvoted-posts/downvoted-posts.component';
 import { CommentedPostsComponent } from './profile/commented-posts/commented-posts.component';
+import { FanShopComponent } from './fan-shop/fan-shop.component';
+import { ProductComponent } from './product/product.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -59,7 +61,9 @@ const routes: Routes = [
     MyPostsComponent,
     UpvotedPostsComponent,
     DownvotedPostsComponent,
-    CommentedPostsComponent
+    CommentedPostsComponent,
+    FanShopComponent,
+    ProductComponent
   ],
     imports: [
         BrowserModule,

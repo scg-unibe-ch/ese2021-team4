@@ -290,7 +290,7 @@ export class PostComponent implements OnInit {
   }
 
 
-  // CREATE - TodoItem
+  // CREATE - Post
   createComment(): void {
     if (!(this.newCommentDescription == '')) {
       this.httpClient.post(environment.endpointURL + "comment", {
@@ -306,7 +306,7 @@ export class PostComponent implements OnInit {
     }
   }
 
-  // UPDATE - TodoItem
+  // UPDATE - Post
   updateComment(comment: Comment): void {
     this.httpClient.put(environment.endpointURL + "comment/" + comment.commentId, {
       description: comment.description,
@@ -314,7 +314,7 @@ export class PostComponent implements OnInit {
     }).subscribe();
   }
 
-  // DELETE - TodoItem
+  // DELETE - Post
   deleteComment(comment: Comment): void {
     this.httpClient.delete(environment.endpointURL + "comment/" + comment.commentId).subscribe(() => {
       this.post.comments.splice(this.post.comments.indexOf(comment), 1);

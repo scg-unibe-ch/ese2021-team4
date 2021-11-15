@@ -14,5 +14,6 @@ export class Post {
         public downvotes: number,
         public createdAt: Date,
         public comments: Comment[],
+        public images: File[]
     ) {}
   }

@@ -60,7 +60,7 @@ export class PostFeedComponent implements OnInit {
       upvotes: 0,
       downvotes: 0
     }).subscribe((post: any) => {
-      this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []));
+      this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []));
       this.newPostTitle = this.newPostDescription = this.newPostTags = '';
     },
         error => {console.log(error)})
@@ -96,7 +96,7 @@ export class PostFeedComponent implements OnInit {
     this.httpClient.get(environment.endpointURL + "post").subscribe((posts: any) => {
 
       posts.forEach((post: any) => {
-        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []));
+        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []));
       });
       this.selectedPosts = this.postList;
 
@@ -105,7 +105,7 @@ export class PostFeedComponent implements OnInit {
   readCreatedPosts(): void {
     this.httpClient.get(environment.endpointURL + "post/" + "createdBy/" + this.user?.userId).subscribe((posts: any) => {
       posts.forEach((post: any) => {
-        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []));
+        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []));
       });
       this.postsLoaded = true;
       this.selectedPosts = this.postList
@@ -117,7 +117,7 @@ export class PostFeedComponent implements OnInit {
       votes.forEach((vote: any) => {
         if(vote.vote == dir) {
           this.httpClient.get(environment.endpointURL + "post/" + vote.postId).subscribe((post:any) => {
-            this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []));
+            this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []));
           })
         }
       });
@@ -133,7 +133,7 @@ export class PostFeedComponent implements OnInit {
       comments.forEach((comment: any) => {
         this.httpClient.get(environment.endpointURL + "post/" + comment.postId).subscribe((post:any) => {
           if(!this.postList.find(existingPost => existingPost.postId == post.postId)) {
-            this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []))
+            this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []))
           }
         })
       });

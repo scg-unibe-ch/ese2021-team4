@@ -18,6 +18,9 @@ import {Category} from "../../models/category.model";
 })
 export class PostComponent implements OnInit {
 
+  fileName = '';
+  images : File[] = [];
+
   selectCategory='';
 
   loggedIn: boolean | undefined;
@@ -77,11 +80,12 @@ export class PostComponent implements OnInit {
       ],
       [
         'insertVideo',
+        'insertImage',
         'backgroundColor',
         'textColor',
         'removeFormat',
         'customClasses',
-        'insertHorizontalRule'
+        'insertHorizontalRule',
       ]
     ]
 
@@ -91,7 +95,7 @@ export class PostComponent implements OnInit {
   };
 
   @Input()
-  post: Post = new Post(0, '', 0, '', 0, Category.Bern, 0, 0, new Date(), []);
+  post: Post = new Post(0, '', 0, '', 0, Category.Bern, 0, 0, new Date(), [], []);
   @Input()
   preview: boolean = false;
 
@@ -124,6 +128,39 @@ export class PostComponent implements OnInit {
 
   }
 
+  onFileSelected(event : any) {
+
+    const files : File[] = event.target.files;
+
+    for (let i=0; i < files.length; i++){
+      const imageSpan = document.getElementById("image");
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(files[i]);
+      img.height = 60;
+
+      img.onload = function() {
+        URL.revokeObjectURL(img.src);
+      }
+      imageSpan?.appendChild(img);
+    }
+    this.post.images = files;
+    
+    /* TODO
+    if (file) {
+
+        this.fileName = file.name;
+
+        const formData = new FormData();
+
+        formData.append("thumbnail", file);
+
+        // const upload$ = this.httpClient.post("/api/thumbnail-upload", formData);
+
+        // upload$.subscribe();
+    }*/
+}
+
+
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       signature: [ '', Validators.required]
@@ -139,7 +176,7 @@ export class PostComponent implements OnInit {
       this.editMode = false;
 
       this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
-        this.post=new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []);
+        this.post=new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []);
         this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
           comments.forEach((comment: any) => {
             this.post.comments.push(new Comment(comment.commentId, comment.postId, comment.userId, comment.description, comment.upvotes, comment.downvotes, new Date(comment.createdAt)));
@@ -155,7 +192,13 @@ export class PostComponent implements OnInit {
     }
 
     this.checkVoteStatus();
+
+    //image Uploading
+
+  
   }
+
+
 
   checkVoteStatus() {
    if(this.loggedIn === undefined || (this.loggedIn == true && this.user===undefined)){
@@ -234,7 +277,8 @@ export class PostComponent implements OnInit {
       tags: this.findCategory(),
       userId: this.user.userId,
       upvotes: 0,
-      downvotes: 0
+      downvotes: 0,
+      images: this.post.images
     }).subscribe((post: any) => {
       // this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes));
       // this.title = this.newPostDescription = this.newPostTags = '';

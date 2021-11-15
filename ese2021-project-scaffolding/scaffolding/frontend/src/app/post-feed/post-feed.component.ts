@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Post } from '../models/post.model';
 import { UserService } from '../services/user.service';
@@ -15,6 +15,9 @@ import {Category} from "../models/category.model";
 })
 export class PostFeedComponent implements OnInit {
 
+  @Input()
+  feedType: string = '';
+
   postList: Post[] = [];
   newPostTitle = '';
   newPostDescription = '';
@@ -23,6 +26,7 @@ export class PostFeedComponent implements OnInit {
   sortBy = '';
   selectedCategory = '';
   selectedPosts: Post[] = [];
+  postsLoaded: boolean = false;
 
   loggedIn: boolean | undefined;
 
@@ -64,8 +68,31 @@ export class PostFeedComponent implements OnInit {
 
   }
 
-  // READ - Post
   readPosts(): void {
+    if(this.user === undefined) {
+      setTimeout(()=> this.readPosts(), 10);
+    } else {
+      switch (this.feedType) {
+        case 'created':
+          this.readCreatedPosts();
+          break;
+        case 'upvoted':
+          this.readVotedPosts(1);
+          break;
+        case 'downvoted':
+          this.readVotedPosts(-1);
+          break;
+        case 'commented' :
+          this.readCommentedPosts();
+          break;
+        default:
+          this.readAllPosts()
+      }
+    }
+  }
+
+  // READ - Post
+  readAllPosts(): void {
     this.httpClient.get(environment.endpointURL + "post").subscribe((posts: any) => {
 
       posts.forEach((post: any) => {
@@ -73,6 +100,47 @@ export class PostFeedComponent implements OnInit {
       });
       this.selectedPosts = this.postList;
 
+    });
+  }
+  readCreatedPosts(): void {
+    this.httpClient.get(environment.endpointURL + "post/" + "createdBy/" + this.user?.userId).subscribe((posts: any) => {
+      posts.forEach((post: any) => {
+        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []));
+      });
+      this.postsLoaded = true;
+      this.selectedPosts = this.postList
+    });
+  }
+
+  readVotedPosts(dir: number) {
+    this.httpClient.get(environment.endpointURL + "userpostvote/" + "votedBy/" + this.user?.userId).subscribe((votes: any) => {
+      votes.forEach((vote: any) => {
+        if(vote.vote == dir) {
+          this.httpClient.get(environment.endpointURL + "post/" + vote.postId).subscribe((post:any) => {
+            this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []));
+          })
+        }
+      });
+      this.postsLoaded = true;
+      this.selectedPosts = this.postList
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  readCommentedPosts() {
+    this.httpClient.get(environment.endpointURL + "comment/" + "createdBy/" + this.user?.userId).subscribe((comments: any) => {
+      comments.forEach((comment: any) => {
+        this.httpClient.get(environment.endpointURL + "post/" + comment.postId).subscribe((post:any) => {
+          if(!this.postList.find(existingPost => existingPost.postId == post.postId)) {
+            this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []))
+          }
+        })
+      });
+      this.postsLoaded = true;
+      this.selectedPosts = this.postList
+    }, error => {
+      console.log(error);
     });
   }
 

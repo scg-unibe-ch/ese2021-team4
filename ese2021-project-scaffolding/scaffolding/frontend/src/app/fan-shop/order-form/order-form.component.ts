@@ -30,6 +30,7 @@ export class OrderFormComponent implements OnInit {
       if(!isNaN(+params.id)) {
         this.productId = +params.id;
       }
+      console.log(this.productId)
     });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
@@ -52,7 +53,7 @@ export class OrderFormComponent implements OnInit {
       productId: this.productId,
       userId: this.user?.userId,
       adminId: 0
-    });
+    }).subscribe(() => {});
     this.router.navigate(['/fan-shop'])
   }
 }

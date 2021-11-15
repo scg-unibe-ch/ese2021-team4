@@ -22,6 +22,7 @@ import { UserPostVoteController} from './controllers/user-post-vote.controller';
 import { Product } from './models/product.model';
 import { ProductController } from './controllers/product.controller';
 import { OrderController } from './controllers/order.controller';
+import {Order} from './models/order.model';
 
 export class Server {
     private server: Application;
@@ -38,6 +39,7 @@ export class Server {
         ItemImage.initialize(this.sequelize);
         Post.initialize(this.sequelize);
         Product.initialize(this.sequelize);
+        Order.initialize(this.sequelize);
         Comment.initialize(this.sequelize);
         UserPostVote.initialize(this.sequelize);
         UserPostVote.createAssociations();

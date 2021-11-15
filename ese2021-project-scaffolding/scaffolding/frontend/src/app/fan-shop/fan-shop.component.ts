@@ -28,6 +28,7 @@ export class FanShopComponent implements OnInit {
 
   user: User | undefined;
 
+
   constructor(
     public httpClient: HttpClient,
     public userService: UserService

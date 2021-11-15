@@ -21,6 +21,7 @@ import { UserPostVote } from './models/user-post-vote.model';
 import { UserPostVoteController} from './controllers/user-post-vote.controller';
 import { Product } from './models/product.model';
 import { ProductController } from './controllers/product.controller';
+import { OrderController } from './controllers/order.controller';
 
 export class Server {
     private server: Application;
@@ -84,6 +85,7 @@ export class Server {
             .use('/post', PostController)
             .use('/comment', CommentController)
             .use('/product', ProductController)
+            .use('/order', OrderController)
             .use('/userpostvote', UserPostVoteController)
             .options('*', cors(options))
             .use(express.static('./src/public'))

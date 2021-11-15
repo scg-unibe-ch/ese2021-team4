@@ -297,7 +297,7 @@ export class PostComponent implements OnInit {
   }
 
 
-  // CREATE - Post
+  // CREATE - Comment
   createComment(): void {
     if (!(this.newCommentDescription == '')) {
       this.httpClient.post(environment.endpointURL + "comment", {
@@ -313,7 +313,7 @@ export class PostComponent implements OnInit {
     }
   }
 
-  // UPDATE - Post
+  // UPDATE - Comment
   updateComment(comment: Comment): void {
     this.httpClient.put(environment.endpointURL + "comment/" + comment.commentId, {
       description: comment.description,
@@ -321,7 +321,7 @@ export class PostComponent implements OnInit {
     }).subscribe();
   }
 
-  // DELETE - Post
+  // DELETE - Comment
   deleteComment(comment: Comment): void {
     this.httpClient.delete(environment.endpointURL + "comment/" + comment.commentId).subscribe(() => {
       this.post.comments.splice(this.post.comments.indexOf(comment), 1);

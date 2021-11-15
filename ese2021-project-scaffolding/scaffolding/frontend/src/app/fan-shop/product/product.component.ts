@@ -23,10 +23,6 @@ export class ProductComponent implements OnInit {
 
   user: User | undefined;
 
-  newCommentDescription: string = '';
-
-  productId: number = 0;
-
   existsInBackend : boolean;
   form: FormGroup = new FormGroup({});
   editMode: boolean = false;
@@ -83,7 +79,11 @@ export class ProductComponent implements OnInit {
   @Input()
   product: Product = new Product(0, '', '', 0, Category.Bern, 0);
 
+  @Input()
+  preview: boolean = false;
 
+  @Input()
+  productId: number = 0;
 
   constructor(
     private router: Router,
@@ -201,9 +201,9 @@ export class ProductComponent implements OnInit {
   }
 
   deleteProduct(product: Product): void {
-
     if(this.user?.isAdmin){
       this.httpClient.delete(environment.endpointURL + "product/" + product.productId).subscribe(() => {});
     }
   }
 }
+

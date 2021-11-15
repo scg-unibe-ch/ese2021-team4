@@ -45,16 +45,9 @@
 
 <mat-grid-list cols="2" rowHeight="2:1">
   <mat-grid-tile *ngFor="let post of selectedPosts">
-
-    <!-- <mat-card> -->
-    <div> <mat-chip-list><mat-chip>{{post.tags}}</mat-chip></mat-chip-list><br><br><br><br><br><br><br>
-          {{post.title}} <span style="display: inline-block;">&nbsp;</span>
-
-        <a [routerLink]="['post', post.postId]"> View </a><br><br>
-    <mat-icon>thumb_up</mat-icon>{{post.upvotes}}<span style="margin-left: 20px"></span>
-    <mat-icon>thumb_down</mat-icon> {{post.downvotes}}
-    <!-- </mat-card> -->
-    </div>
+    <app-post [post]="post"
+              [preview]="true"
+              [postId]="post.postId"></app-post>
   </mat-grid-tile>
 
 </mat-grid-list>

@@ -26,13 +26,14 @@ export class PostComponent implements OnInit {
 
   newCommentDescription: string = '';
 
+  @Input()
   postId: number = 0;
   createdAtString: string | undefined;
   authorName: string | undefined;
   hasUpvoted: boolean = false;
   hasDownvoted: boolean = false;
 
-  existsInBackend : boolean;
+  existsInBackend : boolean = true;
   form: FormGroup = new FormGroup({});
   editMode: boolean = false;
 
@@ -91,6 +92,8 @@ export class PostComponent implements OnInit {
 
   @Input()
   post: Post = new Post(0, '', 0, '', 0, Category.Bern, 0, 0, new Date(), []);
+  @Input()
+  preview: boolean = false;
 
   @Output()
   update = new EventEmitter<Post>();
@@ -107,7 +110,9 @@ export class PostComponent implements OnInit {
     private activatedRoute: ActivatedRoute) {
 
     this.activatedRoute.params.subscribe(params => {
-      this.postId = +params.id;
+      if(!isNaN(+params.id)) {
+        this.postId = +params.id;
+      }
     });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
@@ -117,6 +122,14 @@ export class PostComponent implements OnInit {
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
 
+  }
+
+  ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      signature: [ '', Validators.required]
+    });
+
+
     // if this.postId === -1, this means we are in editor mode and are looking to create a new post
     if (this.postId === -1){
       this.editMode = true;
@@ -124,6 +137,7 @@ export class PostComponent implements OnInit {
     } else {
       this.existsInBackend = true;
       this.editMode = false;
+
       this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
         this.post=new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []);
         this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
@@ -137,16 +151,9 @@ export class PostComponent implements OnInit {
 
       });
 
-
       this.createdAtString = this.post.createdAt.toDateString();
     }
 
-  }
-
-  ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      signature: [ '', Validators.required]
-    });
     this.checkVoteStatus();
   }
 

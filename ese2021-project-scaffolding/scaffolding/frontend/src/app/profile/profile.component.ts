@@ -3,6 +3,8 @@ import {User} from "../models/user.model";
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "../services/user.service";
 import {environment} from "../../environments/environment";
+import {Order} from "../models/order.model";
+import {Status} from "../models/status.model";
 
 @Component({
   selector: 'app-profile',
@@ -29,6 +31,8 @@ export class ProfileComponent implements OnInit {
   updateMessage: string = '';
   emailMessage: string = '';
   usernameMessage: string = '';
+
+  myOrders: Order[] = [];
 
   constructor(
     public httpClient: HttpClient,
@@ -57,6 +61,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getMyOrders()
   }
 
   updateUser(user: User): void {
@@ -107,5 +112,16 @@ export class ProfileComponent implements OnInit {
   }
   isValidEmail(): boolean {
     return !!this.userEmail.match('@')
+  }
+
+  //TODO: implement conversion from string to Status, then replace Status.Pending below
+  getMyOrders(): void {
+    if(this.user === undefined) {
+      setTimeout(()=> this.getMyOrders(), 10);
+    } else {
+      this.httpClient.get(environment.endpointURL + 'order/createdBy/' + this.user?.userId).subscribe((orders: any) => {
+        orders.forEach((order: any) => this.myOrders.push(new Order(Status.Pending, order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate))))
+      })
+    }
   }
 }

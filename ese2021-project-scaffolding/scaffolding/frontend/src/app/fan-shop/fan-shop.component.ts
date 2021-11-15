@@ -82,6 +82,8 @@ export class FanShopComponent implements OnInit {
         break;
       case "tags": this.sortByTags();
         break;
+      case "price": this.sortByPrice();
+        break;
       default: console.log('invalid sort')
 
     }
@@ -124,6 +126,9 @@ export class FanShopComponent implements OnInit {
 
   sortById(): void{
     this.selectedProducts.sort((a,b) => a.productId-b.productId)
+  }
+  sortByPrice(): void{
+    this.selectedProducts.sort((a,b) => a.price-b.price)
   }
 }
 

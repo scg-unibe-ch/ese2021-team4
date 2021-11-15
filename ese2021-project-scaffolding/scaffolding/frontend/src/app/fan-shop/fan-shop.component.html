@@ -1,25 +1,24 @@
-<!--</mat-card>-->
-<!--<mat-form-field appearance="fill">-->
-<!--  <mat-label>Sort by:</mat-label>-->
-<!--  <mat-select [(ngModel)]="sortBy"(ngModelChange)="sortProducts()">-->
-<!--    <mat-option value="title">Title</mat-option>-->
-<!--    <mat-option value="id">ID</mat-option>-->
-<!--    <mat-option value="tags">Tags</mat-option>-->
-<!--  </mat-select>-->
-<!--</mat-form-field>-->
+<mat-form-field appearance="fill">
+  <mat-label>Sort by:</mat-label>
+  <mat-select [(ngModel)]="sortBy"(ngModelChange)="sortProducts()">
+    <mat-option value="title">Title</mat-option>
+    <mat-option value="id">ID</mat-option>
+    <mat-option value="tags">Tags</mat-option>
+  </mat-select>
+</mat-form-field>
 
-<!--<mat-form-field appearance="fill">-->
-<!--  <mat-label>Category:</mat-label>-->
-<!--  <mat-select [(ngModel)]="selectedCategory" (ngModelChange)="selectPosts()">-->
-<!--    <mat-option value="restaurant">Restaurant</mat-option>-->
-<!--    <mat-option value="coffeeshop">Coffeeshop</mat-option>-->
-<!--    <mat-option value="shopping">Shopping</mat-option>-->
-<!--    <mat-option value="sightseeing">Sightseeing</mat-option>-->
-<!--    <mat-option value="museum">Museum</mat-option>-->
-<!--    <mat-option value="university">University</mat-option>-->
-<!--    <mat-option value="all">Show All</mat-option>-->
-<!--  </mat-select>-->
-<!--</mat-form-field>-->
+<mat-form-field appearance="fill">
+  <mat-label>Category:</mat-label>
+  <mat-select [(ngModel)]="selectedCategory" (ngModelChange)="selectProducts()">
+    <mat-option value="restaurant">Restaurant</mat-option>
+    <mat-option value="coffeeshop">Coffeeshop</mat-option>
+    <mat-option value="shopping">Shopping</mat-option>
+    <mat-option value="sightseeing">Sightseeing</mat-option>
+    <mat-option value="museum">Museum</mat-option>
+    <mat-option value="university">University</mat-option>
+    <mat-option value="all">Show All</mat-option>
+  </mat-select>
+</mat-form-field>
 
 <mat-grid-list cols="2" rowHeight="2:1">
   <mat-grid-tile *ngFor="let product of selectedProducts">

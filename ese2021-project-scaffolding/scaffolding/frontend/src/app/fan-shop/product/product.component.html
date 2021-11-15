@@ -3,6 +3,14 @@
     <a [routerLink]="['product', product.productId]"> View </a><br><br>
 </div>
 
-<div *ngIf="!preview">
-  <button [routerLink]="['order']">buy</button>
+<div *ngIf="!preview"><div *ngIf="!editMode">
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar></div>
+      <mat-card-title>{{product.title}}</mat-card-title>
+      <mat-card-subtitle>{{product.tag}}</mat-card-subtitle>
+      <mat-card-subtitle>{{product.price}}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+</div>
 </div>

@@ -52,5 +52,4 @@ export class Order extends Model<OrderAttributes, OrderCreationAttributes> imple
             {sequelize, tableName: 'orders'}
         );
     }
-
 }

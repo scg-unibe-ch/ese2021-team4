@@ -10,25 +10,27 @@
     <mat-card-content>
         <div [innerHTML]="post.description"></div>
     </mat-card-content>
-    <div *ngIf="loggedIn">
-      <mat-card-actions>
-        <button mat-flat-button color="primary" (click)="votePost(1)" [disabled]="hasDownvoted">UPVOTES: {{post.upvotes}}</button>
-        <button mat-flat-button color="primary" (click)="votePost(-1)" [disabled]="hasUpvoted">DOWNVOTES: {{post.downvotes}}</button>
-        <span *ngIf="user?.userId === post.userId || user?.isAdmin">
-          <button  mat-flat-button color="primary" (click)="editMode = true">EDIT</button>
-          <a routerLink="/home"> <button mat-flat-button color="warn" (click)="deletePost(post)">delete post</button></a>
-        </span>
-        <button mat-flat-button color="primary" (click)="createComment()">CREATE COMMENT</button><br><br>
-        <input matInput type="text" placeholder="Comment" name="Comment" [(ngModel)]="newCommentDescription">
-      </mat-card-actions>
-    </div>
-    
+
+    <mat-card-actions>
+      <button mat-flat-button color="primary" (click)="votePost(1)" [disabled]="hasDownvoted">UPVOTES: {{post.upvotes}}</button>
+      <button mat-flat-button color="primary" (click)="votePost(-1)" [disabled]="hasUpvoted">DOWNVOTES: {{post.downvotes}}</button>
+      <span *ngIf="user?.userId === post.userId || user?.isAdmin">
+        <button  mat-flat-button color="primary" (click)="editMode = true">EDIT</button>
+        <a routerLink="/home"> <button mat-flat-button color="warn" (click)="deletePost(post)">delete post</button></a>
+      </span>
+      <br><br>
+      <input matInput type="text" placeholder="Comment" name="Comment" [(ngModel)]="newCommentDescription">
+      <br><br>
+      <button mat-flat-button color="primary" (click)="createComment()">COMMENT</button>
+    </mat-card-actions>
   </mat-card>
 </div>
 
 <mat-card>
   <div *ngFor="let comment of post.comments">
-    <app-comment [comment]="comment"></app-comment>
+    <app-comment [comment]="comment"
+                 (delete)="deleteComment($event)">
+    </app-comment>
   </div>
 </mat-card>
 

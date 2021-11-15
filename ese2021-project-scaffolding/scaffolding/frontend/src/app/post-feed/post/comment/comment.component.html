@@ -1,1 +1,2 @@
 <p>{{comment.description}}</p>
+<div *ngIf="user?.userId === comment.userId || user?.isAdmin"><button mat-flat-button color="warn" (click)="deleteComment()">delete comment</button></div>

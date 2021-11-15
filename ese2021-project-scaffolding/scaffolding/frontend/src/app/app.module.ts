@@ -42,7 +42,9 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent},
   {path: 'home/post/:id', component: PostComponent},
   {path: 'profile/post/:id', component: PostComponent},
-  {path: 'fan-shop', component: FanShopComponent}
+  {path: 'fan-shop', component: FanShopComponent},
+  {path: 'fan-shop/product/:id', component: ProductComponent},
+  {path: 'fan-shop/product/:id/order', component: OrderFormComponent}
 ];
 @NgModule({
   declarations: [

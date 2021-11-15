@@ -183,9 +183,8 @@ export class PostFeedComponent implements OnInit {
         break;
       case "coffeeshop": return Category.Coffeeshop;
         break;
-      case "shopping": return Category.Shopping
+      case "shopping": return Category.Shopping;
         break;
-
       case "sightseeing": return Category.Sightseeing;
         break;
       case "museum": return Category.Museum;

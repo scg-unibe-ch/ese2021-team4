@@ -21,14 +21,10 @@
 <!--  </mat-select>-->
 <!--</mat-form-field>-->
 
-<app-order-form>
-</app-order-form>
-
-
 <mat-grid-list cols="2" rowHeight="2:1">
   <mat-grid-tile *ngFor="let product of selectedProducts">
     <app-product [product]="product"
-              [preview]="true"
-              [productId]="product.productId"></app-product>
+                 [preview]="true"
+                 [productId]="product.productId"></app-product>
   </mat-grid-tile>
 </mat-grid-list>

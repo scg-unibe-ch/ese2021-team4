@@ -1,5 +1,8 @@
-<div *ngIf="preview"><!-- <mat-card> -->
-    {{post.title}} <span style="display: inline-block;">&nbsp;</span>
-    <a [routerLink]="['post', post.postId]"> View </a><br><br>
-    <!-- </mat-card> -->
-  </div></div>
+<div *ngIf="preview">
+    {{product.title}} <span style="display: inline-block;"></span>
+    <a [routerLink]="['product', product.productId]"> View </a><br><br>
+</div>
+
+<div *ngIf="!preview">
+  <button [routerLink]="['order']">buy</button>
+</div>

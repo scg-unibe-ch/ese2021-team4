@@ -23,7 +23,7 @@ export class ProductComponent implements OnInit {
 
   user: User | undefined;
 
-  existsInBackend : boolean;
+  existsInBackend : boolean = true;
   form: FormGroup = new FormGroup({});
   editMode: boolean = false;
 
@@ -93,7 +93,9 @@ export class ProductComponent implements OnInit {
     private activatedRoute: ActivatedRoute) {
 
     this.activatedRoute.params.subscribe(params => {
-      this.productId = +params.id;
+      if(!isNaN(+params.id)) {
+        this.productId = +params.id;
+      }
     });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
@@ -102,6 +104,13 @@ export class ProductComponent implements OnInit {
     // Current value
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
+
+  }
+
+  ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      signature: [ '', Validators.required]
+    });
 
     // if this.productId === -1, this means we are in editor mode and are looking to create a new product
     if (this.productId === -1){
@@ -112,14 +121,8 @@ export class ProductComponent implements OnInit {
       this.editMode = false;
       this.httpClient.get(environment.endpointURL + "product/" + this.productId).subscribe((products: any) => {
         this.product=new Product(this.product.productId, this.product.title, this.product.description, this.product.price, this.product.tag, this.product.imageId);
-        });
+      });
     }
-  }
-
-  ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      signature: [ '', Validators.required]
-    });
   }
 
   onChange(event : any) {

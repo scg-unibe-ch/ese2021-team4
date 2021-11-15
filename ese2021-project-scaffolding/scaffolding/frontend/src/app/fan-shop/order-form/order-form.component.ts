@@ -4,7 +4,8 @@ import {HttpClient} from '@angular/common/http';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
 import { Product } from 'src/app/models/product.model';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder} from "@angular/forms";
 
 @Component({
   selector: 'app-order-form',
@@ -20,9 +21,16 @@ export class OrderFormComponent implements OnInit {
   loggedIn: boolean|undefined;
 
   constructor(
+    private router: Router,
+    public httpClient: HttpClient,
     public userService: UserService,
-    public httpClient: HttpClient
-  ) {
+    private activatedRoute: ActivatedRoute) {
+
+    this.activatedRoute.params.subscribe(params => {
+      if(!isNaN(+params.id)) {
+        this.productId = +params.id;
+      }
+    });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
     userService.user$.subscribe(res => this.user = res);
@@ -30,6 +38,7 @@ export class OrderFormComponent implements OnInit {
     // Current value
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
+
   }
 
 
@@ -43,6 +52,7 @@ export class OrderFormComponent implements OnInit {
       productId: this.productId,
       userId: this.user?.userId,
       adminId: 0
-    })
+    });
+    this.router.navigate(['/fan-shop'])
   }
 }

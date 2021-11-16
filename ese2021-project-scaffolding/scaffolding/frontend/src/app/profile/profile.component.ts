@@ -61,7 +61,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getMyOrders()
+    this.getOrders()
   }
 
   updateUser(user: User): void {
@@ -115,13 +115,20 @@ export class ProfileComponent implements OnInit {
   }
 
   //TODO: implement conversion from string to Status, then replace Status.Pending below
-  getMyOrders(): void {
+  getOrders(): void {
     if(this.user === undefined) {
-      setTimeout(()=> this.getMyOrders(), 10);
+      setTimeout(()=> this.getOrders(), 10);
     } else {
-      this.httpClient.get(environment.endpointURL + 'order/createdBy/' + this.user?.userId).subscribe((orders: any) => {
-        orders.forEach((order: any) => this.myOrders.push(new Order(Status.Pending, order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate))))
-      })
+      if(this.user.isAdmin){
+        this.httpClient.get(environment.endpointURL + 'order/').subscribe((orders: any) => {
+          orders.forEach((order: any) => this.myOrders.push(new Order(Status.Pending, order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate))))
+        })
+      }
+      else{
+        this.httpClient.get(environment.endpointURL + 'order/createdBy/' + this.user?.userId).subscribe((orders: any) => {
+          orders.forEach((order: any) => this.myOrders.push(new Order(Status.Pending, order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate))))
+        })
+      }
     }
   }
 }

@@ -18,6 +18,8 @@ export class OrderFormComponent implements OnInit {
 
   productId: number = 0;
 
+  // product: Product | undefined;
+
   loggedIn: boolean|undefined;
 
   constructor(

@@ -47,7 +47,7 @@ export class FanShopComponent implements OnInit {
   }
 
   //CREATE PRODUCT (ONLY FOR ADMINS)
-  createPost(): void {
+  createProduct(): void {
     if(this.user != null){ //user might not be instantiated, this is taken care of by the html
       this.httpClient.post(environment.endpointURL + "product", {
         title: this.newProductTitle,

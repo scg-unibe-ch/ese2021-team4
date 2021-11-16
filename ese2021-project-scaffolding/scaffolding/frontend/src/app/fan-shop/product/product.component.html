@@ -1,6 +1,6 @@
 <div *ngIf="preview">
     {{product.title}} <span style="display: inline-block;"></span>
-    <a [routerLink]="['product', product.productId]"> View </a><br><br>
+    <a [routerLink]="['product', product.productId]"> View Product Details</a><br><br>
 </div>
 
 <div *ngIf="!preview"><div *ngIf="!editMode">
@@ -11,7 +11,7 @@
       <mat-card-subtitle>{{product.tag}}</mat-card-subtitle>
       <mat-card-subtitle>{{product.price}}</mat-card-subtitle>
     </mat-card-header>
-    <button [routerLink]="['order']">buy</button>
+    <button [routerLink]="['order']">Buy this product</button>
   </mat-card>
 </div>
 </div>

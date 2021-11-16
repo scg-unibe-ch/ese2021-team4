@@ -18,7 +18,6 @@ import {Category} from "../../models/category.model";
 })
 export class PostComponent implements OnInit {
 
-  fileName = '';
   images : File[] = [];
 
   selectCategory='';
@@ -71,12 +70,12 @@ export class PostComponent implements OnInit {
     ],
     toolbarHiddenButtons: [
       [
-      'undo',
-      'redo',
-      'justifyLeft',
-      'justifyCenter',
-      'justifyRight',
-      'justifyFull',
+        'undo',
+        'redo',
+        'justifyLeft',
+        'justifyCenter',
+        'justifyRight',
+        'justifyFull',
       ],
       [
         'insertVideo',
@@ -278,12 +277,19 @@ export class PostComponent implements OnInit {
       userId: this.user.userId,
       upvotes: 0,
       downvotes: 0,
-      images: this.post.images
     }).subscribe((post: any) => {
       // this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes));
       // this.title = this.newPostDescription = this.newPostTags = '';
-    },
-      error => {console.log(error)});
+    }, error => {console.log(error)});
+
+      let formData = new FormData();
+      for (let i=0; i < this.post.images.length; i++){
+        formData.append("image" + i, this.post.images[i]);
+      }
+      console.log(formData);
+      console.log("Sending form data...");
+      this.httpClient.post(environment.endpointURL + "image", formData)
+      .subscribe((post : any) => {});
 
     }
   }}

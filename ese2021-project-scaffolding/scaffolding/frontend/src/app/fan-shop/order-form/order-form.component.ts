@@ -16,6 +16,15 @@ export class OrderFormComponent implements OnInit {
 
   user: User|undefined;
 
+  // orderUser = new User(0, '', '', false);
+  orderFirstName: string = '';
+  orderLastName: string = '';
+  orderStreet: string = '';
+  orderHouseNr: number = 0;
+  orderZip: number = 0;
+  orderCity: string = '';
+  orderPhoneNr: number = 0;
+
   productId: number = 0;
 
   // product: Product | undefined;
@@ -42,6 +51,16 @@ export class OrderFormComponent implements OnInit {
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
 
+    this.httpClient.get(environment.endpointURL + "user/" + localStorage.getItem('userName')).subscribe((user: any) => {
+      // this.orderUser = new User(user.userId, user.userName, user.password, user.admin);
+      this.orderFirstName = user.firstName;
+      this.orderLastName = user.lastName;
+      this.orderStreet = user.street;
+      this.orderHouseNr = user.houseNr;
+      this.orderZip = user.zipCode;
+      this.orderCity = user.city;
+      this.orderPhoneNr = user.phoneNr;
+    });
   }
 
 
@@ -57,5 +76,10 @@ export class OrderFormComponent implements OnInit {
       adminId: 0
     }).subscribe(() => {});
     this.router.navigate(['/fan-shop'])
+  }
+
+  // TODO: speichert die angegeben Shipping Details, ohne die User Attributes zu verändern
+  updateShippingDetails(): void {
+
   }
 }

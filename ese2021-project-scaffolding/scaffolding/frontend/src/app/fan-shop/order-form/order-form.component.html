@@ -1,3 +1,39 @@
+<mat-card>
+  <h3>Shipping Details</h3>
+  <mat-form-field>
+    <input matInput type="text" placeholder="first name" name="first name" [(ngModel)]="orderFirstName">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" placeholder="last name" name="last name" [(ngModel)]="orderLastName">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <input matInput type="text" placeholder="street" name="street" [(ngModel)]="orderStreet">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" placeholder="house number" name="house number" [(ngModel)]="orderHouseNr">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <input matInput type="text" placeholder="zip code" name="zip code" [(ngModel)]="orderZip">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" placeholder="city" name="city" [(ngModel)]="orderCity">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <input matInput type="text" placeholder="phone number" name="phone number" [(ngModel)]="orderPhoneNr">
+  </mat-form-field>
+  <br>
+
+</mat-card>
+
+
+  <p>
+    <button (click)="updateShippingDetails()"> Update Shipping Details </button>
+  </p>
+
 <p>
   <button (click)="createOrder()" [routerLink]="['fan-shop']"> Confirm Order </button>
 </p>
+

@@ -286,6 +286,7 @@ export class PostComponent implements OnInit {
       for (let i=0; i < this.post.images.length; i++){
         formData.append("image" + i, this.post.images[i]);
       }
+      // console.log(formData.get("image0"));
       console.log(formData);
       console.log("Sending form data...");
       this.httpClient.post(environment.endpointURL + "image", formData)

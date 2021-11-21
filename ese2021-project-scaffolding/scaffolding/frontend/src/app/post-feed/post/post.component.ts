@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Post} from 'src/app/models/post.model';
 import {User} from 'src/app/models/user.model';
 import {UserService} from 'src/app/services/user.service';
@@ -270,6 +270,7 @@ export class PostComponent implements OnInit {
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='hidden';
     if(this.user != null){ //user might not be instantiated, this is taken care of by the html
+      
       this.httpClient.post(environment.endpointURL + "post", {
       title: this.post.title,
       description: this.post.description,
@@ -277,20 +278,19 @@ export class PostComponent implements OnInit {
       userId: this.user.userId,
       upvotes: 0,
       downvotes: 0,
+
     }).subscribe((post: any) => {
-      // this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes));
-      // this.title = this.newPostDescription = this.newPostTags = '';
+      const formData = new FormData();
+      for (let i=0; i < this.post.images.length; i++){
+        formData.append("file", this.post.images[i]);
+      }
+      this.httpClient.post(environment.endpointURL + "post/" + post.postId + "/image", formData).subscribe((post: any) => {
+
+
+      });
     }, error => {console.log(error)});
 
-      let formData = new FormData();
-      for (let i=0; i < this.post.images.length; i++){
-        formData.append("image" + i, this.post.images[i]);
-      }
-      console.log(formData);
-      console.log("Sending form data...");
-      this.httpClient.post(environment.endpointURL + "image", formData)
-      .subscribe((post : any) => {});
-
+      
     }
   }}
 

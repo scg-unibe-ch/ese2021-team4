@@ -1,6 +1,7 @@
 import express, { Router, Request, Response } from 'express';
 // import { Post } from '../models/post.model';
 import { Image } from '../models/image.model';
+import { MulterRequest } from '../models/multerRequest.model';
 
 
 const imageController: Router = express.Router();
@@ -40,14 +41,16 @@ imageController.get('/:id', (req, res) => {
 */
 
 // create
-imageController.post('/', (req: Request, res: Response) => {
-    console.log("Now trying to receive image");
-    console.log(req);
+imageController.post('/', (req: MulterRequest, res: Response) => {
+
+
+    console.log('Now trying to receive image');
+    console.log(req.file);
     // let image = req['image1'];
     // let image = req.body;
     // console.log(image);
     // console.log(image);
-    // Post.create(req.body).then(created => {
+    // Image.create(req.body).then(created => {
     //     res.status(201).send(created);
     // })
     //     .catch(err => res.status(500).send(err));

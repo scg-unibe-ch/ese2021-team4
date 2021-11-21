@@ -63,7 +63,7 @@
     <input type="file" class="file-input" multiple accept="image/*"
        (change)="onFileSelected($event)" #fileUpload>
 
-    <div class="file-upload">
+    <div class="file-upload" action="image" enctype="multipart/form-data" method="post">
       <button mat-mini-fab color="primary" class="upload-btn"
         (click)="fileUpload.click()">
           <mat-icon>attach_file</mat-icon>

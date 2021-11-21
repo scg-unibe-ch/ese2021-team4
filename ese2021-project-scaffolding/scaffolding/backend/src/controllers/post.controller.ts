@@ -1,8 +1,12 @@
 import express, { Router, Request, Response } from 'express';
+import { upload } from '../middlewares/fileFilter';
+import { MulterRequest } from '../models/multerRequest.model';
 import { Post } from '../models/post.model';
+import { ItemService } from '../services/item.service';
 
 
 const postController: Router = express.Router();
+const itemService = new ItemService();
 
 // read
 postController.get('/', (req: Request, res: Response) => {
@@ -43,6 +47,13 @@ postController.post('/', (req: Request, res: Response) => {
     })
         .catch(err => res.status(500).send(err));
 });
+
+// upload image and add to a post
+postController.post('/:id/image', (req: MulterRequest, res: Response) => {
+    console.log(req);
+    itemService.addImage(req).then(created => res.send(created)).catch(err => res.status(500).send(err));
+});
+
 
 // delete
 postController.delete('/:id', (req: Request, res: Response) => {

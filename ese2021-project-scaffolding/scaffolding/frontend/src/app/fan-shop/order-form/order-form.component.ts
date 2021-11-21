@@ -21,10 +21,9 @@ export class OrderFormComponent implements OnInit {
   orderLastName: string = '';
   orderStreet: string = '';
   orderHouseNr: number = 0;
-  orderZip: number = 0;
+  orderZipCode: number = 0;
   orderCity: string = '';
   orderPhoneNr: number = 0;
-
   productId: number = 0;
 
   // product: Product | undefined;
@@ -57,7 +56,7 @@ export class OrderFormComponent implements OnInit {
       this.orderLastName = user.lastName;
       this.orderStreet = user.street;
       this.orderHouseNr = user.houseNr;
-      this.orderZip = user.zipCode;
+      this.orderZipCode = user.zipCode;
       this.orderCity = user.city;
       this.orderPhoneNr = user.phoneNr;
     });

@@ -32,7 +32,7 @@ export class OrderComponent implements OnInit {
   }
 
   @Input()
-  order: Order = new Order(Status.Pending, 0, 0, 0, 0, new Date(), new Date());
+  order: Order = new Order(Status.Pending, 0, 0, 0, 0, new Date(), new Date(), '', '', '', 0, 0, '', '');
 
   @Output()
   update = new EventEmitter<Order>();

@@ -7,6 +7,13 @@ export interface OrderAttributes {
     productId: number;
     adminId: number;
     shippedDate: Date;
+    orderFirstName: string;
+    orderLastName: string;
+    orderStreet: string;
+    orderHouseNr: number;
+    orderZipCode: number;
+    orderCity: string;
+    orderPhoneNr: string;
 }
 
 export interface OrderCreationAttributes extends Optional<Order, 'orderId'> { }
@@ -19,6 +26,13 @@ export class Order extends Model<OrderAttributes, OrderCreationAttributes> imple
     productId!: number;
     adminId!: number;
     shippedDate!: Date;
+    orderFirstName!: string;
+    orderLastName!: string;
+    orderStreet!: string;
+    orderHouseNr!: number;
+    orderZipCode!: number;
+    orderCity!: string;
+    orderPhoneNr!: string;
 
 
     public static initialize(sequelize: Sequelize) { // definition for database
@@ -47,7 +61,35 @@ export class Order extends Model<OrderAttributes, OrderCreationAttributes> imple
                 shippedDate: {
                     type: DataTypes.DATE,
                     allowNull: true
-                }
+                },
+                orderFirstName: {
+                    type: DataTypes.STRING,
+                    allowNull: false
+                },
+                orderLastName: {
+                    type: DataTypes.STRING,
+                    allowNull: false
+                },
+                orderStreet: {
+                    type: DataTypes.STRING,
+                    allowNull: false
+                },
+                orderHouseNr: {
+                    type: DataTypes.INTEGER,
+                    allowNull: false
+                },
+                orderZipCode: {
+                    type: DataTypes.INTEGER,
+                    allowNull: false
+                },
+                orderCity: {
+                    type: DataTypes.STRING,
+                    allowNull: false
+                },
+                orderPhoneNr: {
+                    type: DataTypes.STRING,
+                    allowNull: false
+                },
             },
             {sequelize, tableName: 'orders'}
         );

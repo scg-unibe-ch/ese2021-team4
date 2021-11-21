@@ -120,7 +120,7 @@ export class ProfileComponent implements OnInit {
       setTimeout(()=> this.getMyOrders(), 10);
     } else {
       this.httpClient.get(environment.endpointURL + 'order/createdBy/' + this.user?.userId).subscribe((orders: any) => {
-        orders.forEach((order: any) => this.myOrders.push(new Order(Status.Pending, order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate))))
+        orders.forEach((order: any) => this.myOrders.push(new Order(Status.Pending, order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)))
       })
     }
   }

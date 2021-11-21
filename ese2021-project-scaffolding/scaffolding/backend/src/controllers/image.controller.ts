@@ -47,8 +47,8 @@ imageController.post('/', (req: MulterRequest, res: Response) => {
     console.log('Now trying to receive image');
     console.log(req.file);
     // let image = req['image1'];
-    // let image = req.body;
-    // console.log(image);
+    const image = req.get('image0');
+    console.log(image);
     // console.log(image);
     // Image.create(req.body).then(created => {
     //     res.status(201).send(created);

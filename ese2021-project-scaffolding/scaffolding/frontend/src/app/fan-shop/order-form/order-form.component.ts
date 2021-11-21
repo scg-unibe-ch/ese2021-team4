@@ -6,6 +6,8 @@ import { UserService } from 'src/app/services/user.service';
 import { Product } from 'src/app/models/product.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder} from "@angular/forms";
+import { Order } from 'src/app/models/order.model';
+import { Status } from 'src/app/models/status.model';
 
 @Component({
   selector: 'app-order-form',
@@ -15,15 +17,15 @@ import {FormBuilder} from "@angular/forms";
 export class OrderFormComponent implements OnInit {
 
   user: User|undefined;
+  newOrder: Order|undefined;
 
-  // orderUser = new User(0, '', '', false);
   orderFirstName: string = '';
   orderLastName: string = '';
   orderStreet: string = '';
   orderHouseNr: number = 0;
   orderZipCode: number = 0;
   orderCity: string = '';
-  orderPhoneNr: number = 0;
+  orderPhoneNr: string = '';
   productId: number = 0;
 
   // product: Product | undefined;
@@ -51,7 +53,6 @@ export class OrderFormComponent implements OnInit {
     this.user = userService.getUser();
 
     this.httpClient.get(environment.endpointURL + "user/" + localStorage.getItem('userName')).subscribe((user: any) => {
-      // this.orderUser = new User(user.userId, user.userName, user.password, user.admin);
       this.orderFirstName = user.firstName;
       this.orderLastName = user.lastName;
       this.orderStreet = user.street;
@@ -59,6 +60,7 @@ export class OrderFormComponent implements OnInit {
       this.orderZipCode = user.zipCode;
       this.orderCity = user.city;
       this.orderPhoneNr = user.phoneNr;
+      this.newOrder = new Order(Status.Pending, 0, user.userId, this.productId, 0, new Date(), new Date(), this.orderFirstName, this.orderLastName, this.orderStreet, this.orderHouseNr, this.orderZipCode, this.orderCity, this.orderPhoneNr)
     });
   }
 
@@ -68,11 +70,13 @@ export class OrderFormComponent implements OnInit {
 
 
   createOrder(): void {
+    this.updateShippingDetails();
     this.httpClient.post(environment.endpointURL + "order", {
       status: "Pending",
       productId: this.productId,
       userId: this.user?.userId,
-      adminId: 0
+      adminId: 0,
+
     }).subscribe(() => {});
     this.router.navigate(['/fan-shop'])
   }
@@ -81,4 +85,5 @@ export class OrderFormComponent implements OnInit {
   updateShippingDetails(): void {
 
   }
+
 }

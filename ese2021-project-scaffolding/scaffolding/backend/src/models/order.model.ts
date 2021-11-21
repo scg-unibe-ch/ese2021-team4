@@ -14,6 +14,7 @@ export interface OrderAttributes {
     orderZipCode: number;
     orderCity: string;
     orderPhoneNr: string;
+    billingStatus: string;
 }
 
 export interface OrderCreationAttributes extends Optional<Order, 'orderId'> { }
@@ -33,6 +34,7 @@ export class Order extends Model<OrderAttributes, OrderCreationAttributes> imple
     orderZipCode!: number;
     orderCity!: string;
     orderPhoneNr!: string;
+    billingStatus!: string;
 
 
     public static initialize(sequelize: Sequelize) { // definition for database
@@ -87,6 +89,10 @@ export class Order extends Model<OrderAttributes, OrderCreationAttributes> imple
                     allowNull: false
                 },
                 orderPhoneNr: {
+                    type: DataTypes.STRING,
+                    allowNull: false
+                },
+                billingStatus: {
                     type: DataTypes.STRING,
                     allowNull: false
                 },

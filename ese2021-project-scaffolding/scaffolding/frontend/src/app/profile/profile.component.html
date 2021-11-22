@@ -59,7 +59,8 @@
         </mat-select>
       </mat-form-field>
       <div *ngFor="let order of selectedOrders">
-        <app-order [order]="order"></app-order>
+        <app-order [order]="order"
+                   (update)="updateOrder($event)"></app-order>
       </div>
     </mat-tab>
   </mat-tab-group>

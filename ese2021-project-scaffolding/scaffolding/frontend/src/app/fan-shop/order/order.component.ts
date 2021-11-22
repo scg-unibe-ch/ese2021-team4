@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Order } from 'src/app/models/order.model';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Order} from 'src/app/models/order.model';
 import {UserService} from "src/app/services/user.service";
 import {User} from "src/app//models/user.model";
-import { Status } from 'src/app/models/status.model';
+import {Status} from 'src/app/models/status.model';
 
 @Component({
   selector: 'app-order',
@@ -37,8 +37,13 @@ export class OrderComponent implements OnInit {
   @Output()
   update = new EventEmitter<Order>();
 
-  updateOrder(): void {
-    // Emits event to parent component that Order got updated
+  cancelOrder(): void {
+    this.order.status = Status.Cancelled;
+    this.update.emit(this.order);
+  }
+
+  shipOrder(): void {
+    this.order.status = Status.Shipped;
     this.update.emit(this.order);
   }
 }

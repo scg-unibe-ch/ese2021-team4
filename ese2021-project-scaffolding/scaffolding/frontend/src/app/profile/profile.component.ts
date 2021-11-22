@@ -143,4 +143,10 @@ export class ProfileComponent implements OnInit {
       this.selectedOrders = this.myOrders.filter(order => order.status == StatusFinder.status(status))
     }
   }
+
+  updateOrder(order: Order): void {
+    this.httpClient.put(environment.endpointURL + "order/" + order.orderId, {
+      status: order.status
+    })
+  }
 }

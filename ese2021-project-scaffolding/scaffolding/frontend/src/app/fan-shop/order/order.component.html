@@ -2,6 +2,7 @@
   <mat-card-header>
     <div mat-card-avatar></div>
     <mat-card-subtitle>{{order.status}}</mat-card-subtitle>
-    <>
+    <button mat-flat-button color="warn" (click)="cancelOrder()">CANCEL</button>
+    <button *ngIf="user?.isAdmin" mat-flat-button color="primary" (click)="shipOrder()">SHIP</button>
   </mat-card-header>
 </mat-card>

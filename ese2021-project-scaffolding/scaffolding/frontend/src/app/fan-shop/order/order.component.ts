@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Order } from 'src/app/models/order.model';
-import {HttpClient} from "@angular/common/http";
 import {UserService} from "src/app/services/user.service";
 import {User} from "src/app//models/user.model";
 import { Status } from 'src/app/models/status.model';

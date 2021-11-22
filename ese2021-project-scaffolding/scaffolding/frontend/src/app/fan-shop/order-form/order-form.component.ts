@@ -76,6 +76,14 @@ export class OrderFormComponent implements OnInit {
       productId: this.productId,
       userId: this.user?.userId,
       adminId: 0,
+      orderFirstName: this.orderFirstName,
+      orderLastName: this.orderLastName,
+      orderStreet: this.orderStreet,
+      orderHouseNr: this.orderHouseNr,
+      orderZipCode: this.orderZipCode,
+      orderCity: this.orderCity,
+      orderPhoneNr: this.orderPhoneNr,
+      billingStatus: ''
 
     }).subscribe(() => {});
     this.router.navigate(['/fan-shop'])

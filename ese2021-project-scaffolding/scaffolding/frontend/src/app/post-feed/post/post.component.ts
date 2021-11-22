@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AngularEditorConfig} from '@kolkov/angular-editor';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Comment} from 'src/app/models/comment.model';
-import {Category} from "../../models/category.model";
+import {Category, CategoryFinder} from "../../models/category.model";
 
 
 @Component({
@@ -198,21 +198,7 @@ export class PostComponent implements OnInit {
   }
 
   findCategory(): Category{
-    switch (this.selectCategory){
-      case "restaurant": return Category.Restaurant;
-        break;
-      case "coffeeshop": return Category.Coffeeshop;
-        break;
-      case "shopping": return Category.Shopping
-        break;
-      case "sightseeing": return Category.Sightseeing;
-        break;
-      case "museum": return Category.Museum;
-        break;
-      case "university": return Category.University;
-        break;
-    }
-    return Category.Bern;
+    return CategoryFinder.findCategory(this.selectCategory)
   }
 
   createPost(): void {

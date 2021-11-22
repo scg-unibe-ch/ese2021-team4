@@ -4,7 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {UserService} from "../services/user.service";
 import {environment} from "../../environments/environment";
 import {Order} from "../models/order.model";
-import {Status} from "../models/status.model";
+import {Status, StatusFinder} from "../models/status.model";
 
 @Component({
   selector: 'app-profile',
@@ -116,12 +116,12 @@ export class ProfileComponent implements OnInit {
 
   //TODO: implement conversion from string to Status, then replace Status.Pending below
   getOrders(): void {
-    if(this.user === undefined) {
+    if(this.loggedIn && this.user === undefined) {
       setTimeout(()=> this.getOrders(), 10);
     } else {
-      if(this.user.isAdmin){
+      if(this.user?.isAdmin){
         this.httpClient.get(environment.endpointURL + 'order/').subscribe((orders: any) => {
-          orders.forEach((order: any) => this.myOrders.push(new Order(Status.Pending, order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)))
+          orders.forEach((order: any) => this.myOrders.push(new Order(StatusFinder.status(order.status), order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)))
         })
       }
       else{

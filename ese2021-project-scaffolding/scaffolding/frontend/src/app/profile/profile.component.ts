@@ -33,6 +33,8 @@ export class ProfileComponent implements OnInit {
   usernameMessage: string = '';
 
   myOrders: Order[] = [];
+  selectedOrders: Order[] = [];
+  selectedStatus = 'all';
 
   constructor(
     public httpClient: HttpClient,
@@ -114,21 +116,31 @@ export class ProfileComponent implements OnInit {
     return !!this.userEmail.match('@')
   }
 
-  //TODO: implement conversion from string to Status, then replace Status.Pending below
+
   getOrders(): void {
     if(this.loggedIn && this.user === undefined) {
       setTimeout(()=> this.getOrders(), 10);
     } else {
       if(this.user?.isAdmin){
         this.httpClient.get(environment.endpointURL + 'order/').subscribe((orders: any) => {
-          orders.forEach((order: any) => this.myOrders.push(new Order(StatusFinder.status(order.status), order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)))
+          orders.forEach((order: any) => this.myOrders.push(new Order(StatusFinder.status(order.status), order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)));
+          this.selectedOrders = this.myOrders;
         })
       }
       else{
         this.httpClient.get(environment.endpointURL + 'order/createdBy/' + this.user?.userId).subscribe((orders: any) => {
-          orders.forEach((order: any) => this.myOrders.push(new Order(Status.Pending, order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)))
+          orders.forEach((order: any) => this.myOrders.push(new Order(StatusFinder.status(order.status), order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)));
+          this.selectedOrders = this.myOrders;
         })
       }
+    }
+  }
+
+  filterBy(status: string): void {
+    if(status == 'all'){
+      this.selectedOrders = this.myOrders;
+    } else {
+      this.selectedOrders = this.myOrders.filter(order => order.status == StatusFinder.status(status))
     }
   }
 }

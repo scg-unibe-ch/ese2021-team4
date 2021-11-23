@@ -208,5 +208,16 @@ export class ProductComponent implements OnInit {
       this.httpClient.delete(environment.endpointURL + "product/" + product.productId).subscribe(() => {});
     }
   }
+
+  checkLoggedIn() {
+    if (this.loggedIn){
+      this.router.navigate(['fan-shop/product/:id/order']);
+    }
+    else
+    {
+      this.router.navigate(['login']);
+
+    }
+  }
 }
 

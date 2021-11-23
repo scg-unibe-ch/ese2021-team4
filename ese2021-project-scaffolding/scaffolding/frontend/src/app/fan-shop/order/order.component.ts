@@ -3,6 +3,10 @@ import {Order} from 'src/app/models/order.model';
 import {UserService} from "src/app/services/user.service";
 import {User} from "src/app//models/user.model";
 import {Status} from 'src/app/models/status.model';
+import {HttpClient} from "@angular/common/http";
+import {Product} from "../../models/product.model";
+import {environment} from "../../../environments/environment";
+import {Category} from "../../models/category.model";
 
 @Component({
   selector: 'app-order',
@@ -16,6 +20,7 @@ export class OrderComponent implements OnInit {
   loggedIn: boolean|undefined;
 
   constructor(
+    public httpClient: HttpClient,
     public userService: UserService
   ) {
     // Listen for changes
@@ -25,10 +30,10 @@ export class OrderComponent implements OnInit {
     // Current value
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
+
   }
 
   ngOnInit(): void {
-
   }
 
   @Input()

@@ -70,7 +70,6 @@ export class OrderFormComponent implements OnInit {
 
 
   createOrder(): void {
-    this.updateShippingDetails();
     this.httpClient.post(environment.endpointURL + "order", {
       status: "Pending",
       productId: this.productId,
@@ -88,10 +87,4 @@ export class OrderFormComponent implements OnInit {
     }).subscribe(() => {});
     this.router.navigate(['/fan-shop'])
   }
-
-  // TODO: speichert die angegeben Shipping Details, ohne die User Attributes zu verändern
-  updateShippingDetails(): void {
-
-  }
-
 }

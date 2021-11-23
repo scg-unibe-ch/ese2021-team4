@@ -3,6 +3,7 @@ import {User} from "../models/user.model";
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "../services/user.service";
 import {environment} from "../../environments/environment";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -38,6 +39,7 @@ export class RegisterComponent {
 
 
   constructor(
+    private router: Router,
     public httpClient: HttpClient,
     public userService: UserService
   ) {
@@ -51,38 +53,37 @@ export class RegisterComponent {
   }
 
   registerUser(): void {
-    this.httpClient.post(environment.endpointURL + "user/register", {
-      userName: this.userToRegister.username,
-      password: this.userToRegister.password,
-      userEmail: this.userEmail.toLowerCase(),
-      firstName: this.firstName,
-      lastName: this.lastName,
-      street: this.street,
-      houseNr: this.houseNr,
-      city: this.city,
-      zipCode: this.zipCode,
-      birthday: this.birthday,
-      phoneNr: this.phoneNr
-    }).subscribe(() => {
-      this.userToRegister.username = this.userToRegister.password = this.userEmail = this.firstName = this.lastName
-        = this.street = this.houseNr = this.city =this.zipCode = this.phoneNr = this.emailMessage = this.usernameMessage = '';
-      this.birthday = new Date();
-      this.checkPassword();
-      this.registrationMessage = 'Registration successful. Please log in'
-    }, err => {
-      if(err.error.name == 'SequelizeUniqueConstraintError'){
-        if(err.error.fields[0] == 'userName') {
-          this.usernameMessage = 'Username already taken: ' + this.userToRegister.username;
-          this.userToRegister.username = '';
+    if(this.userToRegister.username == ''){
+      this.usernameMessage = 'Please enter a username.'
+    } else {
+      this.httpClient.post(environment.endpointURL + "user/register", {
+        userName: this.userToRegister.username,
+        password: this.userToRegister.password,
+        userEmail: this.userEmail.toLowerCase(),
+        firstName: this.firstName,
+        lastName: this.lastName,
+        street: this.street,
+        houseNr: this.houseNr,
+        city: this.city,
+        zipCode: this.zipCode,
+        birthday: this.birthday,
+        phoneNr: this.phoneNr
+      }).subscribe(() => {
+        //TODO: user feedback
+        this.router.navigate(['/login'])
+      }, err => {
+        if (err.error.name == 'SequelizeUniqueConstraintError') {
+          if (err.error.fields[0] == 'userName') {
+            this.usernameMessage = 'Username already taken: ' + this.userToRegister.username;
+            this.userToRegister.username = '';
+          }
+          if (err.error.fields[0] == 'userEmail') {
+            this.emailMessage = 'E-mail already in use: ' + this.userEmail;
+            this.userEmail = ''
+          }
         }
-        if(err.error.fields[0] == 'userEmail') {
-          this.emailMessage = 'E-mail already in use: ' + this.userEmail;
-          this.userEmail = ''
-        }
-      }
-      console.log(err)
-    });
-
+      });
+    }
   }
 
   isValidEmail(): boolean {
@@ -105,7 +106,7 @@ export class RegisterComponent {
 
   updateUsernameMessage(): void {
     if(!this.isValidUsername()){
-     this.usernameMessage='You username must not contain an @-Symbol.'
+     this.usernameMessage='Your username must not contain an @-Symbol.'
     }
     else{
       this.usernameMessage=''

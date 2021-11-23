@@ -16,8 +16,8 @@ import { Status } from 'src/app/models/status.model';
 })
 export class OrderFormComponent implements OnInit {
 
-  user: User|undefined;
-  newOrder: Order|undefined;
+  user: User | undefined;
+  newOrder: Order | undefined;
 
   orderFirstName: string = '';
   orderLastName: string = '';
@@ -30,7 +30,7 @@ export class OrderFormComponent implements OnInit {
 
   // product: Product | undefined;
 
-  loggedIn: boolean|undefined;
+  loggedIn: boolean | undefined;
 
   constructor(
     private router: Router,
@@ -39,7 +39,7 @@ export class OrderFormComponent implements OnInit {
     private activatedRoute: ActivatedRoute) {
 
     this.activatedRoute.params.subscribe(params => {
-      if(!isNaN(+params.id)) {
+      if (!isNaN(+params.id)) {
         this.productId = +params.id;
       }
       console.log(this.productId)
@@ -70,28 +70,42 @@ export class OrderFormComponent implements OnInit {
 
 
   createOrder(): void {
-    this.updateShippingDetails();
-    this.httpClient.post(environment.endpointURL + "order", {
-      status: "Pending",
-      productId: this.productId,
-      userId: this.user?.userId,
-      adminId: 0,
-      orderFirstName: this.orderFirstName,
-      orderLastName: this.orderLastName,
-      orderStreet: this.orderStreet,
-      orderHouseNr: this.orderHouseNr,
-      orderZipCode: this.orderZipCode,
-      orderCity: this.orderCity,
-      orderPhoneNr: this.orderPhoneNr,
-      billingStatus: ''
+    if(!this.formIsFilled()){
+      document.getElementById('emptyFields')!.style.visibility='visible';
+    }
+    else {
+      this.updateShippingDetails();
+      this.httpClient.post(environment.endpointURL + "order", {
+        status: "Pending",
+        productId: this.productId,
+        userId: this.user?.userId,
+        adminId: 0,
+        orderFirstName: this.orderFirstName,
+        orderLastName: this.orderLastName,
+        orderStreet: this.orderStreet,
+        orderHouseNr: this.orderHouseNr,
+        orderZipCode: this.orderZipCode,
+        orderCity: this.orderCity,
+        orderPhoneNr: this.orderPhoneNr,
+        billingStatus: ''
 
-    }).subscribe(() => {});
-    this.router.navigate(['/fan-shop'])
+      }).subscribe(() => {
+      });
+      this.router.navigate(['/fan-shop'])
+    }
   }
 
   // TODO: speichert die angegeben Shipping Details, ohne die User Attributes zu verändern
   updateShippingDetails(): void {
 
   }
+
+  formIsFilled(): boolean {
+    if (this.orderFirstName==='' || this.orderLastName === '' || this.orderStreet === '' ||
+      this.orderHouseNr == 0 || this.orderZipCode == 0 ||this.orderCity === '' ||this.orderPhoneNr === ''){
+    return false;
+  }
+    return true;
+}
 
 }

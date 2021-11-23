@@ -12,8 +12,8 @@
     </mat-card-content>
 
     <mat-card-actions>
-      <button mat-flat-button color="primary" (click)="votePost(1)" [disabled]="hasDownvoted">UPVOTES: {{post.upvotes}}</button>
-      <button mat-flat-button color="primary" (click)="votePost(-1)" [disabled]="hasUpvoted">DOWNVOTES: {{post.downvotes}}</button>
+      <button mat-flat-button color="primary" (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn">UPVOTES: {{post.upvotes}}</button>
+      <button mat-flat-button color="primary" (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn">DOWNVOTES: {{post.downvotes}}</button>
       <span *ngIf="user?.userId === post.userId || user?.isAdmin">
         <button  mat-flat-button color="primary" (click)="editMode = true">EDIT</button>
         <a routerLink="/home"> <button mat-flat-button color="warn" (click)="deletePost(post)">delete post</button></a>
@@ -79,7 +79,7 @@
     {{post.title}} <span style="display: inline-block;">&nbsp;</span>
 
     <a [routerLink]="['post', post.postId]"> View </a><br><br>
-    <button (click)="votePost(1)" [disabled]="hasDownvoted"><mat-icon>thumb_up</mat-icon></button>{{post.upvotes}}<span style="margin-left: 20px"></span>
-    <button (click)="votePost(-1)" [disabled]="hasUpvoted"><mat-icon>thumb_down</mat-icon></button> {{post.downvotes}}
+    <button (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn"><mat-icon>thumb_up</mat-icon></button>{{post.upvotes}}<span style="margin-left: 20px"></span>
+    <button (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn"><mat-icon>thumb_down</mat-icon></button> {{post.downvotes}}
     <!-- </mat-card> -->
   </div></div>

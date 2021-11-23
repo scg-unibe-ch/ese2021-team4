@@ -42,7 +42,7 @@ export class ProfileComponent implements OnInit {
   ) {
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
-    userService.user$.subscribe(res => this.user = res);
+    userService.user$.subscribe(res => {this.user = res; this.getOrders()});
 
     // Current value
     this.loggedIn = userService.getLoggedIn();
@@ -63,7 +63,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getOrders()
+    
   }
 
   updateUser(user: User): void {
@@ -118,21 +118,17 @@ export class ProfileComponent implements OnInit {
 
 
   getOrders(): void {
-    if(this.loggedIn && this.user === undefined) {
-      setTimeout(()=> this.getOrders(), 10);
-    } else {
-      if(this.user?.isAdmin){
-        this.httpClient.get(environment.endpointURL + 'order/').subscribe((orders: any) => {
-          orders.forEach((order: any) => this.myOrders.push(new Order(StatusFinder.status(order.status), order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)));
-          this.selectedOrders = this.myOrders;
-        })
-      }
-      else{
-        this.httpClient.get(environment.endpointURL + 'order/createdBy/' + this.user?.userId).subscribe((orders: any) => {
-          orders.forEach((order: any) => this.myOrders.push(new Order(StatusFinder.status(order.status), order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)));
-          this.selectedOrders = this.myOrders;
-        })
-      }
+    if(this.user?.isAdmin){
+      this.httpClient.get(environment.endpointURL + 'order/').subscribe((orders: any) => {
+        orders.forEach((order: any) => this.myOrders.push(new Order(StatusFinder.status(order.status), order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)));
+        this.selectedOrders = this.myOrders;
+      })
+    }
+    else{
+      this.httpClient.get(environment.endpointURL + 'order/createdBy/' + this.user?.userId).subscribe((orders: any) => {
+        orders.forEach((order: any) => this.myOrders.push(new Order(StatusFinder.status(order.status), order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)));
+        this.selectedOrders = this.myOrders;
+      })
     }
   }
 

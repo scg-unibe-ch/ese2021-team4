@@ -69,25 +69,21 @@ export class PostFeedComponent implements OnInit {
   }
 
   readPosts(): void {
-    if(this.user === undefined) {
-      setTimeout(()=> this.readPosts(), 10);
-    } else {
-      switch (this.feedType) {
-        case 'created':
-          this.readCreatedPosts();
-          break;
-        case 'upvoted':
-          this.readVotedPosts(1);
-          break;
-        case 'downvoted':
-          this.readVotedPosts(-1);
-          break;
-        case 'commented' :
-          this.readCommentedPosts();
-          break;
-        default:
-          this.readAllPosts()
-      }
+    switch (this.feedType) {
+      case 'created':
+        this.readCreatedPosts();
+        break;
+      case 'upvoted':
+        this.readVotedPosts(1);
+        break;
+      case 'downvoted':
+        this.readVotedPosts(-1);
+        break;
+      case 'commented' :
+        this.readCommentedPosts();
+        break;
+      default:
+        this.readAllPosts();
     }
   }
 

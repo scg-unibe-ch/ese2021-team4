@@ -116,7 +116,7 @@ export class PostComponent implements OnInit {
     });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
-    userService.user$.subscribe(res => this.user = res);
+    userService.user$.subscribe(res => {this.user = res; this.checkVoteStatus();});
 
     // Current value
     this.loggedIn = userService.getLoggedIn();
@@ -153,14 +153,10 @@ export class PostComponent implements OnInit {
 
       this.createdAtString = this.post.createdAt.toDateString();
     }
-
-    this.checkVoteStatus();
   }
 
   checkVoteStatus() {
-   if(this.loggedIn === undefined || (this.loggedIn == true && this.user===undefined)){
-     setTimeout(()=>{this.checkVoteStatus()},10);
-   } else if (this.loggedIn == true){
+  if (this.loggedIn == true){
       this.httpClient.get(environment.endpointURL + "userpostvote/" + this.user?.userId + "/" + this.postId).subscribe((userPostVote: any) => {
         if(userPostVote !== null) {
           if (userPostVote.vote == 1) {

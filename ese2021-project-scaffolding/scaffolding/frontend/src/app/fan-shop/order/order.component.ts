@@ -4,9 +4,6 @@ import {UserService} from "src/app/services/user.service";
 import {User} from "src/app//models/user.model";
 import {Status} from 'src/app/models/status.model';
 import {HttpClient} from "@angular/common/http";
-import {Product} from "../../models/product.model";
-import {environment} from "../../../environments/environment";
-import {Category} from "../../models/category.model";
 
 @Component({
   selector: 'app-order',
@@ -48,7 +45,10 @@ export class OrderComponent implements OnInit {
   }
 
   shipOrder(): void {
-    this.order.status = Status.Shipped;
-    this.update.emit(this.order);
+    if(this.user?.isAdmin) {
+      this.order.status = Status.Shipped;
+      this.order.adminId = this.user!.userId;
+      this.update.emit(this.order);
+    }
   }
 }

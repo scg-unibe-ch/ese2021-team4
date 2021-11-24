@@ -8,7 +8,8 @@
 
 <div *ngIf="preview"><!-- <mat-card> -->
   <div> <mat-chip-list><mat-chip>{{product.tags}}</mat-chip></mat-chip-list><br><br><br><br><br><br><br>
-    {{product.title}} <span style="display: inline-block;">&nbsp;</span>
+    {{product.title}} <br>
+    <mat-card-subtitle>Price: {{product.price}} CHF </mat-card-subtitle> <br><br>
     <a [routerLink]="['product', product.productId]"> View Product Details</a><br><br>
   </div></div>
 
@@ -62,11 +63,13 @@
           <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="fill">
+
         <mat-label>Price</mat-label>
         <input matInput #message maxlength="256" [(ngModel)]="product.price" [ngModelOptions]="{standalone: true}">
         <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="fill">
+
         <mat-label>Category:</mat-label>
         <mat-select [(ngModel)]="selectCategory"(ngModelChange)="findCategory()"[ngModelOptions]="{standalone: true}" >
           <mat-option value="restaurant">Restaurant</mat-option>

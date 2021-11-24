@@ -13,7 +13,7 @@
       <mat-card-subtitle>{{product.tag}}</mat-card-subtitle>
       <mat-card-subtitle>{{product.price}}</mat-card-subtitle>
     </mat-card-header>
-    <button [routerLink]="['order']">Buy this product</button>
+    <button (click) = "checkLoggedIn()">Buy now</button >
   </mat-card>
 </div>
 </div>

@@ -119,7 +119,7 @@ export class ProductComponent implements OnInit {
         this.existsInBackend = true;
         this.editMode = false;
         this.httpClient.get(environment.endpointURL + "product/" + this.productId).subscribe((product: any) => {
-          this.product = new Product(product.productId, product.title, product.description, product.price, product.tag, product.imageId);
+          this.product = new Product(product.productId, product.title, product.description, product.price, product.tags, product.imageId);
         });
       }
   }
@@ -170,6 +170,7 @@ export class ProductComponent implements OnInit {
     else {
       this.router.navigate(['/fan-shop']);
       document.getElementById('setTitle')!.style.visibility='hidden';
+      document.getElementById('setPrice')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='hidden';
       if(this.user != null){ //user might not be instantiated, this is taken care of by the html
         this.httpClient.post(environment.endpointURL + "product", {

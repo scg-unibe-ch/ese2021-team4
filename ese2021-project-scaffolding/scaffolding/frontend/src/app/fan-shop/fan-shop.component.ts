@@ -54,7 +54,7 @@ export class FanShopComponent implements OnInit {
         description: this.newProductDescription,
         tags: this.newProductTags,
       }).subscribe((product: any) => {
-          this.productList.push(new Product(product.productId, product.title, product.description, product.price, product.tag, product.imageId));
+          this.productList.push(new Product(product.productId, product.title, product.description, product.price, product.tags, product.imageId));
           this.newProductTitle = this.newProductDescription = this.newProductTags = '';
         },
         error => {console.log(error)})
@@ -67,7 +67,7 @@ export class FanShopComponent implements OnInit {
     this.httpClient.get(environment.endpointURL + "product").subscribe((products: any) => {
 
       products.forEach((product: any) => {
-        this.productList.push(new Product(product.productId, product.title, product.description, product.price, product.tag, product.imageId));
+        this.productList.push(new Product(product.productId, product.title, product.description, product.price, product.tags, product.imageId));
       });
       this.selectedProducts = this.productList;
 
@@ -95,7 +95,7 @@ export class FanShopComponent implements OnInit {
       this.selectedProducts = this.productList;
     }
     else{
-      this.selectedProducts = this.productList.filter(product => product.tag == tags)
+      this.selectedProducts = this.productList.filter(product => product.tags == tags)
     }
   }
 
@@ -104,7 +104,7 @@ export class FanShopComponent implements OnInit {
   }
 
   sortByTags():void{
-    this.selectedProducts.sort((a, b) => a.tag.localeCompare(b.tag))
+    this.selectedProducts.sort((a, b) => a.tags.localeCompare(b.tags))
   }
   sortByTitle(): void {
     this.selectedProducts.sort((a, b) => a.title.localeCompare(b.title))

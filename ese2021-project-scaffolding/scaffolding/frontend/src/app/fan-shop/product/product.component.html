@@ -7,7 +7,7 @@
 
 
 <div *ngIf="preview"><!-- <mat-card> -->
-  <div> <mat-chip-list><mat-chip>{{product.tag}}</mat-chip></mat-chip-list><br><br><br><br><br><br><br>
+  <div> <mat-chip-list><mat-chip>{{product.tags}}</mat-chip></mat-chip-list><br><br><br><br><br><br><br>
     {{product.title}} <span style="display: inline-block;">&nbsp;</span>
     <a [routerLink]="['product', product.productId]"> View Product Details</a><br><br>
   </div></div>
@@ -18,7 +18,7 @@
     <mat-card-header>
       <div mat-card-avatar></div>
       <mat-card-title>{{product.title}}</mat-card-title>
-      <mat-card-subtitle>{{product.tag}}</mat-card-subtitle>
+      <mat-card-subtitle>{{product.tags}}</mat-card-subtitle>
       <mat-card-subtitle>{{product.price}}</mat-card-subtitle>
     </mat-card-header>
     <button (click) = "checkLoggedIn()">Buy now</button >
@@ -33,7 +33,7 @@
     <mat-card-header>
       <div mat-card-avatar></div>
       <mat-card-title>{{product.title}}</mat-card-title>
-      <mat-card-subtitle>{{product.tag}}</mat-card-subtitle>
+      <mat-card-subtitle>{{product.tags}}</mat-card-subtitle>
       <mat-card-subtitle>Price: {{product.price}} CHF </mat-card-subtitle>
     </mat-card-header>
    <mat-card-content>

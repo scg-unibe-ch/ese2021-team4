@@ -13,13 +13,6 @@
   </div></div>
 
 
-
-
-
-
-
-
-
 <!--<div *ngIf="!preview"><div *ngIf="!editMode">
   <mat-card>
     <mat-card-header>
@@ -50,23 +43,30 @@
       <button mat-flat-button color="primary" (click) = "checkLoggedIn()">Buy now</button >
       <span *ngIf="user?.isAdmin">
         <button  mat-flat-button color="primary" (click)="editMode = true">Edit Product</button>
-        <a routerLink="/home"> <button mat-flat-button color="warn" (click)="deleteProduct(product)">Delete Product</button></a>
+        <a routerLink="/fan-shop"> <button mat-flat-button color="warn" (click)="deleteProduct(product)">Delete Product</button></a>
       </span>
     </mat-card-actions>
   </mat-card>
 </div>
 
+
+
   <div *ngIf="editMode">
 
     <div class="container">
 
-      <!-- TITLE -->
       <form class="title-form">
         <mat-form-field appearance="fill">
           <mat-label>Title</mat-label>
           <input matInput #message maxlength="256" [(ngModel)]="product.title" [ngModelOptions]="{standalone: true}">
           <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
-        </mat-form-field><mat-form-field appearance="fill">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+        <mat-label>Price</mat-label>
+        <input matInput #message maxlength="256" [(ngModel)]="product.price" [ngModelOptions]="{standalone: true}">
+        <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
         <mat-label>Category:</mat-label>
         <mat-select [(ngModel)]="selectCategory"(ngModelChange)="findCategory()"[ngModelOptions]="{standalone: true}" >
           <mat-option value="restaurant">Restaurant</mat-option>
@@ -79,6 +79,7 @@
 
       </mat-form-field><span id="setTitle" style="visibility: hidden">Please set a title. </span>
         <span id="setCategory" style="visibility: hidden"> Please set a category.</span>
+        <span id="setPrice" style="visibility: hidden"> Please set a price.</span>
       </form>
 
       <!-- DESCRIPTION -->

@@ -143,7 +143,7 @@ export class ProductComponent implements OnInit {
     else{
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='hidden';
-      this.router.navigate(['/home']);
+      this.router.navigate(['/fan-shop']);
       this.updateProduct(this.product);
     }
   }
@@ -156,12 +156,19 @@ export class ProductComponent implements OnInit {
     if (this.product.title==''){
       document.getElementById('setTitle')!.style.visibility='visible';
     }
+    else if(this.product.price==0){
+      document.getElementById('setTitle')!.style.visibility='hidden';
+      document.getElementById('setCategory')!.style.visibility='hidden';
+      document.getElementById('setPrice')!.style.visibility='visible';
+    }
     else if (this.findCategory()==Category.Bern){
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='visible';
+      document.getElementById('setPrice')!.style.visibility='hidden';
     }
+
     else {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/fan-shop']);
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='hidden';
       if(this.user != null){ //user might not be instantiated, this is taken care of by the html

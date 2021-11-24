@@ -33,6 +33,15 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(this.order.status == Status.Shipped)
+    {
+      this.isShipped = true;
+    }
+
+    if(this.order.status == Status.Cancelled)
+    {
+      this.isCancelled = true;
+    }
   }
 
   @Input()
@@ -40,12 +49,14 @@ export class OrderComponent implements OnInit {
 
   @Input()
   isShipped: boolean = false;
+  isCancelled: boolean = false;
 
   @Output()
   update = new EventEmitter<Order>();
 
 
   cancelOrder(): void {
+    this.isCancelled = true;
     this.httpClient.put(environment.endpointURL + "order/" + this.order.orderId, {
       status: Status.Cancelled,
       orderId: this.order.orderId,
@@ -89,6 +100,5 @@ export class OrderComponent implements OnInit {
 
       this.update.emit(this.order);
     }
-
   }
 }

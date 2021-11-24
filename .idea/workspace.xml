@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="665e9aa3-6cd1-4315-843c-4790b6472fcb" name="Default Changelist" comment="fixed tags for products">
+    <list default="true" id="665e9aa3-6cd1-4315-843c-4790b6472fcb" name="Default Changelist" comment="fixed order shipped/cancelled status after refreshing page">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/backend/db.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/backend/db.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/order/order.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/order/order.component.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/order/order.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/order/order.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/order/order.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/order/order.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/product/product.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/product/product.component.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +64,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637764804971</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="fixed order shipped/cancelled status after refreshing page">
+      <created>1637768749745</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1637768749745</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -89,6 +94,7 @@
     <MESSAGE value="worked an: admin can CRUD posts" />
     <MESSAGE value="worked on: admin can CRUD posts" />
     <MESSAGE value="fixed tags for products" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed tags for products" />
+    <MESSAGE value="fixed order shipped/cancelled status after refreshing page" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed order shipped/cancelled status after refreshing page" />
   </component>
 </project>

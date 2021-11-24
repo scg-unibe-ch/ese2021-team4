@@ -63,7 +63,9 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+    if(this.user != undefined) {
+      this.getOrders();
+    }
   }
 
   updateUser(user: User): void {

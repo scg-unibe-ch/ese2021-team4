@@ -38,7 +38,7 @@ export class PostFeedComponent implements OnInit {
   ) {
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
-    userService.user$.subscribe(res => this.user = res);
+    userService.user$.subscribe(res => {this.user = res; this.readPosts()});
 
     // Current value
     this.loggedIn = userService.getLoggedIn();
@@ -46,7 +46,9 @@ export class PostFeedComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.readPosts();
+    if(this.user != undefined) {
+      this.readPosts();
+    }
   }
 
   //CREATE POST

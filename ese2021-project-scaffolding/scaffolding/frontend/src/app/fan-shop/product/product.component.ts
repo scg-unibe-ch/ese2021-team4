@@ -7,7 +7,7 @@ import {Component, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AngularEditorConfig} from '@kolkov/angular-editor';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Category} from "../../models/category.model";
+import {Category, CategoryFinder} from "../../models/category.model";
 
 
 @Component({
@@ -76,7 +76,6 @@ export class ProductComponent implements OnInit {
     ]
       };
 
-  @Input()
   product: Product = new Product(0, '', '', 0, Category.Bern, 0);
 
   @Input()
@@ -109,20 +108,20 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      signature: [ '', Validators.required]
+      signature: ['', Validators.required]
     });
 
-    // if this.productId === -1, this means we are in editor mode and are looking to create a new product
-    if (this.productId === -1){
-      this.editMode = true;
-      this.existsInBackend = false;
-    } else {
-      this.existsInBackend = true;
-      this.editMode = false;
-      this.httpClient.get(environment.endpointURL + "product/" + this.productId).subscribe((products: any) => {
-        this.product=new Product(this.product.productId, this.product.title, this.product.description, this.product.price, this.product.tag, this.product.imageId);
-      });
-    }
+      // if this.productId === -1, this means we are in editor mode and are looking to create a new product
+      if (this.productId === -1) {
+        this.editMode = true;
+        this.existsInBackend = false;
+      } else {
+        this.existsInBackend = true;
+        this.editMode = false;
+        this.httpClient.get(environment.endpointURL + "product/" + this.productId).subscribe((product: any) => {
+          this.product = new Product(product.productId, product.title, product.description, product.price, product.tag, product.imageId);
+        });
+      }
   }
 
   onChange(event : any) {
@@ -150,21 +149,7 @@ export class ProductComponent implements OnInit {
   }
 
   findCategory(): Category{
-    switch (this.selectCategory){
-      case "restaurant": return Category.Restaurant;
-        break;
-      case "coffeeshop": return Category.Coffeeshop;
-        break;
-      case "shopping": return Category.Shopping
-        break;
-      case "sightseeing": return Category.Sightseeing;
-        break;
-      case "museum": return Category.Museum;
-        break;
-      case "university": return Category.University;
-        break;
-    }
-    return Category.Bern;
+    return CategoryFinder.findCategory(this.selectCategory);
   }
 
   createProduct(): void {

@@ -1,8 +1,22 @@
 <mat-card>
   <mat-card-header>
-    <div mat-card-avatar></div>
     <mat-card-subtitle>{{order.status}}</mat-card-subtitle>
-    <button mat-flat-button color="warn" (click)="cancelOrder()">CANCEL</button>
-    <button *ngIf="user?.isAdmin" mat-flat-button color="primary" (click)="shipOrder()">SHIP</button>
   </mat-card-header>
+  <mat-card-content>
+      <mat-card><app-product [productId]="order.productId"
+                             [preview]="true"></app-product></mat-card>
+      <mat-card>{{order.orderFirstName}} {{order.orderLastName}} <br>
+                {{order.orderStreet}} {{order.orderHouseNr}} <br>
+                {{order.orderZipCode}} {{order.orderZipCode}} <br>
+                {{order.orderPhoneNr}}
+      </mat-card>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-flat-button color="warn" (click)="cancelOrder()">CANCEL</button>
+      <button *ngIf="user?.isAdmin" mat-flat-button color="primary" (click)="shipOrder()">SHIP</button>
+    </mat-card-actions>
+    <mat-card-footer *ngIf="user?.isAdmin">
+      Ordered by: {{order.userId}} | Shipped by: {{order.adminId}} <br><br>
+    </mat-card-footer>
+
 </mat-card>

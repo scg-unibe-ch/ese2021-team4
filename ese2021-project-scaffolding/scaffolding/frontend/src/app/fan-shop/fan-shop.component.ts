@@ -5,7 +5,7 @@ import { Product } from '../models/product.model';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
 import {MatGridListModule} from '@angular/material/grid-list';
-import {Category} from "../models/category.model";
+import {Category, CategoryFinder} from "../models/category.model";
 
 
 @Component({
@@ -100,21 +100,7 @@ export class FanShopComponent implements OnInit {
   }
 
   findCategory(): Category{
-    switch (this.selectedCategory){
-      case "restaurant": return Category.Restaurant;
-        break;
-      case "coffeeshop": return Category.Coffeeshop;
-        break;
-      case "shopping": return Category.Shopping;
-        break;
-      case "sightseeing": return Category.Sightseeing;
-        break;
-      case "museum": return Category.Museum;
-        break;
-      case "university": return Category.University;
-        break;
-    }
-    return Category.Bern;
+    return CategoryFinder.findCategory(this.selectedCategory)
   }
 
   sortByTags():void{

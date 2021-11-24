@@ -3,6 +3,7 @@ import {Order} from 'src/app/models/order.model';
 import {UserService} from "src/app/services/user.service";
 import {User} from "src/app//models/user.model";
 import {Status} from 'src/app/models/status.model';
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-order',
@@ -16,6 +17,7 @@ export class OrderComponent implements OnInit {
   loggedIn: boolean|undefined;
 
   constructor(
+    public httpClient: HttpClient,
     public userService: UserService
   ) {
     // Listen for changes
@@ -25,10 +27,10 @@ export class OrderComponent implements OnInit {
     // Current value
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
+
   }
 
   ngOnInit(): void {
-
   }
 
   @Input()
@@ -43,7 +45,10 @@ export class OrderComponent implements OnInit {
   }
 
   shipOrder(): void {
-    this.order.status = Status.Shipped;
-    this.update.emit(this.order);
+    if(this.user?.isAdmin) {
+      this.order.status = Status.Shipped;
+      this.order.adminId = this.user!.userId;
+      this.update.emit(this.order);
+    }
   }
 }

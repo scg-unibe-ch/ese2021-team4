@@ -1,6 +1,8 @@
 <div *ngIf="preview">
+  <div>
     {{product.title}} <span style="display: inline-block;"></span>
     <a [routerLink]="['product', product.productId]"> View Product Details</a><br><br>
+  </div>
 </div>
 
 <div *ngIf="!preview"><div *ngIf="!editMode">

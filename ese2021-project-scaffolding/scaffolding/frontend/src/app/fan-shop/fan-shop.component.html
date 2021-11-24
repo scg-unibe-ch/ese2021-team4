@@ -23,8 +23,7 @@
 
 <mat-grid-list cols="2" rowHeight="2:1">
   <mat-grid-tile *ngFor="let product of selectedProducts">
-    <app-product [product]="product"
-                 [preview]="true"
+    <app-product [preview]="true"
                  [productId]="product.productId"></app-product>
   </mat-grid-tile>
 </mat-grid-list>

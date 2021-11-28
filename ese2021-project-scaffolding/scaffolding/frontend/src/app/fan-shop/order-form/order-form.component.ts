@@ -9,6 +9,9 @@ import {FormBuilder} from "@angular/forms";
 import { Order } from 'src/app/models/order.model';
 import { Status } from 'src/app/models/status.model';
 
+import { StripeService } from 'ngx-stripe';
+import { switchMap } from 'rxjs/operators';
+
 @Component({
   selector: 'app-order-form',
   templateUrl: './order-form.component.html',
@@ -35,6 +38,7 @@ export class OrderFormComponent implements OnInit {
   constructor(
     private router: Router,
     public httpClient: HttpClient,
+    private stripeService: StripeService,
     public userService: UserService,
     private activatedRoute: ActivatedRoute) {
 
@@ -89,9 +93,16 @@ export class OrderFormComponent implements OnInit {
         orderPhoneNr: this.orderPhoneNr,
         billingStatus: ''
 
-      }).subscribe(() => {
+      })
+      .pipe(
+        switchMap((session : any) => {
+          console.log(session);
+          return this.stripeService.redirectToCheckout({ sessionId: session.id })
+        })
+      )
+      .subscribe(() => {
       });
-      this.router.navigate(['/fan-shop'])
+      // this.router.navigate(['/fan-shop'])
     }
   }
 

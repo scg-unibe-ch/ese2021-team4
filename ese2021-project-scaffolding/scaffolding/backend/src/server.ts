@@ -22,7 +22,7 @@ import { UserPostVoteController} from './controllers/user-post-vote.controller';
 import { Product } from './models/product.model';
 import { ProductController } from './controllers/product.controller';
 import { OrderController } from './controllers/order.controller';
-import {Order} from './models/order.model';
+import { Order } from './models/order.model';
 
 export class Server {
     private server: Application;

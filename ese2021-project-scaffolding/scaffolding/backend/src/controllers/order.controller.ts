@@ -36,9 +36,41 @@ orderController.get('/:id', (req, res) => {
 });
 
 // create
-orderController.post('/', (req: Request, res: Response) => {
+orderController.post('/', async (req: Request, res: Response) => {
+
+    const path = require('path'); // dotenv requires absolute path to file.
+    require('dotenv').config({ path: path.resolve(__dirname, '../../src/.env') });
+
+    // Stripe private key should never be published
+    const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
+
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [
+            {
+                price_data: {
+                    currency: 'chf',
+                    product_data: {
+                        name: 'Merlin Streilein',
+                    },
+                    unit_amount: 2000,
+                },
+                quantity: 1,
+            },
+        ],
+        mode: 'payment',
+        success_url: 'https://ilias.unibe.ch',
+        cancel_url: 'https://web.whatsapp.com/',
+    });
+
+
     Order.create(req.body).then(created => {
-        res.status(201).send(created);
+        const obj = created.toJSON();
+
+
+        obj['id'] = session.id;
+
+        res.status(201).send(obj);
     })
         .catch(err => res.status(500).send(err));
 });

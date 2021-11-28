@@ -33,6 +33,9 @@ import { FanShopComponent } from './fan-shop/fan-shop.component';
 import { ProductComponent } from './fan-shop/product/product.component';
 import { OrderComponent } from './fan-shop/order/order.component';
 import { OrderFormComponent } from './fan-shop/order-form/order-form.component';
+import { NgxStripeModule } from 'ngx-stripe';
+
+
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -84,6 +87,7 @@ const routes: Routes = [
         ReactiveFormsModule,
         MatGridListModule,
         MatChipsModule,
+        NgxStripeModule.forRoot('pk_test_51K0pOrIFU9ZBSiczIlnqN7V1M1A7mf0vb6KDUJR01ajD8j3Lfht3SPgImeSnweRtNr29wjknKCEn2gGd4Zwha6Bx00VKqhuUP6')
         // Component
     ],
   providers: [

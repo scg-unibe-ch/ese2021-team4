@@ -4,7 +4,7 @@ import {TodoItem} from './todoitem.model';
 export interface ItemImageAttributes {
     imageId: number;
     fileName: string;
-    todoItemId: number;
+    postId: number;
 }
 
 export interface ItemCreationAttributes extends Optional<ItemImageAttributes, 'imageId'> { }
@@ -16,7 +16,7 @@ export class ItemImage extends Model<ItemImageAttributes, ItemCreationAttributes
 
     imageId!: number;
     fileName!: string;
-    todoItemId!: number;
+    postId!: number;
 
     public static initialize(sequelize: Sequelize) {
         ItemImage.init(
@@ -30,7 +30,7 @@ export class ItemImage extends Model<ItemImageAttributes, ItemCreationAttributes
                     type: DataTypes.STRING,
                     allowNull: false
                 },
-                todoItemId: {
+                postId: {
                     type: DataTypes.INTEGER,
                     allowNull: false
                 }

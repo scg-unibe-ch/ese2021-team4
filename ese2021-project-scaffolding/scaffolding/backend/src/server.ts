@@ -21,7 +21,8 @@ import { UserPostVote } from './models/user-post-vote.model';
 import { UserPostVoteController} from './controllers/user-post-vote.controller';
 import { Product } from './models/product.model';
 import { ProductController } from './controllers/product.controller';
-import { ImageController } from './controllers/image.controller';
+import { OrderController } from './controllers/order.controller';
+import {Order} from './models/order.model';
 
 export class Server {
     private server: Application;
@@ -38,6 +39,7 @@ export class Server {
         ItemImage.initialize(this.sequelize);
         Post.initialize(this.sequelize);
         Product.initialize(this.sequelize);
+        Order.initialize(this.sequelize);
         Comment.initialize(this.sequelize);
         UserPostVote.initialize(this.sequelize);
         Image.initialize(this.sequelize);
@@ -86,8 +88,8 @@ export class Server {
             .use('/post', PostController)
             .use('/comment', CommentController)
             .use('/product', ProductController)
+            .use('/order', OrderController)
             .use('/userpostvote', UserPostVoteController)
-            .use('/image', ImageController)
             .options('*', cors(options))
             .use(express.static('./src/public'))
             // this is the message you get if you open http://localhost:3000/ when the server is running

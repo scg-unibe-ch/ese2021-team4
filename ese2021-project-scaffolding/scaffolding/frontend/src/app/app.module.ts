@@ -31,6 +31,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatChipsModule} from "@angular/material/chips";
 import { FanShopComponent } from './fan-shop/fan-shop.component';
 import { ProductComponent } from './fan-shop/product/product.component';
+import { OrderComponent } from './fan-shop/order/order.component';
+import { OrderFormComponent } from './fan-shop/order-form/order-form.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -40,7 +42,9 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent},
   {path: 'home/post/:id', component: PostComponent},
   {path: 'profile/post/:id', component: PostComponent},
-  {path: 'fan-shop', component: FanShopComponent}
+  {path: 'fan-shop', component: FanShopComponent},
+  {path: 'fan-shop/product/:id', component: ProductComponent},
+  {path: 'fan-shop/product/:id/order', component: OrderFormComponent}
 ];
 @NgModule({
   declarations: [
@@ -56,7 +60,9 @@ const routes: Routes = [
     CommentComponent,
     PostComponent,
     FanShopComponent,
-    ProductComponent
+    ProductComponent,
+    OrderComponent,
+    OrderFormComponent
   ],
     imports: [
         BrowserModule,

@@ -5,7 +5,7 @@ import { Post } from '../models/post.model';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
 import {MatGridListModule} from '@angular/material/grid-list';
-import {Category} from "../models/category.model";
+import {Category, CategoryFinder} from "../models/category.model";
 
 
 @Component({
@@ -38,7 +38,7 @@ export class PostFeedComponent implements OnInit {
   ) {
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
-    userService.user$.subscribe(res => this.user = res);
+    userService.user$.subscribe(res => {this.user = res; this.readPosts()});
 
     // Current value
     this.loggedIn = userService.getLoggedIn();
@@ -46,7 +46,9 @@ export class PostFeedComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.readPosts();
+    if(this.user != undefined) {
+      this.readPosts();
+    }
   }
 
   //CREATE POST
@@ -69,25 +71,21 @@ export class PostFeedComponent implements OnInit {
   }
 
   readPosts(): void {
-    if(this.user === undefined) {
-      setTimeout(()=> this.readPosts(), 10);
-    } else {
-      switch (this.feedType) {
-        case 'created':
-          this.readCreatedPosts();
-          break;
-        case 'upvoted':
-          this.readVotedPosts(1);
-          break;
-        case 'downvoted':
-          this.readVotedPosts(-1);
-          break;
-        case 'commented' :
-          this.readCommentedPosts();
-          break;
-        default:
-          this.readAllPosts()
-      }
+    switch (this.feedType) {
+      case 'created':
+        this.readCreatedPosts();
+        break;
+      case 'upvoted':
+        this.readVotedPosts(1);
+        break;
+      case 'downvoted':
+        this.readVotedPosts(-1);
+        break;
+      case 'commented' :
+        this.readCommentedPosts();
+        break;
+      default:
+        this.readAllPosts();
     }
   }
 
@@ -178,22 +176,7 @@ export class PostFeedComponent implements OnInit {
   }
 
   findCategory(): Category{
-    switch (this.selectedCategory){
-      case "restaurant": return Category.Restaurant;
-        break;
-      case "coffeeshop": return Category.Coffeeshop;
-        break;
-      case "shopping": return Category.Shopping
-        break;
-
-      case "sightseeing": return Category.Sightseeing;
-        break;
-      case "museum": return Category.Museum;
-        break;
-      case "university": return Category.University;
-        break;
-    }
-    return Category.Bern;
+    return CategoryFinder.findCategory(this.selectedCategory)
   }
 
   sortByTags():void{

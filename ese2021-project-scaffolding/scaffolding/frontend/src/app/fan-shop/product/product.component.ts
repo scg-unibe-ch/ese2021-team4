@@ -7,7 +7,7 @@ import {Component, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AngularEditorConfig} from '@kolkov/angular-editor';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Category} from "../../models/category.model";
+import {Category, CategoryFinder} from "../../models/category.model";
 
 
 @Component({
@@ -23,11 +23,7 @@ export class ProductComponent implements OnInit {
 
   user: User | undefined;
 
-  newCommentDescription: string = '';
-
-  productId: number = 0;
-
-  existsInBackend : boolean;
+  existsInBackend : boolean = true;
   form: FormGroup = new FormGroup({});
   editMode: boolean = false;
 
@@ -80,10 +76,13 @@ export class ProductComponent implements OnInit {
     ]
       };
 
-  @Input()
   product: Product = new Product(0, '', '', 0, Category.Bern, 0);
 
+  @Input()
+  preview: boolean = false;
 
+  @Input()
+  productId: number = 0;
 
   constructor(
     private router: Router,
@@ -93,7 +92,9 @@ export class ProductComponent implements OnInit {
     private activatedRoute: ActivatedRoute) {
 
     this.activatedRoute.params.subscribe(params => {
-      this.productId = +params.id;
+      if(!isNaN(+params.id)) {
+        this.productId = +params.id;
+      }
     });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
@@ -103,23 +104,24 @@ export class ProductComponent implements OnInit {
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
 
-    // if this.productId === -1, this means we are in editor mode and are looking to create a new product
-    if (this.productId === -1){
-      this.editMode = true;
-      this.existsInBackend = false;
-    } else {
-      this.existsInBackend = true;
-      this.editMode = false;
-      this.httpClient.get(environment.endpointURL + "product/" + this.productId).subscribe((products: any) => {
-        this.product=new Product(this.product.productId, this.product.title, this.product.description, this.product.price, this.product.tag, this.product.imageId);
-        });
-    }
   }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      signature: [ '', Validators.required]
+      signature: ['', Validators.required]
     });
+
+      // if this.productId === -1, this means we are in editor mode and are looking to create a new product
+      if (this.productId === -1) {
+        this.editMode = true;
+        this.existsInBackend = false;
+      } else {
+        this.existsInBackend = true;
+        this.editMode = false;
+        this.httpClient.get(environment.endpointURL + "product/" + this.productId).subscribe((product: any) => {
+          this.product = new Product(product.productId, product.title, product.description, product.price, product.tags, product.imageId);
+        });
+      }
   }
 
   onChange(event : any) {
@@ -141,40 +143,34 @@ export class ProductComponent implements OnInit {
     else{
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='hidden';
-      this.router.navigate(['/home']);
+      this.router.navigate(['/fan-shop']);
       this.updateProduct(this.product);
     }
   }
 
   findCategory(): Category{
-    switch (this.selectCategory){
-      case "restaurant": return Category.Restaurant;
-        break;
-      case "coffeeshop": return Category.Coffeeshop;
-        break;
-      case "shopping": return Category.Shopping
-        break;
-      case "sightseeing": return Category.Sightseeing;
-        break;
-      case "museum": return Category.Museum;
-        break;
-      case "university": return Category.University;
-        break;
-    }
-    return Category.Bern;
+    return CategoryFinder.findCategory(this.selectCategory);
   }
 
   createProduct(): void {
     if (this.product.title==''){
       document.getElementById('setTitle')!.style.visibility='visible';
     }
+    else if(this.product.price==0){
+      document.getElementById('setTitle')!.style.visibility='hidden';
+      document.getElementById('setCategory')!.style.visibility='hidden';
+      document.getElementById('setPrice')!.style.visibility='visible';
+    }
     else if (this.findCategory()==Category.Bern){
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='visible';
+      document.getElementById('setPrice')!.style.visibility='hidden';
     }
+
     else {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/fan-shop']);
       document.getElementById('setTitle')!.style.visibility='hidden';
+      document.getElementById('setPrice')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='hidden';
       if(this.user != null){ //user might not be instantiated, this is taken care of by the html
         this.httpClient.post(environment.endpointURL + "product", {
@@ -201,9 +197,20 @@ export class ProductComponent implements OnInit {
   }
 
   deleteProduct(product: Product): void {
-
     if(this.user?.isAdmin){
       this.httpClient.delete(environment.endpointURL + "product/" + product.productId).subscribe(() => {});
     }
   }
+
+  checkLoggedIn() {
+    if (this.loggedIn){
+      this.router.navigate(['fan-shop/product/:id/order']);
+    }
+    else
+    {
+      this.router.navigate(['login']);
+
+    }
+  }
 }
+

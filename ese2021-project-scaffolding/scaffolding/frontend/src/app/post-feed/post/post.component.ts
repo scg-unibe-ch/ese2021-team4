@@ -1,4 +1,4 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Post} from 'src/app/models/post.model';
 import {User} from 'src/app/models/user.model';
 import {UserService} from 'src/app/services/user.service';
@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AngularEditorConfig} from '@kolkov/angular-editor';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Comment} from 'src/app/models/comment.model';
-import {Category} from "../../models/category.model";
+import {Category, CategoryFinder} from "../../models/category.model";
 
 
 @Component({
@@ -17,8 +17,6 @@ import {Category} from "../../models/category.model";
   styleUrls: ['./post.component.css']
 })
 export class PostComponent implements OnInit {
-
-  images : File[] = [];
 
   selectCategory='';
 
@@ -70,21 +68,20 @@ export class PostComponent implements OnInit {
     ],
     toolbarHiddenButtons: [
       [
-        'undo',
-        'redo',
-        'justifyLeft',
-        'justifyCenter',
-        'justifyRight',
-        'justifyFull',
+      'undo',
+      'redo',
+      'justifyLeft',
+      'justifyCenter',
+      'justifyRight',
+      'justifyFull',
       ],
       [
         'insertVideo',
-        'insertImage',
         'backgroundColor',
         'textColor',
         'removeFormat',
         'customClasses',
-        'insertHorizontalRule',
+        'insertHorizontalRule'
       ]
     ]
 
@@ -94,7 +91,7 @@ export class PostComponent implements OnInit {
   };
 
   @Input()
-  post: Post = new Post(0, '', 0, '', 0, Category.Bern, 0, 0, new Date(), [], []);
+  post: Post = new Post(0, '', 0, '', 0, Category.Bern, 0, 0, new Date(), []);
   @Input()
   preview: boolean = false;
 
@@ -119,46 +116,13 @@ export class PostComponent implements OnInit {
     });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
-    userService.user$.subscribe(res => this.user = res);
+    userService.user$.subscribe(res => {this.user = res; this.checkVoteStatus();});
 
     // Current value
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
 
   }
-
-  onFileSelected(event : any) {
-
-    const files : File[] = event.target.files;
-
-    for (let i=0; i < files.length; i++){
-      const imageSpan = document.getElementById("image");
-      const img = document.createElement("img");
-      img.src = URL.createObjectURL(files[i]);
-      img.height = 60;
-
-      img.onload = function() {
-        URL.revokeObjectURL(img.src);
-      }
-      imageSpan?.appendChild(img);
-    }
-    this.post.images = files;
-    
-    /* TODO
-    if (file) {
-
-        this.fileName = file.name;
-
-        const formData = new FormData();
-
-        formData.append("thumbnail", file);
-
-        // const upload$ = this.httpClient.post("/api/thumbnail-upload", formData);
-
-        // upload$.subscribe();
-    }*/
-}
-
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -175,7 +139,7 @@ export class PostComponent implements OnInit {
       this.editMode = false;
 
       this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
-        this.post=new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []);
+        this.post=new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []);
         this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
           comments.forEach((comment: any) => {
             this.post.comments.push(new Comment(comment.commentId, comment.postId, comment.userId, comment.description, comment.upvotes, comment.downvotes, new Date(comment.createdAt)));
@@ -189,20 +153,10 @@ export class PostComponent implements OnInit {
 
       this.createdAtString = this.post.createdAt.toDateString();
     }
-
-    this.checkVoteStatus();
-
-    //image Uploading
-
-  
   }
 
-
-
   checkVoteStatus() {
-   if(this.loggedIn === undefined || (this.loggedIn == true && this.user===undefined)){
-     setTimeout(()=>{this.checkVoteStatus()},10);
-   } else if (this.loggedIn == true){
+  if (this.loggedIn == true){
       this.httpClient.get(environment.endpointURL + "userpostvote/" + this.user?.userId + "/" + this.postId).subscribe((userPostVote: any) => {
         if(userPostVote !== null) {
           if (userPostVote.vote == 1) {
@@ -240,21 +194,7 @@ export class PostComponent implements OnInit {
   }
 
   findCategory(): Category{
-    switch (this.selectCategory){
-      case "restaurant": return Category.Restaurant;
-        break;
-      case "coffeeshop": return Category.Coffeeshop;
-        break;
-      case "shopping": return Category.Shopping
-        break;
-      case "sightseeing": return Category.Sightseeing;
-        break;
-      case "museum": return Category.Museum;
-        break;
-      case "university": return Category.University;
-        break;
-    }
-    return Category.Bern;
+    return CategoryFinder.findCategory(this.selectCategory)
   }
 
   createPost(): void {
@@ -270,29 +210,19 @@ export class PostComponent implements OnInit {
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='hidden';
     if(this.user != null){ //user might not be instantiated, this is taken care of by the html
-      
       this.httpClient.post(environment.endpointURL + "post", {
       title: this.post.title,
       description: this.post.description,
       tags: this.findCategory(),
       userId: this.user.userId,
       upvotes: 0,
-      downvotes: 0,
-
+      downvotes: 0
     }).subscribe((post: any) => {
-      const formData = new FormData();
-      formData.append("postId", String(post.postId));
-      for (let i=0; i < this.post.images.length; i++){
-        formData.append("file"+i, this.post.images[i]);
-      }
-      
-      this.httpClient.post(environment.endpointURL + "post/" + post.postId + "/image", formData).subscribe((post: any) => {
+      // this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes));
+      // this.title = this.newPostDescription = this.newPostTags = '';
+    },
+      error => {console.log(error)});
 
-
-      });
-    }, error => {console.log(error)});
-
-      
     }
   }}
 
@@ -349,7 +279,7 @@ export class PostComponent implements OnInit {
   }
 
 
-  // CREATE - Post
+  // CREATE - Comment
   createComment(): void {
     if (!(this.newCommentDescription == '')) {
       this.httpClient.post(environment.endpointURL + "comment", {
@@ -365,7 +295,7 @@ export class PostComponent implements OnInit {
     }
   }
 
-  // UPDATE - Post
+  // UPDATE - Comment
   updateComment(comment: Comment): void {
     this.httpClient.put(environment.endpointURL + "comment/" + comment.commentId, {
       description: comment.description,
@@ -373,7 +303,7 @@ export class PostComponent implements OnInit {
     }).subscribe();
   }
 
-  // DELETE - Post
+  // DELETE - Comment
   deleteComment(comment: Comment): void {
     this.httpClient.delete(environment.endpointURL + "comment/" + comment.commentId).subscribe(() => {
       this.post.comments.splice(this.post.comments.indexOf(comment), 1);

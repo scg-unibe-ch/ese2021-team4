@@ -12,16 +12,16 @@
     </mat-card-content>
 
     <mat-card-actions>
-      <button mat-flat-button color="primary" (click)="votePost(1)" [disabled]="hasDownvoted">UPVOTES: {{post.upvotes}}</button>
-      <button mat-flat-button color="primary" (click)="votePost(-1)" [disabled]="hasUpvoted">DOWNVOTES: {{post.downvotes}}</button>
+      <button mat-flat-button color="primary" (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn">Upvotes: {{post.upvotes}}</button>
+      <button mat-flat-button color="primary" (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn">Downvotes: {{post.downvotes}}</button>
       <span *ngIf="user?.userId === post.userId || user?.isAdmin">
-        <button  mat-flat-button color="primary" (click)="editMode = true">EDIT</button>
-        <a routerLink="/home"> <button mat-flat-button color="warn" (click)="deletePost(post)">delete post</button></a>
+        <button  mat-flat-button color="primary" (click)="editMode = true">Edit Post</button>
+        <a routerLink="/home"> <button mat-flat-button color="warn" (click)="deletePost(post)">Delete Post</button></a>
       </span>
       <br><br>
-      <input matInput type="text" placeholder="Comment" name="Comment" [(ngModel)]="newCommentDescription">
+      <input matInput type="text" placeholder="Write comment..." name="Comment" [(ngModel)]="newCommentDescription">
       <br><br>
-      <button mat-flat-button color="primary" (click)="createComment()">COMMENT</button>
+      <button mat-flat-button color="primary" (click)="createComment()">Create Comment</button>
     </mat-card-actions>
   </mat-card>
 </div>
@@ -84,8 +84,8 @@
 
     <span id="image"></span>
 
-    <button *ngIf="existsInBackend" (click)="save()">Save</button>
-    <button *ngIf="!existsInBackend" (click)="createPost()">Create</button>
+    <button *ngIf="existsInBackend" (click)="save()">Save Post</button>
+    <button *ngIf="!existsInBackend" (click)="createPost()">Create Post</button>
   </div>
 
 </div></div>
@@ -95,8 +95,8 @@
   <div> <mat-chip-list><mat-chip>{{post.tags}}</mat-chip></mat-chip-list><br><br><br><br><br><br><br>
     {{post.title}} <span style="display: inline-block;">&nbsp;</span>
 
-    <a [routerLink]="['post', post.postId]"> View </a><br><br>
-    <button (click)="votePost(1)" [disabled]="hasDownvoted"><mat-icon>thumb_up</mat-icon></button>{{post.upvotes}}<span style="margin-left: 20px"></span>
-    <button (click)="votePost(-1)" [disabled]="hasUpvoted"><mat-icon>thumb_down</mat-icon></button> {{post.downvotes}}
+    <a [routerLink]="['post', post.postId]"> View Post </a><br><br>
+    <button (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn"><mat-icon>thumb_up</mat-icon></button>{{post.upvotes}}<span style="margin-left: 20px"></span>
+    <button (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn"><mat-icon>thumb_down</mat-icon></button> {{post.downvotes}}
     <!-- </mat-card> -->
   </div></div>

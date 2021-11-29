@@ -5,7 +5,7 @@ import { Product } from '../models/product.model';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
 import {MatGridListModule} from '@angular/material/grid-list';
-import {Category} from "../models/category.model";
+import {Category, CategoryFinder} from "../models/category.model";
 
 
 @Component({
@@ -28,6 +28,7 @@ export class FanShopComponent implements OnInit {
 
   user: User | undefined;
 
+
   constructor(
     public httpClient: HttpClient,
     public userService: UserService
@@ -46,14 +47,14 @@ export class FanShopComponent implements OnInit {
   }
 
   //CREATE PRODUCT (ONLY FOR ADMINS)
-  createPost(): void {
+  createProduct(): void {
     if(this.user != null){ //user might not be instantiated, this is taken care of by the html
       this.httpClient.post(environment.endpointURL + "product", {
         title: this.newProductTitle,
         description: this.newProductDescription,
         tags: this.newProductTags,
       }).subscribe((product: any) => {
-          this.productList.push(new Product(product.productId, product.title, product.description, product.price, product.tag, product.imageId));
+          this.productList.push(new Product(product.productId, product.title, product.description, product.price, product.tags, product.imageId));
           this.newProductTitle = this.newProductDescription = this.newProductTags = '';
         },
         error => {console.log(error)})
@@ -66,7 +67,7 @@ export class FanShopComponent implements OnInit {
     this.httpClient.get(environment.endpointURL + "product").subscribe((products: any) => {
 
       products.forEach((product: any) => {
-        this.productList.push(new Product(product.productId, product.title, product.description, product.price, product.tag, product.imageId));
+        this.productList.push(new Product(product.productId, product.title, product.description, product.price, product.tags, product.imageId));
       });
       this.selectedProducts = this.productList;
 
@@ -81,6 +82,8 @@ export class FanShopComponent implements OnInit {
         break;
       case "tags": this.sortByTags();
         break;
+      case "price": this.sortByPrice();
+        break;
       default: console.log('invalid sort')
 
     }
@@ -92,30 +95,16 @@ export class FanShopComponent implements OnInit {
       this.selectedProducts = this.productList;
     }
     else{
-      this.selectedProducts = this.productList.filter(product => product.tag == tags)
+      this.selectedProducts = this.productList.filter(product => product.tags == tags)
     }
   }
 
   findCategory(): Category{
-    switch (this.selectedCategory){
-      case "restaurant": return Category.Restaurant;
-        break;
-      case "coffeeshop": return Category.Coffeeshop;
-        break;
-      case "shopping": return Category.Shopping
-        break;
-      case "sightseeing": return Category.Sightseeing;
-        break;
-      case "museum": return Category.Museum;
-        break;
-      case "university": return Category.University;
-        break;
-    }
-    return Category.Bern;
+    return CategoryFinder.findCategory(this.selectedCategory)
   }
 
   sortByTags():void{
-    this.selectedProducts.sort((a, b) => a.tag.localeCompare(b.tag))
+    this.selectedProducts.sort((a, b) => a.tags.localeCompare(b.tags))
   }
   sortByTitle(): void {
     this.selectedProducts.sort((a, b) => a.title.localeCompare(b.title))
@@ -123,6 +112,9 @@ export class FanShopComponent implements OnInit {
 
   sortById(): void{
     this.selectedProducts.sort((a,b) => a.productId-b.productId)
+  }
+  sortByPrice(): void{
+    this.selectedProducts.sort((a,b) => a.price-b.price)
   }
 }
 

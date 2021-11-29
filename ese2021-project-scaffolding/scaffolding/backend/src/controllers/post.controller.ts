@@ -3,6 +3,7 @@ import { upload } from '../middlewares/fileFilter';
 import { MulterRequest } from '../models/multerRequest.model';
 import { Post } from '../models/post.model';
 import { ItemService } from '../services/item.service';
+import { ImageAttributes, Image } from '../models/image.model';
 
 
 const postController: Router = express.Router();
@@ -32,6 +33,14 @@ postController.get('/:id', (req, res) => {
     Post.findByPk(req.params.id)
         .then(found => {
             if (found != null) {
+                const formData = new FormData(); //TODO
+                formData.append("post", "");
+                Image.findAll({where:{postId: found.postId}}).then(found => {
+                    const formData = new FormData();
+                    found.forEach(element => {
+                        formData.append("file", element.file);
+                    });
+                })
                 res.status(200).send(found);
             } else {
                 res.sendStatus(404);
@@ -50,8 +59,12 @@ postController.post('/', (req: Request, res: Response) => {
 
 // upload image and add to a post
 postController.post('/:id/image', upload.any(), (req: MulterRequest, res: Response) => {
-    console.log(req.files[0]);
-    // itemService.addImage(req).then(created => res.send(created)).catch(err => res.status(500).send(err));
+
+    Image.create({file: req.files[0] as Blob, postId: req.body.postId}).then(created => {
+            res.status(201).send(created);
+        })
+            .catch(err => res.status(500).send(err));
+    // // itemService.addImage(req).then(created => res.send(created)).catch(err => res.status(500).send(err));
 });
 
 

@@ -1,4 +1,5 @@
 import {upload} from '../middlewares/fileFilter';
+import { Image, ImageAttributes } from '../models/image.model';
 import {ItemImage, ItemImageAttributes} from '../models/itemImage.model';
 import {MulterRequest} from '../models/multerRequest.model';
 import { Post } from '../models/post.model';
@@ -35,6 +36,10 @@ export class ItemService {
             .catch(() => Promise.reject('could not fetch the image!'));
     }
 
+    // public test(image: ImageAttributes): Promise<ImageAttributes> {
+    //     image.postId = 1;
 
+    //     return Image.create(image).then(inserted => Promise.resolve(inserted)).catch(err => Promise.reject(err));
+    // }
 
 }

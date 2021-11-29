@@ -281,9 +281,9 @@ export class PostComponent implements OnInit {
 
     }).subscribe((post: any) => {
       const formData = new FormData();
+      formData.append("postId", String(post.postId));
       for (let i=0; i < this.post.images.length; i++){
-        formData.append("file", this.post.images[i]);
-        
+        formData.append("file"+i, this.post.images[i]);
       }
       
       this.httpClient.post(environment.endpointURL + "post/" + post.postId + "/image", formData).subscribe((post: any) => {

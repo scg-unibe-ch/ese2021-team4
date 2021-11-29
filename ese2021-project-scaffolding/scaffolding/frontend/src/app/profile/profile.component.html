@@ -48,7 +48,7 @@
     <mat-tab label="Upvoted"><app-post-feed [feedType]="'upvoted'"></app-post-feed></mat-tab>
     <mat-tab label="Downvoted"><app-post-feed [feedType]="'downvoted'"></app-post-feed></mat-tab>
     <mat-tab label="Commented"><app-post-feed [feedType]="'commented'"></app-post-feed></mat-tab>
-    <mat-tab label="My Orders">
+    <mat-tab label="Orders">
       <mat-form-field appearance="fill">
         <mat-label>Status:</mat-label>
         <mat-select [(ngModel)]="selectedStatus" (ngModelChange)="filterBy(selectedStatus)">

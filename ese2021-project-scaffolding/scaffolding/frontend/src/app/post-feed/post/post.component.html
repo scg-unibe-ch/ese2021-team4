@@ -19,20 +19,22 @@
         <a routerLink="/home"> <button mat-flat-button color="warn" (click)="deletePost(post)">Delete Post</button></a>
       </span>
       <br><br>
-      <input matInput type="text" placeholder="Write comment..." name="Comment" [(ngModel)]="newCommentDescription">
+      <input matInput type="text" placeholder="Write comment..." name="Comment" [(ngModel)]="newCommentDescription" *ngIf="loggedIn">
       <br><br>
-      <button mat-flat-button color="primary" (click)="createComment()">Create Comment</button>
+      <button mat-flat-button color="primary" (click)="createComment()" *ngIf="loggedIn">Comment</button>
+      <p *ngIf="!loggedIn">
+        <a routerLink="/login">Please log in to comment</a>
+      </p>
     </mat-card-actions>
   </mat-card>
+  <mat-card *ngIf = "post.comments.length != 0">
+    <div *ngFor="let comment of post.comments">
+      <app-comment [comment]="comment"
+                   (delete)="deleteComment($event)">
+      </app-comment>
+    </div>
+  </mat-card>
 </div>
-
-<mat-card>
-  <div *ngFor="let comment of post.comments">
-    <app-comment [comment]="comment"
-                 (delete)="deleteComment($event)">
-    </app-comment>
-  </div>
-</mat-card>
 
 <div *ngIf="editMode">
 
@@ -47,12 +49,12 @@
       </mat-form-field><mat-form-field appearance="fill">
       <mat-label>Category:</mat-label>
       <mat-select [(ngModel)]="selectCategory"(ngModelChange)="findCategory()"[ngModelOptions]="{standalone: true}" >
-        <mat-option value="restaurant">Restaurant</mat-option>
-        <mat-option value="university">University</mat-option>
-        <mat-option value="coffeeshop">Coffeeshop</mat-option>
-        <mat-option value="sightseeing">Sightseeing</mat-option>
-        <mat-option value="shopping">Shopping</mat-option>
-        <mat-option value="museum">Museum</mat-option>
+        <mat-option value="Restaurant">Restaurant</mat-option>
+        <mat-option value="University">University</mat-option>
+        <mat-option value="Coffeeshop">Coffeeshop</mat-option>
+        <mat-option value="Sightseeing">Sightseeing</mat-option>
+        <mat-option value="Shopping">Shopping</mat-option>
+        <mat-option value="Museum">Museum</mat-option>
       </mat-select>
 
     </mat-form-field><span id="setTitle" style="visibility: hidden">Please set a title. </span>
@@ -79,7 +81,7 @@
     {{post.title}} <span style="display: inline-block;">&nbsp;</span>
 
     <a [routerLink]="['post', post.postId]"> View Post </a><br><br>
-    <button (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn"><mat-icon>thumb_up</mat-icon></button>{{post.upvotes}}<span style="margin-left: 20px"></span>
-    <button (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn"><mat-icon>thumb_down</mat-icon></button> {{post.downvotes}}
+    <button  mat-flat-button color="primary" (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn"><mat-icon>thumb_up</mat-icon></button>{{post.upvotes}}<span style="margin-left: 20px"></span>
+    <button  mat-flat-button color="primary" (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn"><mat-icon>thumb_down</mat-icon></button> {{post.downvotes}}
     <!-- </mat-card> -->
   </div></div>

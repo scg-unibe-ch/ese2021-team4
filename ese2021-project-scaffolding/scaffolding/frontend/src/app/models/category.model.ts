@@ -11,22 +11,22 @@ export enum Category{
 export class CategoryFinder{
   static findCategory(selectedCategory: string): Category {
     switch (selectedCategory) {
-      case "restaurant":
+      case "Restaurant":
         return Category.Restaurant;
         break;
-      case "coffeeshop":
+      case "Coffeeshop":
         return Category.Coffeeshop;
         break;
-      case "shopping":
+      case "Shopping":
         return Category.Shopping;
         break;
-      case "sightseeing":
+      case "Sightseeing":
         return Category.Sightseeing;
         break;
-      case "museum":
+      case "Museum":
         return Category.Museum;
         break;
-      case "university":
+      case "University":
         return Category.University;
         break;
       default:

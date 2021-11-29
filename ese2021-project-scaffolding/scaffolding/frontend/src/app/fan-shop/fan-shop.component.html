@@ -1,5 +1,5 @@
-<mat-card>
-  <p *ngIf="user?.isAdmin">
+<mat-card *ngIf="user?.isAdmin">
+  <p>
   <a routerLink="/fan-shop/product/-1"><button>Create Product</button></a>
 </p>
 </mat-card>

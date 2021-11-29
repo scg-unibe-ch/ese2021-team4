@@ -17,8 +17,6 @@ import {Category, CategoryFinder} from "../../models/category.model";
 })
 export class ProductComponent implements OnInit {
 
-  selectCategory='';
-
   loggedIn: boolean | undefined;
 
   user: User | undefined;
@@ -84,6 +82,8 @@ export class ProductComponent implements OnInit {
   @Input()
   productId: number = 0;
 
+  selectCategory=this.product.tags.toString();
+
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -120,6 +120,7 @@ export class ProductComponent implements OnInit {
         this.editMode = false;
         this.httpClient.get(environment.endpointURL + "product/" + this.productId).subscribe((product: any) => {
           this.product = new Product(product.productId, product.title, product.description, product.price, product.tags, product.imageId);
+          this.selectCategory=this.product.tags.toString();
         });
       }
   }

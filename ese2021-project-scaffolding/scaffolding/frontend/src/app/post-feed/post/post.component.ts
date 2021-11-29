@@ -18,8 +18,6 @@ import {Category, CategoryFinder} from "../../models/category.model";
 })
 export class PostComponent implements OnInit {
 
-  selectCategory='';
-
   loggedIn: boolean | undefined;
 
   user: User | undefined;
@@ -101,6 +99,8 @@ export class PostComponent implements OnInit {
   @Output()
   delete = new EventEmitter<Post>();
 
+  selectCategory=this.post.tags.toString();
+
 
   constructor(
     private router: Router,
@@ -134,6 +134,7 @@ export class PostComponent implements OnInit {
     if (this.postId === -1){
       this.editMode = true;
       this.existsInBackend = false;
+      this.selectCategory=this.post.tags.toString();
     } else {
       this.existsInBackend = true;
       this.editMode = false;
@@ -149,8 +150,9 @@ export class PostComponent implements OnInit {
           this.authorName = user.userName;
         });
 
+        this.selectCategory=this.post.tags.toString();
       });
-
+      this.checkVoteStatus();
       this.createdAtString = this.post.createdAt.toDateString();
     }
   }

@@ -12,6 +12,11 @@
     <p style="color:red" *ngIf="userNameWrong"> Username not found</p>
 
     <button mat-flat-button color="primary" (click)="loginUser()">Login</button>
+
+    <p>
+      Don't have an account yet? <a routerLink="/register">Register</a>
+    </p>
+
   </div>
 
   <div *ngIf="loggedIn">
@@ -19,11 +24,11 @@
   </div>
 </mat-card>
 
-<mat-card>
-  <h3>Secure Endpoints</h3>
-  <button mat-flat-button color="primary" (click)="accessUserEndpoint()">User Endpoint</button>
-  {{ endpointMsgUser }}
-  <hr>
-  <button mat-flat-button color="primary" (click)="accessAdminEndpoint()">Admin Endpoint</button>
-  {{ endpointMsgAdmin }}
-</mat-card>
+<!--<mat-card>-->
+<!--  <h3>Secure Endpoints</h3>-->
+<!--  <button mat-flat-button color="primary" (click)="accessUserEndpoint()">User Endpoint</button>-->
+<!--  {{ endpointMsgUser }}-->
+<!--  <hr>-->
+<!--  <button mat-flat-button color="primary" (click)="accessAdminEndpoint()">Admin Endpoint</button>-->
+<!--  {{ endpointMsgAdmin }}-->
+<!--</mat-card>-->

@@ -46,7 +46,7 @@ export class PostFeedComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    if(this.user != undefined) {
+    if(this.user != undefined || !this.loggedIn) {
       this.readPosts();
     }
   }

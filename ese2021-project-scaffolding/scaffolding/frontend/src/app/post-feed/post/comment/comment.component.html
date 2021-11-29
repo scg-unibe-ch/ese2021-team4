@@ -1,2 +1,6 @@
-<p>{{comment.description}}</p>
-<div *ngIf="user?.userId === comment.userId || user?.isAdmin"><button mat-flat-button color="warn" (click)="deleteComment()">Delete Comment</button></div>
+<mat-card>
+<div>
+  {{comment.description}}<br><br>
+  <button mat-flat-button color="warn" (click)="deleteComment()" *ngIf="user?.userId === comment.userId || user?.isAdmin">Delete Comment</button>
+</div>
+</mat-card>

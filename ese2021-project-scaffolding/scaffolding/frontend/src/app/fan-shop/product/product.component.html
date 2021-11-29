@@ -14,20 +14,6 @@
   </div></div>
 
 
-<!--<div *ngIf="!preview"><div *ngIf="!editMode">
-  <mat-card>
-    <mat-card-header>
-      <div mat-card-avatar></div>
-      <mat-card-title>{{product.title}}</mat-card-title>
-      <mat-card-subtitle>{{product.tags}}</mat-card-subtitle>
-      <mat-card-subtitle>{{product.price}}</mat-card-subtitle>
-    </mat-card-header>
-    <button (click) = "checkLoggedIn()">Buy now</button >
-  </mat-card>
-</div>
-</div>-->
-
-
 
 <div *ngIf="!preview"><div *ngIf="!editMode">
   <mat-card>
@@ -41,7 +27,7 @@
       <div [innerHTML]="product.description"></div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-flat-button color="primary" (click) = "checkLoggedIn()">Buy now</button >
+      <button mat-flat-button color="primary" (click) = "checkLoggedIn()" *ngIf="!user?.isAdmin">Buy now</button > <!-- buy now redirects to login-->
       <span *ngIf="user?.isAdmin">
         <button  mat-flat-button color="primary" (click)="editMode = true">Edit Product</button>
         <a routerLink="/fan-shop"> <button mat-flat-button color="warn" (click)="deleteProduct(product)">Delete Product</button></a>
@@ -72,12 +58,12 @@
 
         <mat-label>Category:</mat-label>
         <mat-select [(ngModel)]="selectCategory"(ngModelChange)="findCategory()"[ngModelOptions]="{standalone: true}" >
-          <mat-option value="restaurant">Restaurant</mat-option>
-          <mat-option value="university">University</mat-option>
-          <mat-option value="coffeeshop">Coffeeshop</mat-option>
-          <mat-option value="sightseeing">Sightseeing</mat-option>
-          <mat-option value="shopping">Shopping</mat-option>
-          <mat-option value="museum">Museum</mat-option>
+          <mat-option value="Restaurant">Restaurant</mat-option>
+          <mat-option value="University">University</mat-option>
+          <mat-option value="Coffeeshop">Coffeeshop</mat-option>
+          <mat-option value="Sightseeing">Sightseeing</mat-option>
+          <mat-option value="Shopping">Shopping</mat-option>
+          <mat-option value="Museum">Museum</mat-option>
         </mat-select>
 
       </mat-form-field><span id="setTitle" style="visibility: hidden">Please set a title. </span>

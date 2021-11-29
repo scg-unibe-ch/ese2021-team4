@@ -31,7 +31,7 @@ export class OrderFormComponent implements OnInit {
   orderPhoneNr: string = '';
   productId: number = 0;
 
-  // product: Product | undefined;
+  product: Product | undefined;
   redirecting: boolean = false;
 
   loggedIn: boolean | undefined;
@@ -47,7 +47,6 @@ export class OrderFormComponent implements OnInit {
       if (!isNaN(+params.id)) {
         this.productId = +params.id;
       }
-      console.log(this.productId)
     });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
@@ -65,6 +64,13 @@ export class OrderFormComponent implements OnInit {
       this.orderZipCode = user.zipCode;
       this.orderCity = user.city;
       this.orderPhoneNr = user.phoneNr;
+
+      this.httpClient.get(environment.endpointURL + "product/" + this.productId).subscribe((product: any) => {
+        this.product = new Product(product.productId, product.title, product.description, product.price, product.tags, product.imageId);
+      });
+
+
+      //mit product ID Order richtig instanziieren
       this.newOrder = new Order(Status.Pending, 0, user.userId, this.productId, 0, new Date(), new Date(), this.orderFirstName, this.orderLastName, this.orderStreet, this.orderHouseNr, this.orderZipCode, this.orderCity, this.orderPhoneNr)
     });
   }

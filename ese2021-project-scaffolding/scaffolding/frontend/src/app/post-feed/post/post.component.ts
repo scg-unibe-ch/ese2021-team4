@@ -91,7 +91,7 @@ export class PostComponent implements OnInit {
   };
 
   @Input()
-  post: Post = new Post(0, '', 0, '', 0, Category.Bern, 0, 0, new Date(), []);
+  post: Post = new Post(0, '', 0, '', 0, Category.Bern, 0, 0, new Date(), [], []);
   @Input()
   preview: boolean = false;
 
@@ -123,6 +123,37 @@ export class PostComponent implements OnInit {
     this.user = userService.getUser();
 
   }
+  onFileSelected(event : any) {
+
+    const files : File[] = event.target.files;
+
+    for (let i=0; i < files.length; i++){
+      const imageSpan = document.getElementById("image");
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(files[i]);
+      img.height = 60;
+
+      img.onload = function() {
+        URL.revokeObjectURL(img.src);
+      }
+      imageSpan?.appendChild(img);
+    }
+    this.post.images = files;
+    
+    /* TODO
+    if (file) {
+
+        this.fileName = file.name;
+
+        const formData = new FormData();
+
+        formData.append("thumbnail", file);
+
+        // const upload$ = this.httpClient.post("/api/thumbnail-upload", formData);
+
+        // upload$.subscribe();
+    }*/
+  }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -139,7 +170,7 @@ export class PostComponent implements OnInit {
       this.editMode = false;
 
       this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
-        this.post=new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []);
+        this.post=new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []);
         this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
           comments.forEach((comment: any) => {
             this.post.comments.push(new Comment(comment.commentId, comment.postId, comment.userId, comment.description, comment.upvotes, comment.downvotes, new Date(comment.createdAt)));
@@ -218,10 +249,17 @@ export class PostComponent implements OnInit {
       upvotes: 0,
       downvotes: 0
     }).subscribe((post: any) => {
-      // this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes));
-      // this.title = this.newPostDescription = this.newPostTags = '';
-    },
-      error => {console.log(error)});
+      const formData = new FormData();
+      formData.append("postId", String(post.postId));
+      for (let i=0; i < this.post.images.length; i++){
+        formData.append("file"+i, this.post.images[i]);
+      }
+      
+      this.httpClient.post(environment.endpointURL + "post/" + post.postId + "/image", formData).subscribe((post: any) => {
+
+
+      });
+    }, error => {console.log(error)});
 
     }
   }}

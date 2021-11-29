@@ -72,7 +72,7 @@ postController.post('/', (req: Request, res: Response) => {
 });
 
 // upload image and add to a post
-postController.post('/:id/image', upload.any(), async (req: MulterRequest, res: Response) => {
+postController.post('/:id/image', upload.any(), (req: MulterRequest, res: Response) => {
     Image.create({file: req.files[0].buffer, postId: req.body.postId}).then(created => {
         res.status(201).send(created);
     }).catch(err => res.status(500).send(err));

@@ -1,5 +1,6 @@
 import express, { Router, Request, Response } from 'express';
 import { Order } from '../models/order.model';
+import { Product } from '../models/product.model';
 
 
 const orderController: Router = express.Router();
@@ -46,12 +47,12 @@ orderController.post('/', async (req: Request, res: Response) => {
 
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
-        line_items: [
+        line_items: [ // price is calculated in cents, 1.- (CHF) == unit_amout=100
             {
                 price_data: {
                     currency: 'chf',
                     product_data: {
-                        name: 'Merlin Streilein',
+                        name: 'Unibern Pullover',
                     },
                     unit_amount: 2000,
                 },
@@ -59,15 +60,12 @@ orderController.post('/', async (req: Request, res: Response) => {
             },
         ],
         mode: 'payment',
-        success_url: 'https://ilias.unibe.ch',
-        cancel_url: 'https://web.whatsapp.com/',
+        success_url: process.env.SITE + '/success',
+        cancel_url: process.env.SITE + '/payment_cancelled',
     });
-
-
+    Product.findByPk(req.body.productId);
     Order.create(req.body).then(created => {
         const obj = created.toJSON();
-
-
         obj['id'] = session.id;
 
         res.status(201).send(obj);

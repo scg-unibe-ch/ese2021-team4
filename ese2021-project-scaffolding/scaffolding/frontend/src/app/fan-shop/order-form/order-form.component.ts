@@ -32,6 +32,7 @@ export class OrderFormComponent implements OnInit {
   productId: number = 0;
 
   // product: Product | undefined;
+  redirecting: boolean = false;
 
   loggedIn: boolean | undefined;
 
@@ -96,13 +97,12 @@ export class OrderFormComponent implements OnInit {
       })
       .pipe(
         switchMap((session : any) => {
-          console.log(session);
           return this.stripeService.redirectToCheckout({ sessionId: session.id })
         })
       )
       .subscribe(() => {
       });
-      // this.router.navigate(['/fan-shop'])
+      this.redirecting = true;
     }
   }
 
@@ -117,6 +117,35 @@ export class OrderFormComponent implements OnInit {
     return false;
   }
     return true;
-}
+  }
+
+  postAPI(): void {
+    const request = "https://wedec.post.ch/api/address/v1/addresses/validation";
+    const payload = {
+      "addressee":{
+         "firstName":"Hans",
+         "lastName":"Muster",
+         "title":"MISTER"
+      },
+      "geographicLocation":{
+         "house":{
+            "street":"viale Stazione",
+            "houseNumber":"15",
+            "additionalAddress":""
+         },
+         "zip":{
+            "zip":"6500",
+            "city":"Bellinzona"
+         }
+      },
+      "logisticLocation":{
+         "postBoxNumber":""
+      },
+      "fullValidation":true
+   }
+    this.httpClient.post(request, payload).subscribe( res => {
+      console.log(res);
+    })
+  }
 
 }

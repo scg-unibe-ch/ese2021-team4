@@ -6,6 +6,7 @@ import { ItemService } from '../services/item.service';
 import { ImageAttributes, Image } from '../models/image.model';
 
 
+
 const postController: Router = express.Router();
 const itemService = new ItemService();
 
@@ -33,14 +34,6 @@ postController.get('/:id', (req, res) => {
     Post.findByPk(req.params.id)
         .then(found => {
             if (found != null) {
-                const formData = new FormData(); //TODO
-                formData.append("post", "");
-                Image.findAll({where:{postId: found.postId}}).then(found => {
-                    const formData = new FormData();
-                    found.forEach(element => {
-                        formData.append("file", element.file);
-                    });
-                })
                 res.status(200).send(found);
             } else {
                 res.sendStatus(404);
@@ -48,6 +41,27 @@ postController.get('/:id', (req, res) => {
         })
         .catch(err => res.status(500).send(err));
 });
+// get images to specific post
+postController.get('/:id/getImages', (req, res) => {
+    console.log(req.params.id);
+    // const formData = new FormData(); // TODO
+    // formData.append('post', '');
+    Image.findAll({where: {postId: req.params.id}}).then(found => {
+        // const formData = new FormData();
+        if (found != null) {
+            found.forEach(element => {
+                // formData.append('file', element.file);
+                console.log(element.file);
+            });
+        } else {
+
+        }
+
+    //     });
+    });
+});
+
+
 
 // create
 postController.post('/', (req: Request, res: Response) => {
@@ -58,15 +72,11 @@ postController.post('/', (req: Request, res: Response) => {
 });
 
 // upload image and add to a post
-postController.post('/:id/image', upload.any(), (req: MulterRequest, res: Response) => {
-
-    Image.create({file: req.files[0] as Blob, postId: req.body.postId}).then(created => {
-            res.status(201).send(created);
-        })
-            .catch(err => res.status(500).send(err));
-    // // itemService.addImage(req).then(created => res.send(created)).catch(err => res.status(500).send(err));
+postController.post('/:id/image', upload.any(), async (req: MulterRequest, res: Response) => {
+    Image.create({file: req.files[0].buffer, postId: req.body.postId}).then(created => {
+        res.status(201).send(created);
+    }).catch(err => res.status(500).send(err));
 });
-
 
 // delete
 postController.delete('/:id', (req: Request, res: Response) => {

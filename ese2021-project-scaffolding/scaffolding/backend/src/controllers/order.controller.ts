@@ -45,7 +45,9 @@ orderController.post('/', async (req: Request, res: Response) => {
     // Stripe private key should never be published
     const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 
-    const prod : any = await Product.findByPk(req.body.productId)
+    // this await means: Wait for the Promise to resolve and then set prod accordingly. Do not
+    // execute more lines.
+    const prod : any = await Product.findByPk(req.body.productId) 
         .then(found => {
             if (found != null) {
                 return found;
@@ -55,8 +57,6 @@ orderController.post('/', async (req: Request, res: Response) => {
 
         })
         .catch(err => res.status(500).send(err));
-
-
 
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],

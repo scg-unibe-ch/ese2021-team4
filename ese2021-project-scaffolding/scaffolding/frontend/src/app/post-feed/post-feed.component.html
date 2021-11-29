@@ -12,7 +12,7 @@
         <a routerLink="/home/post/-1"><button mat-flat-button color="primary">Create Post</button></a>
     </p>
     <p *ngIf="!loggedIn">
-        <a routerLink="/login">Please log in to create Post</a>
+      Please<a routerLink="/login"> log in </a>to create a Post
     </p>
 
   </mat-card>
@@ -21,8 +21,8 @@
   <mat-select [(ngModel)]="sortBy"(ngModelChange)="sortPosts()">
     <mat-option value="title">Title</mat-option>
     <mat-option value="id">ID</mat-option>
-    <mat-option value="recent">most recent</mat-option>
-    <mat-option value="oldest">oldest</mat-option>
+    <mat-option value="recent">Newest</mat-option>
+    <mat-option value="oldest">Oldest</mat-option>
     <mat-option value="upvotes">Upvotes</mat-option>
     <mat-option value="downvotes">Downvotes</mat-option>
     <mat-option value="tags">Tags</mat-option>

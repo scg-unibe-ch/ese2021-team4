@@ -1,18 +1,9 @@
-<!--<div *ngIf="preview">
-  <div>
-    {{product.title}} <span style="display: inline-block;"></span>
-    <a [routerLink]="['product', product.productId]"> View Product Details</a><br><br>
-  </div>
-</div>-->
-
-
-<div *ngIf="preview"><!-- <mat-card> -->
+<div *ngIf="preview">
   <div> <mat-chip-list><mat-chip>{{product.tags}}</mat-chip></mat-chip-list><br><br><br><br><br><br><br>
     {{product.title}} <br>
     <mat-card-subtitle>Price: {{product.price}} CHF </mat-card-subtitle> <br><br>
-    <a [routerLink]="['product', product.productId]"> View Product Details</a><br><br>
+    <a [routerLink]="['product', product.productId]"> View Product Details </a><br><br>
   </div></div>
-
 
 
 <div *ngIf="!preview"><div *ngIf="!editMode">

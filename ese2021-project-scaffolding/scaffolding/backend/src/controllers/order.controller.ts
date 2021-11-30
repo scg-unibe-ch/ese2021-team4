@@ -45,25 +45,39 @@ orderController.post('/', async (req: Request, res: Response) => {
     // Stripe private key should never be published
     const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 
+    // this await means: Wait for the Promise to resolve and then set prod accordingly. Do not
+    // execute more lines.
+    const prod : any = await Product.findByPk(req.body.productId) 
+        .then(found => {
+            if (found != null) {
+                return found;
+            } else {
+                res.sendStatus(404);
+            }
+
+        })
+        .catch(err => res.status(500).send(err));
+
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
-        line_items: [ // price is calculated in cents, 1.- (CHF) == unit_amout=100
-            {
-                price_data: {
-                    currency: 'chf',
-                    product_data: {
-                        name: 'Unibern Pullover',
-                    },
-                    unit_amount: 2000,
+
+        line_items: [{
+            price_data: {
+                currency: 'chf',
+                product_data: {
+                  name: prod.title,
                 },
-                quantity: 1,
+                unit_amount: prod.price * 100,
+            },
+            quantity: 1,
             },
         ],
         mode: 'payment',
         success_url: process.env.SITE + '/success',
         cancel_url: process.env.SITE + '/payment_cancelled',
     });
-    Product.findByPk(req.body.productId);
+
+
     Order.create(req.body).then(created => {
         const obj = created.toJSON();
         obj['id'] = session.id;
@@ -71,6 +85,8 @@ orderController.post('/', async (req: Request, res: Response) => {
         res.status(201).send(obj);
     })
         .catch(err => res.status(500).send(err));
+
+
 });
 
 // update

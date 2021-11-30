@@ -205,7 +205,7 @@ export class ProductComponent implements OnInit {
 
   checkLoggedIn() {
     if (this.loggedIn){
-      this.router.navigate(['fan-shop/product/:id/order']);
+      this.router.navigate(['fan-shop/product/' + this.productId + '/order']);
     }
     else
     {

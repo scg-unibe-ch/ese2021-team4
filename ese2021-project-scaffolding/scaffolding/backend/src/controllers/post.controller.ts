@@ -38,30 +38,21 @@ postController.get('/:id', (req, res) => {
             } else {
                 res.sendStatus(404);
             }
-        })
-        .catch(err => res.status(500).send(err));
+    }).catch(err => res.status(500).send(err));
 });
+
 // get images to specific post
-postController.get('/:id/getImages', (req, res) => {
-    console.log(req.params.id);
-    // const formData = new FormData(); // TODO
-    // formData.append('post', '');
+postController.get('/:id/getImages', (req: Request, res: Response) => {
     Image.findAll({where: {postId: req.params.id}}).then(found => {
-        // const formData = new FormData();
         if (found != null) {
             found.forEach(element => {
-                // formData.append('file', element.file);
-                console.log(element.file);
+                res.status(200).send(element.file);
             });
         } else {
-
+            res.status(500).send("no images found");
         }
-
-    //     });
     });
 });
-
-
 
 // create
 postController.post('/', (req: Request, res: Response) => {

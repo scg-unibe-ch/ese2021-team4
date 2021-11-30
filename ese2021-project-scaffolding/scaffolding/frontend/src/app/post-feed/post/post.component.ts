@@ -199,6 +199,24 @@ export class PostComponent implements OnInit {
       });
     }
   }
+  test(){
+    this.httpClient.get(environment.endpointURL + "post/" + this.postId + "/getImages", 
+    {responseType: 'blob', headers: {'Content-Type': 'multipart/form-data'}}).subscribe((images: any) => {
+      var file = new File([images], "name");
+      
+      this.post.images[0] = file;
+      const imageSpan = document.getElementById("image");
+
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(file);
+      img.height = 60;
+
+      img.onload = function() {
+        URL.revokeObjectURL(img.src);
+      }
+      imageSpan?.appendChild(img);
+    });
+  }
 
   onChange(event : any) {
     console.log('changed');
@@ -250,7 +268,6 @@ export class PostComponent implements OnInit {
       downvotes: 0
     }).subscribe((post: any) => {
       const formData = new FormData();
-      formData.append("postId", String(post.postId));
       for (let i=0; i < this.post.images.length; i++){
         formData.append("file"+i, this.post.images[i]);
       }

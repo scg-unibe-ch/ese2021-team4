@@ -37,6 +37,7 @@ import { NgxStripeModule } from 'ngx-stripe';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { OrderFeedComponent } from './fan-shop/order-feed/order-feed.component';
 import { UserListComponent } from './admin-dashboard/user-list/user-list.component';
+import { LoginFeedbackComponent } from './login/login-feedback/login-feedback.component';
 
 
 
@@ -44,6 +45,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: '', redirectTo: '/home', pathMatch:'full'},
   {path: 'login', component: LoginComponent},
+  {path: 'login/feedback', component: LoginFeedbackComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'home/post/:id', component: PostComponent},
@@ -72,7 +74,8 @@ const routes: Routes = [
     OrderFormComponent,
     AdminDashboardComponent,
     OrderFeedComponent,
-    UserListComponent
+    UserListComponent,
+    LoginFeedbackComponent
   ],
     imports: [
         BrowserModule,

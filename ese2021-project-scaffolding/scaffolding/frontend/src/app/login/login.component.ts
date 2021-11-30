@@ -3,6 +3,7 @@ import {User} from "../models/user.model";
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "../services/user.service";
 import {environment} from "../../environments/environment";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -25,6 +26,7 @@ export class LoginComponent {
   endpointMsgAdmin: string = '';
 
   constructor(
+    private router: Router,
     public httpClient: HttpClient,
     public userService: UserService
   ) {
@@ -59,6 +61,7 @@ export class LoginComponent {
 
       this.userService.setLoggedIn(true);
       this.userService.setUser(new User(res.user.userId, res.user.userName, res.user.password, res.user.admin));
+      this.router.navigate(['/login/feedback']);
 
     }, (error: any ) => {
       if (error.error.message.message === 'not authorized'){
@@ -67,6 +70,7 @@ export class LoginComponent {
       } else {
         this.userNameWrong = true;
         this.passwordWrong = false;
+
       }
 
     });

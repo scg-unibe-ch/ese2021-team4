@@ -10,6 +10,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {ToastrModule} from "ngx-toastr";
+
 //import { TodoListComponent } from './todo-list/todo-list.component';
 // import { TodoItemComponent } from './todo-list/todo-item/todo-item.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -38,6 +40,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { OrderFeedComponent } from './fan-shop/order-feed/order-feed.component';
 import { UserListComponent } from './admin-dashboard/user-list/user-list.component';
 import { LoginFeedbackComponent } from './login/login-feedback/login-feedback.component';
+import {ConfirmBoxConfigModule, NgxAwesomePopupModule} from "@costlydeveloper/ngx-awesome-popup";
 
 
 
@@ -80,6 +83,9 @@ const routes: Routes = [
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        ToastrModule.forRoot(),
+        NgxAwesomePopupModule.forRoot(),
+        ConfirmBoxConfigModule.forRoot(),
         HttpClientModule,
         MatToolbarModule,
         MatTabsModule,

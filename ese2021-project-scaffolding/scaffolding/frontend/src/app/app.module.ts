@@ -36,6 +36,7 @@ import { OrderFormComponent } from './fan-shop/order-form/order-form.component';
 import { NgxStripeModule } from 'ngx-stripe';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { OrderFeedComponent } from './fan-shop/order-feed/order-feed.component';
+import { UserListComponent } from './admin-dashboard/user-list/user-list.component';
 
 
 
@@ -70,7 +71,8 @@ const routes: Routes = [
     OrderComponent,
     OrderFormComponent,
     AdminDashboardComponent,
-    OrderFeedComponent
+    OrderFeedComponent,
+    UserListComponent
   ],
     imports: [
         BrowserModule,

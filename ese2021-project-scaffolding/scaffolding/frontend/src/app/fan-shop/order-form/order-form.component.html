@@ -1,4 +1,6 @@
 <div *ngIf=!redirecting>
+  <mat-card><app-product [productId]="productId"
+                         [preview]="true"></app-product></mat-card>
   <mat-card>
     <h3>Shipping Details</h3>
     <mat-form-field>

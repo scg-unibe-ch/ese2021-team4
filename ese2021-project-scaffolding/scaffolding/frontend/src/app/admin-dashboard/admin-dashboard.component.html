@@ -1,0 +1,7 @@
+<h1>Welcome, {{user?.username}}!</h1>
+<mat-tab-group>
+  <mat-tab label="Flagged Posts"><app-post-feed [feedType]="'flagged'"></app-post-feed></mat-tab>
+  <mat-tab label="Orders"></mat-tab>
+  <mat-tab label="Users"></mat-tab>
+  <mat-tab label="Commented"></mat-tab>
+</mat-tab-group>

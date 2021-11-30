@@ -14,11 +14,7 @@ productController.get('/', (req: Request, res: Response) => {
 productController.get('/:id', (req, res) => {
     Product.findByPk(req.params.id)
         .then(found => {
-            if (found != null) {
                 res.status(200).send(found);
-            } else {
-                res.sendStatus(404);
-            }
         })
         .catch(err => res.status(500).send(err));
 });

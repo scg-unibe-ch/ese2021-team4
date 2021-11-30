@@ -85,7 +85,6 @@ export class FanShopComponent implements OnInit {
       case "price": this.sortByPrice();
         break;
       default: console.log('invalid sort')
-
     }
   }
 
@@ -97,6 +96,7 @@ export class FanShopComponent implements OnInit {
     else{
       this.selectedProducts = this.productList.filter(product => product.tags == tags)
     }
+    this.sortProducts();
   }
 
   findCategory(): Category{

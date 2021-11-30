@@ -65,9 +65,9 @@
     <br><br>
     <angular-editor id="editor1" [(ngModel)]="post.description" [config]="config1" (ngModelChange)="onChange($event)"
                     (blur)="onBlur($event)"></angular-editor>
-    <p class="html">
-      HTML Output:  {{ post.description }}
-    </p>
+<!--    <p class="html">-->
+<!--      HTML Output:  {{ post.description }}-->
+<!--    </p>-->
 
     <button *ngIf="existsInBackend" (click)="save()">Save Post</button>
     <button *ngIf="!existsInBackend" (click)="createPost()">Create Post</button>

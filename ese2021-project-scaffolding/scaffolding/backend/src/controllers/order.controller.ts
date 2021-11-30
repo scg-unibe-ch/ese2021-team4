@@ -47,7 +47,7 @@ orderController.post('/', async (req: Request, res: Response) => {
 
     // this await means: Wait for the Promise to resolve and then set prod accordingly. Do not
     // execute more lines.
-    const prod : any = await Product.findByPk(req.body.productId) 
+    const prod: any = await Product.findByPk(req.body.productId)
         .then(found => {
             if (found != null) {
                 return found;

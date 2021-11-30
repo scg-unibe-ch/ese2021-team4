@@ -123,6 +123,7 @@ export class ProfileComponent implements OnInit {
     if(this.user?.isAdmin){
       this.httpClient.get(environment.endpointURL + 'order/').subscribe((orders: any) => {
         orders.forEach((order: any) => this.myOrders.push(new Order(StatusFinder.status(order.status), order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)));
+        this.selectedOrders = this.myOrders;
       })
     }
     else {

@@ -61,7 +61,7 @@ export class OrderComponent implements OnInit {
 
       confirmBox.setTitle('');
 
-      confirmBox.setMessage('Are you sure you want to delete this order?');
+      confirmBox.setMessage('Are you sure you want to cancel this order?');
 
       confirmBox.setButtonLabels('YES', 'NO');
 

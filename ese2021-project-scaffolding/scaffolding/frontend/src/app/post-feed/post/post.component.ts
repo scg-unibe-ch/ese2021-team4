@@ -187,9 +187,15 @@ export class PostComponent implements OnInit {
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='visible';
     }
+    else if(this.post.imageId == 0 && this.post.description == '') {
+      document.getElementById('setTitle')!.style.visibility = 'hidden';
+      document.getElementById('setCategory')!.style.visibility = 'hidden';
+      document.getElementById('setDescriptionOrImage')!.style.visibility = 'visible';
+    }
     else{
-    document.getElementById('setTitle')!.style.visibility='hidden';
-    document.getElementById('setCategory')!.style.visibility='hidden';
+      document.getElementById('setTitle')!.style.visibility = 'hidden';
+      document.getElementById('setCategory')!.style.visibility = 'hidden';
+      document.getElementById('setDescriptionOrImage')!.style.visibility = 'hidden';
     this.router.navigate(['/home']);
     this.updatePost(this.post);
     }
@@ -207,10 +213,16 @@ export class PostComponent implements OnInit {
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='visible';
     }
+    else if(this.post.imageId == 0 && this.post.description == '') {
+      document.getElementById('setTitle')!.style.visibility = 'hidden';
+      document.getElementById('setCategory')!.style.visibility = 'hidden';
+      document.getElementById('setDescriptionOrImage')!.style.visibility = 'visible';
+    }
     else {
       this.router.navigate(['/home']);
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='hidden';
+      document.getElementById('setDescriptionOrImage')!.style.visibility = 'hidden';
     if(this.user != null){ //user might not be instantiated, this is taken care of by the html
       this.httpClient.post(environment.endpointURL + "post", {
       title: this.post.title,

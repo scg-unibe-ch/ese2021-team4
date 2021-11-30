@@ -38,9 +38,19 @@ export class LoginComponent {
   }
 
   loginUser(): void {
+    if (this.userToLogin.username == ''){
+      document.getElementById("emptyUser")!.style.visibility='visible';
+    }
+    else if (this.userToLogin.password == ''){
+      document.getElementById("emptyUser")!.style.visibility='hidden';
+      document.getElementById("emptyPassword")!.style.visibility='visible';
+    }
+    else{
+      document.getElementById("emptyUser")!.style.visibility='hidden';
+      document.getElementById("emptyPassword")!.style.visibility='hidden';
     this.httpClient.post(environment.endpointURL + "user/login", {
       userName: this.userToLogin.username,
-      password: this.userToLogin.password 
+      password: this.userToLogin.password
     }).subscribe((res: any) => {
       this.userToLogin.username = this.userToLogin.password = '';
 
@@ -60,7 +70,7 @@ export class LoginComponent {
       }
 
     });
-  }
+  }}
 
   logoutUser(): void {
     localStorage.removeItem('userName');

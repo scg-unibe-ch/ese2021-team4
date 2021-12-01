@@ -2,13 +2,9 @@ import express, { Router, Request, Response } from 'express';
 import { upload } from '../middlewares/fileFilter';
 import { MulterRequest } from '../models/multerRequest.model';
 import { Post } from '../models/post.model';
-import { ItemService } from '../services/item.service';
-import { ImageAttributes, Image } from '../models/image.model';
-
-
+import { Image } from '../models/image.model';
 
 const postController: Router = express.Router();
-const itemService = new ItemService();
 
 // read
 postController.get('/', (req: Request, res: Response) => {
@@ -95,6 +91,13 @@ postController.delete('/:id', (req: Request, res: Response) => {
     Post.findByPk(req.params.id)
         .then(found => {
             if (found != null) {
+                Image.findAll({where: {postId: found.postId}}).then(foundImgs => {
+                    if (foundImgs != null) {
+                        foundImgs.forEach(image => {
+                           image.destroy();
+                        });
+                    }
+                });
                 found.destroy()
                     .then(item => res.status(200).send({ deleted: item }))
                     .catch(err => res.status(500).send(err));
@@ -120,6 +123,5 @@ postController.put('/:id', (req: Request, res: Response) => {
         })
         .catch(err => res.status(500).send(err));
 });
-
 
 export const PostController: Router = postController;

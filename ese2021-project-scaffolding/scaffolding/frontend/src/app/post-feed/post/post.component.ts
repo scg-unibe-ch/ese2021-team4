@@ -84,14 +84,10 @@ export class PostComponent implements OnInit {
         'insertHorizontalRule'
       ]
     ]
-
-
-
-
   };
 
   @Input()
-  post: Post = new Post(0, '', 0, '', 0, Category.Bern, 0, 0, new Date(), [], []);
+  post: Post = new Post(0, '', 0, '', Category.Bern, 0, 0, new Date(), [], []);
   @Input()
   preview: boolean = false;
 
@@ -100,7 +96,6 @@ export class PostComponent implements OnInit {
 
   @Output()
   delete = new EventEmitter<Post>();
-
 
   constructor(
     private router: Router,
@@ -114,6 +109,7 @@ export class PostComponent implements OnInit {
         this.postId = +params.id;
       }
     });
+
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
     userService.user$.subscribe(res => {this.user = res; this.checkVoteStatus();});
@@ -121,8 +117,8 @@ export class PostComponent implements OnInit {
     // Current value
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
-
   }
+
   onFileSelected(event : any) {
 
     const files : File[] = event.target.files;
@@ -139,20 +135,6 @@ export class PostComponent implements OnInit {
       imageSpan?.appendChild(img);
     }
     this.post.images = files;
-    
-    /* TODO
-    if (file) {
-
-        this.fileName = file.name;
-
-        const formData = new FormData();
-
-        formData.append("thumbnail", file);
-
-        // const upload$ = this.httpClient.post("/api/thumbnail-upload", formData);
-
-        // upload$.subscribe();
-    }*/
   }
 
   ngOnInit(): void {
@@ -170,7 +152,7 @@ export class PostComponent implements OnInit {
       this.editMode = false;
 
       this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
-        this.post=new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []);
+        this.post=new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []);
         if(!this.preview){
           this.loadPicturesToPost();
           this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
@@ -217,7 +199,7 @@ export class PostComponent implements OnInit {
           const img = document.createElement("img");
           const picture: File = new File([image], "test");
           img.src = URL.createObjectURL(picture);
-          img.height = 500;
+          img.height = 200;
 
           img.onload = function() {
             URL.revokeObjectURL(img.src);
@@ -281,9 +263,7 @@ export class PostComponent implements OnInit {
       for (let i=0; i < this.post.images.length; i++){
         formData.append("file"+i, this.post.images[i]);
       }
-      
       this.httpClient.post(environment.endpointURL + "post/" + post.postId + "/image", formData).subscribe((post: any) => {
-
 
       });
     }, error => {console.log(error)});
@@ -298,12 +278,10 @@ export class PostComponent implements OnInit {
       tags: this.findCategory(),
       upvotes: post.upvotes,
       downvotes: post.downvotes,
-      imageId: post.imageId
     }).subscribe();
   }
 
   deletePost(post: Post): void {
-
     if(this.user?.userId == post.userId || this.user?.isAdmin){
       this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {});
     }
@@ -342,7 +320,6 @@ export class PostComponent implements OnInit {
       });
     }
   }
-
 
   // CREATE - Comment
   createComment(): void {

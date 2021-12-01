@@ -46,10 +46,11 @@ export class LoginComponent implements OnInit{
   }
 
   initLoginButton(): void {
+    console.log("loginButtons loaded");
     const usernameField = document.getElementById("usernameInput");
     const passwordField = document.getElementById("passwordInput");
     usernameField?.addEventListener("keyup", function(event){
-      console.log(event.key);
+      // console.log(event.key);
       if (event.key === "Enter") {
         event.preventDefault();
         document.getElementById("loginButton")?.click();
@@ -57,7 +58,7 @@ export class LoginComponent implements OnInit{
     })
 
     passwordField?.addEventListener("keyup", function(event){
-      console.log(event.key);
+      // console.log(event.key);
       if (event.key === "Enter") {
         event.preventDefault();
         document.getElementById("loginButton")?.click();

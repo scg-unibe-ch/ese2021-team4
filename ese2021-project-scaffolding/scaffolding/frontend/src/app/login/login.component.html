@@ -1,12 +1,12 @@
 <mat-card>
   <h3>Login</h3>
 
-  <div *ngIf="!loggedIn">
+  <div *ngIf="!loggedIn" >
     <mat-form-field>
-      <input matInput type="text" placeholder="Username or E-mail" name="name" [(ngModel)]="userToLogin.username">
+      <input matInput type="text" placeholder="Username or E-mail" name="name" [(ngModel)]="userToLogin.username" id="usernameInput">
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToLogin.password">
+      <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToLogin.password" id="passwordInput">
     </mat-form-field>
     <p style="color:red" *ngIf="passwordWrong"> Password wrong</p>
     <p style="color:red" *ngIf="userNameWrong"> Username not found</p>

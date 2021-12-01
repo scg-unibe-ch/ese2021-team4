@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import {User} from "../models/user.model";
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "../services/user.service";
@@ -10,8 +10,7 @@ import {Router} from "@angular/router";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
-
+export class LoginComponent implements OnInit{
   loggedIn: boolean | undefined;
 
   passwordWrong: boolean = false;
@@ -38,6 +37,34 @@ export class LoginComponent {
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
   }
+
+  ngOnInit() : void {
+    setTimeout( () => {
+      this.initLoginButton();
+    },1);
+    
+  }
+
+  initLoginButton(): void {
+    const usernameField = document.getElementById("usernameInput");
+    const passwordField = document.getElementById("passwordInput");
+    usernameField?.addEventListener("keyup", function(event){
+      console.log(event.key);
+      if (event.key === "Enter") {
+        event.preventDefault();
+        document.getElementById("loginButton")?.click();
+      }
+    })
+
+    passwordField?.addEventListener("keyup", function(event){
+      console.log(event.key);
+      if (event.key === "Enter") {
+        event.preventDefault();
+        document.getElementById("loginButton")?.click();
+      }
+    })
+  }
+
 
   loginUser(): void {
     if (this.userToLogin.username == ''){
@@ -93,6 +120,7 @@ export class LoginComponent {
   }
 
   accessAdminEndpoint(): void {
+    this.initLoginButton();
     this.httpClient.get(environment.endpointURL + "admin").subscribe(() => {
       this.endpointMsgAdmin = "Access granted";
     }, () => {

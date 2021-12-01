@@ -16,7 +16,7 @@
       <button mat-flat-button color="primary" (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn">Downvotes: {{post.downvotes}}</button>
       <span *ngIf="user?.userId === post.userId || user?.isAdmin">
         <button  mat-flat-button color="primary" (click)="editMode = true">Edit Post</button>
-        <a routerLink="/home"> <button mat-flat-button color="warn" (click)="deletePost(post)">Delete Post</button></a>
+        <button mat-flat-button color="warn" (click)="confirmDeleting(post)">Delete Post</button>
       </span>
       <br><br>
       <input matInput type="text" placeholder="Write comment..." name="Comment" [(ngModel)]="newCommentDescription" *ngIf="loggedIn">

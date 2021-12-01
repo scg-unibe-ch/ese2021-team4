@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {UserService} from "../../../services/user.service";
 import {User} from "../../../models/user.model";
 import {TodoItem} from "../../../models/todo-item.model";
+import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-awesome-popup";
 
 @Component({
   selector: 'app-comment',
@@ -45,6 +46,25 @@ export class CommentComponent implements OnInit {
     this.update.emit(this.comment);
   }
 
+  confirmDeleteComment(): void{
+    const confirmBox = new ConfirmBoxInitializer();
+    confirmBox.setTitle('');
+    confirmBox.setMessage('Are you sure you want to delete this comment?');
+    confirmBox.setButtonLabels('YES', 'NO');
+
+    // Choose layout color type
+    confirmBox.setConfig({
+      LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
+    });
+
+    // Simply open the popup and listen which button is clicked
+    confirmBox.openConfirmBox$().subscribe(resp => {
+
+      if (resp.ClickedButtonID=='yes'){
+        this.deleteComment()
+      }
+    });
+  }
   deleteComment(): void {
     // Emits event to parent component that TodoItem got deleted
     this.delete.emit(this.comment);

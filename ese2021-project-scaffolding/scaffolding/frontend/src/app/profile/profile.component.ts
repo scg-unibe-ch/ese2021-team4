@@ -3,6 +3,7 @@ import {User} from "../models/user.model";
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "../services/user.service";
 import {environment} from "../../environments/environment";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-profile',
@@ -33,6 +34,7 @@ export class ProfileComponent implements OnInit {
   constructor(
     public httpClient: HttpClient,
     public userService: UserService,
+    public toastr: ToastrService
   ) {
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
@@ -75,7 +77,9 @@ export class ProfileComponent implements OnInit {
         birthday: this.birthday,
         phoneNr: this.phoneNr
       }).subscribe(() => {
-        this.updateMessage = 'Your Information has been updated.';
+          this.toastr.success("Your information has been updated.","",{
+            timeOut: 2500
+          });
         this.emailMessage = this.usernameMessage = ''
         },
         error => {

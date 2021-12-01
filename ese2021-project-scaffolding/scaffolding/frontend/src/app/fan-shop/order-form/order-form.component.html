@@ -2,12 +2,6 @@
   <mat-card><app-product [productId]="productId"
                          [preview]="true"></app-product></mat-card>
   <mat-card>
-    <h3>Payment Options</h3>
-    <mat-radio-group [(ngModel)]="paymentType">
-      <mat-radio-button class="example-margin" value="invoice">Invoice</mat-radio-button>
-      <mat-radio-button class="example-margin" value="stripe">Stripe</mat-radio-button>
-    </mat-radio-group>
-
     <h3>Shipping Details</h3>
     <mat-form-field>
       <input matInput type="text" placeholder="first name" name="first name" [(ngModel)]="orderFirstName">
@@ -40,7 +34,7 @@
   <span id="emptyFields" style="visibility: hidden"> Please fill out all the address details. </span>
 
   <p>
-    <button (click)="createOrder()" [routerLink]="['fan-shop']"> Confirm Order</button>
+    <button (click)="createOrder()" [routerLink]="['fan-shop']"> Confirm Order </button>
   </p>
 
   <button (click)="postAPI()">Make api call to post</button>

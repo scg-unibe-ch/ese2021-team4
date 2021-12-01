@@ -37,16 +37,7 @@ orderController.get('/:id', (req, res) => {
 });
 
 // create
-orderController.post('/invoice', (req: Request, res: Response) => {
-    Order.create(req.body).then(created => {
-        res.status(201).send(created);
-    })
-        .catch(err => res.status(500).send(err));
-    }
-);
-
-// create
-orderController.post('/stripe', async (req: Request, res: Response) => {
+orderController.post('/', async (req: Request, res: Response) => {
 
     const path = require('path'); // dotenv requires absolute path to file.
     require('dotenv').config({ path: path.resolve(__dirname, '../../src/.env') });

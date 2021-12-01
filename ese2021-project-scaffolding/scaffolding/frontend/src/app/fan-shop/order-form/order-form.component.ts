@@ -11,6 +11,7 @@ import { Status } from 'src/app/models/status.model';
 
 import { StripeService } from 'ngx-stripe';
 import { switchMap } from 'rxjs/operators';
+import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-awesome-popup";
 
 @Component({
   selector: 'app-order-form',
@@ -74,12 +75,29 @@ export class OrderFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
-  createOrder(): void {
+  confirmOrder(): void {
     if(!this.formIsFilled()){
       document.getElementById('emptyFields')!.style.visibility='visible';
     }
-    else {
+    else{
+    const confirmBox = new ConfirmBoxInitializer();
+    confirmBox.setTitle('You are about to place an order.');
+    confirmBox.setMessage('Do you want to proceed?');
+    confirmBox.setButtonLabels('YES', 'NO');
+
+    // Choose layout color type
+    confirmBox.setConfig({
+      LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
+    });
+    // Simply open the popup and listen which button is clicked
+    confirmBox.openConfirmBox$().subscribe(resp => {
+
+      if (resp.ClickedButtonID=='yes'){
+        this.createOrder()
+      }
+    });
+  }}
+  createOrder(): void {
       this.httpClient.post(environment.endpointURL + "order", {
         status: "Pending",
         productId: this.productId,
@@ -104,7 +122,6 @@ export class OrderFormComponent implements OnInit {
       });
       this.redirecting = true;
     }
-  }
 
   formIsFilled(): boolean {
     if (this.orderFirstName==='' || this.orderLastName === '' || this.orderStreet === '' ||

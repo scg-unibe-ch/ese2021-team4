@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {UserService} from "../../services/user.service";
 import {environment} from "../../../environments/environment";
 import { Router } from '@angular/router';
+import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-awesome-popup";
 
 @Component({
   selector: 'app-user-list',
@@ -38,6 +39,24 @@ export class UserListComponent implements OnInit {
     })
   }
 
+  confirmRemoveAdmin(admin: User): void{
+    const confirmBox = new ConfirmBoxInitializer();
+    confirmBox.setTitle('You are about to revoke admin rights.');
+    confirmBox.setMessage('Do you want to proceed?');
+    confirmBox.setButtonLabels('YES', 'NO');
+
+    // Choose layout color type
+    confirmBox.setConfig({
+      LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
+    });
+    // Simply open the popup and listen which button is clicked
+    confirmBox.openConfirmBox$().subscribe(resp => {
+
+      if (resp.ClickedButtonID=='yes'){
+        this.removeAdmin(admin)
+      }
+    });
+  }
   removeAdmin(admin: User): void {
     admin.isAdmin = false;
     this.httpClient.put(environment.endpointURL + 'user/' + admin.userId, {admin: false}).subscribe(() => {

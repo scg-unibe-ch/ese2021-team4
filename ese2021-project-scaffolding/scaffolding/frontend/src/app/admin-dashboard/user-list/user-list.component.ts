@@ -3,6 +3,7 @@ import {User} from "../../models/user.model";
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "../../services/user.service";
 import {environment} from "../../../environments/environment";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-list',
@@ -17,6 +18,7 @@ export class UserListComponent implements OnInit {
   userList: User[] = [];
 
   constructor(
+    private router: Router,
     public httpClient: HttpClient,
     public userService: UserService,
   ) {
@@ -37,11 +39,19 @@ export class UserListComponent implements OnInit {
   }
 
   removeAdmin(admin: User): void {
+    admin.isAdmin = false;
+    this.httpClient.put(environment.endpointURL + 'user/' + admin.userId, {admin: false}).subscribe(() => {
+    })
 
+    if(this.user?.userId == admin.userId)
+    {
+      this.router.navigate(['/home']);
+    }
   }
 
   promoteAdmin(user: User): void {
-
+    user.isAdmin = true;
+    this.httpClient.put(environment.endpointURL + 'user/' + user.userId, {admin: true}).subscribe(() => {
+    })
   }
-
 }

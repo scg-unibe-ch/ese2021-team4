@@ -323,5 +323,4 @@ export class PostComponent implements OnInit {
       this.post.comments.splice(this.post.comments.indexOf(comment), 1);
     });
   }
-
 }

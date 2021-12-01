@@ -56,33 +56,23 @@ export class OrderComponent implements OnInit {
   update = new EventEmitter<Order>();
 
   confirmCancelling(): void{
-
       const confirmBox = new ConfirmBoxInitializer();
-
       confirmBox.setTitle('');
-
       confirmBox.setMessage('Are you sure you want to cancel this order?');
-
       confirmBox.setButtonLabels('YES', 'NO');
 
       // Choose layout color type
-
       confirmBox.setConfig({
-
         LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
-
       });
 
       // Simply open the popup and listen which button is clicked
-
       confirmBox.openConfirmBox$().subscribe(resp => {
 
         if (resp.ClickedButtonID=='yes'){
           this.cancelOrder()
         }
-
       });
-
     }
 
   cancelOrder(): void {
@@ -104,6 +94,26 @@ export class OrderComponent implements OnInit {
       orderPhoneNr: this.order.orderPhoneNr,
     }).subscribe();
     this.update.emit(this.order);
+  }
+
+
+  confirmShipping(): void{
+    const confirmBox = new ConfirmBoxInitializer();
+    confirmBox.setTitle('');
+    confirmBox.setMessage('Are you sure you want to ship this order?');
+    confirmBox.setButtonLabels('YES', 'NO');
+
+    // Choose layout color type
+    confirmBox.setConfig({
+      LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
+    });
+    // Simply open the popup and listen which button is clicked
+    confirmBox.openConfirmBox$().subscribe(resp => {
+
+      if (resp.ClickedButtonID=='yes'){
+        this.shipOrder()
+      }
+    });
   }
 
   shipOrder(): void {

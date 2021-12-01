@@ -26,7 +26,6 @@ export class PostComponent implements OnInit {
 
   @Input()
   postId: number = 0;
-  createdAtString: string | undefined;
   authorName: string | undefined;
   hasUpvoted: boolean = false;
   hasDownvoted: boolean = false;
@@ -140,6 +139,8 @@ export class PostComponent implements OnInit {
       this.editMode = false;
 
       this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
+        console.log(post.createdAt);
+        console.log(new Date(post.createdAt));
         this.post=new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []);
         this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
           comments.forEach((comment: any) => {
@@ -153,7 +154,6 @@ export class PostComponent implements OnInit {
         this.selectCategory=this.post.tags.toString();
       });
       this.checkVoteStatus();
-      this.createdAtString = this.post.createdAt.toDateString();
     }
   }
 

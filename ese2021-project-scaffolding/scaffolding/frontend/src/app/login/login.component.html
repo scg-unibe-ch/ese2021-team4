@@ -3,15 +3,25 @@
 
   <div *ngIf="!loggedIn">
     <mat-form-field>
-      <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="userToLogin.username">
+      <input matInput type="text" placeholder="Username or E-mail" name="name" [(ngModel)]="userToLogin.username">
     </mat-form-field>
     <mat-form-field>
       <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToLogin.password">
     </mat-form-field>
     <p style="color:red" *ngIf="passwordWrong"> Password wrong</p>
     <p style="color:red" *ngIf="userNameWrong"> Username not found</p>
-
     <button mat-flat-button color="primary" (click)="loginUser()">Login</button>
+    <br>
+    <span id="emptyUser" style="visibility: hidden">Please enter your username or email</span>
+    <span id="emptyPassword" style="visibility: hidden">Please enter your password</span>
+
+
+
+    <br>
+    <p>
+      Don't have an account yet? <a routerLink="/register">Register</a>
+    </p>
+
   </div>
 
   <div *ngIf="loggedIn">
@@ -19,11 +29,11 @@
   </div>
 </mat-card>
 
-<mat-card>
-  <h3>Secure Endpoints</h3>
-  <button mat-flat-button color="primary" (click)="accessUserEndpoint()">User Endpoint</button>
-  {{ endpointMsgUser }}
-  <hr>
-  <button mat-flat-button color="primary" (click)="accessAdminEndpoint()">Admin Endpoint</button>
-  {{ endpointMsgAdmin }}
-</mat-card>
+<!--<mat-card>-->
+<!--  <h3>Secure Endpoints</h3>-->
+<!--  <button mat-flat-button color="primary" (click)="accessUserEndpoint()">User Endpoint</button>-->
+<!--  {{ endpointMsgUser }}-->
+<!--  <hr>-->
+<!--  <button mat-flat-button color="primary" (click)="accessAdminEndpoint()">Admin Endpoint</button>-->
+<!--  {{ endpointMsgAdmin }}-->
+<!--</mat-card>-->

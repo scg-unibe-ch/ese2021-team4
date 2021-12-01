@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Post } from '../models/post.model';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
 import {MatGridListModule} from '@angular/material/grid-list';
-import {Category} from "../models/category.model";
+import {Category, CategoryFinder} from "../models/category.model";
 
 
 @Component({
@@ -15,6 +15,9 @@ import {Category} from "../models/category.model";
 })
 export class PostFeedComponent implements OnInit {
 
+  @Input()
+  feedType: string = '';
+
   postList: Post[] = [];
   newPostTitle = '';
   newPostDescription = '';
@@ -23,6 +26,7 @@ export class PostFeedComponent implements OnInit {
   sortBy = '';
   selectedCategory = '';
   selectedPosts: Post[] = [];
+  postsLoaded: boolean = false;
 
   loggedIn: boolean | undefined;
 
@@ -34,7 +38,7 @@ export class PostFeedComponent implements OnInit {
   ) {
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
-    userService.user$.subscribe(res => this.user = res);
+    userService.user$.subscribe(res => {this.user = res; this.readPosts()});
 
     // Current value
     this.loggedIn = userService.getLoggedIn();
@@ -42,7 +46,9 @@ export class PostFeedComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.readPosts();
+    if(this.user != undefined || !this.loggedIn) {
+      this.readPosts();
+    }
   }
 
   //CREATE POST
@@ -64,8 +70,31 @@ export class PostFeedComponent implements OnInit {
 
   }
 
-  // READ - Post
+  shouldShowPostButton(): boolean {
+    return this.feedType != 'flagged' && this.feedType != 'upvoted' && this.feedType != 'downvoted' && this.feedType != 'commented';
+  }
+
   readPosts(): void {
+    switch (this.feedType) {
+      case 'created':
+        this.readCreatedPosts();
+        break;
+      case 'upvoted':
+        this.readVotedPosts(1);
+        break;
+      case 'downvoted':
+        this.readVotedPosts(-1);
+        break;
+      case 'commented' :
+        this.readCommentedPosts();
+        break;
+      default:
+        this.readAllPosts();
+    }
+  }
+
+  // READ - Post
+  readAllPosts(): void {
     this.httpClient.get(environment.endpointURL + "post").subscribe((posts: any) => {
 
       posts.forEach((post: any) => {
@@ -73,6 +102,47 @@ export class PostFeedComponent implements OnInit {
       });
       this.selectedPosts = this.postList;
 
+    });
+  }
+  readCreatedPosts(): void {
+    this.httpClient.get(environment.endpointURL + "post/" + "createdBy/" + this.user?.userId).subscribe((posts: any) => {
+      posts.forEach((post: any) => {
+        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []));
+      });
+      this.postsLoaded = true;
+      this.selectedPosts = this.postList
+    });
+  }
+
+  readVotedPosts(dir: number) {
+    this.httpClient.get(environment.endpointURL + "userpostvote/" + "votedBy/" + this.user?.userId).subscribe((votes: any) => {
+      votes.forEach((vote: any) => {
+        if(vote.vote == dir) {
+          this.httpClient.get(environment.endpointURL + "post/" + vote.postId).subscribe((post:any) => {
+            this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []));
+          })
+        }
+      });
+      this.postsLoaded = true;
+      this.selectedPosts = this.postList
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  readCommentedPosts() {
+    this.httpClient.get(environment.endpointURL + "comment/" + "createdBy/" + this.user?.userId).subscribe((comments: any) => {
+      comments.forEach((comment: any) => {
+        this.httpClient.get(environment.endpointURL + "post/" + comment.postId).subscribe((post:any) => {
+          if(!this.postList.find(existingPost => existingPost.postId == post.postId)) {
+            this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []))
+          }
+        })
+      });
+      this.postsLoaded = true;
+      this.selectedPosts = this.postList
+    }, error => {
+      console.log(error);
     });
   }
 
@@ -110,22 +180,7 @@ export class PostFeedComponent implements OnInit {
   }
 
   findCategory(): Category{
-    switch (this.selectedCategory){
-      case "restaurant": return Category.Restaurant;
-        break;
-      case "coffeeshop": return Category.Coffeeshop;
-        break;
-      case "shopping": return Category.Shopping
-        break;
-
-      case "sightseeing": return Category.Sightseeing;
-        break;
-      case "museum": return Category.Museum;
-        break;
-      case "university": return Category.University;
-        break;
-    }
-    return Category.Bern;
+    return CategoryFinder.findCategory(this.selectedCategory)
   }
 
   sortByTags():void{

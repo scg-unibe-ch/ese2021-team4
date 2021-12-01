@@ -11,7 +11,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~12.2.0",
+    "@angular/animations": "^12.2.13",
     "@angular/cdk": "^12.2.6",
     "@angular/common": "~12.2.0",
     "@angular/compiler": "~12.2.0",
@@ -21,7 +21,11 @@
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
+    "@costlydeveloper/ngx-awesome-popup": "^2.2.0",
     "@kolkov/angular-editor": "^1.2.0",
+    "@stripe/stripe-js": "^1.21.1",
+    "ngx-stripe": "^13.0.0",
+    "ngx-toastr": "^14.2.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

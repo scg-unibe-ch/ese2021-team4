@@ -1,0 +1,36 @@
+<mat-card *ngIf="user?.isAdmin">
+  <p>
+  <a routerLink="/fan-shop/product/-1"><button mat-flat-button color="primary">Create Product</button></a>
+</p>
+</mat-card>
+
+
+<mat-form-field appearance="fill">
+  <mat-label>Sort by:</mat-label>
+  <mat-select [(ngModel)]="sortBy"(ngModelChange)="sortProducts()">
+    <mat-option value="title">Name</mat-option>
+<!--    <mat-option value="id">ID</mat-option>-->
+    <mat-option value="tags">Tags</mat-option>
+    <mat-option value="price">Price</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+  <mat-label>Category:</mat-label>
+  <mat-select [(ngModel)]="selectedCategory" (ngModelChange)="selectProducts()">
+    <mat-option value="Restaurant">Restaurant</mat-option>
+    <mat-option value="Coffeeshop">Coffeeshop</mat-option>
+    <mat-option value="Shopping">Shopping</mat-option>
+    <mat-option value="Sightseeing">Sightseeing</mat-option>
+    <mat-option value="Museum">Museum</mat-option>
+    <mat-option value="University">University</mat-option>
+    <mat-option value="all">Show All</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-grid-list cols="2" rowHeight="2:1">
+  <mat-grid-tile *ngFor="let product of selectedProducts">
+    <app-product [preview]="true"
+                 [productId]="product.productId"></app-product>
+  </mat-grid-tile>
+</mat-grid-list>

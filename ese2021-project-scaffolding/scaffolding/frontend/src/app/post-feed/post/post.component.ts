@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AngularEditorConfig} from '@kolkov/angular-editor';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Comment} from 'src/app/models/comment.model';
-import {Category} from "../../models/category.model";
+import {Category, CategoryFinder} from "../../models/category.model";
 
 
 @Component({
@@ -18,21 +18,20 @@ import {Category} from "../../models/category.model";
 })
 export class PostComponent implements OnInit {
 
-  selectCategory='';
-
   loggedIn: boolean | undefined;
 
   user: User | undefined;
 
   newCommentDescription: string = '';
 
+  @Input()
   postId: number = 0;
   createdAtString: string | undefined;
   authorName: string | undefined;
   hasUpvoted: boolean = false;
   hasDownvoted: boolean = false;
 
-  existsInBackend : boolean;
+  existsInBackend : boolean = true;
   form: FormGroup = new FormGroup({});
   editMode: boolean = false;
 
@@ -91,12 +90,16 @@ export class PostComponent implements OnInit {
 
   @Input()
   post: Post = new Post(0, '', 0, '', 0, Category.Bern, 0, 0, new Date(), []);
+  @Input()
+  preview: boolean = false;
 
   @Output()
   update = new EventEmitter<Post>();
 
   @Output()
   delete = new EventEmitter<Post>();
+
+  selectCategory=this.post.tags.toString();
 
 
   constructor(
@@ -107,23 +110,35 @@ export class PostComponent implements OnInit {
     private activatedRoute: ActivatedRoute) {
 
     this.activatedRoute.params.subscribe(params => {
-      this.postId = +params.id;
+      if(!isNaN(+params.id)) {
+        this.postId = +params.id;
+      }
     });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
-    userService.user$.subscribe(res => this.user = res);
+    userService.user$.subscribe(res => {this.user = res; this.checkVoteStatus();});
 
     // Current value
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
 
+  }
+
+  ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      signature: [ '', Validators.required]
+    });
+
+
     // if this.postId === -1, this means we are in editor mode and are looking to create a new post
     if (this.postId === -1){
       this.editMode = true;
       this.existsInBackend = false;
+      this.selectCategory=this.post.tags.toString();
     } else {
       this.existsInBackend = true;
       this.editMode = false;
+
       this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
         this.post=new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []);
         this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
@@ -135,25 +150,15 @@ export class PostComponent implements OnInit {
           this.authorName = user.userName;
         });
 
+        this.selectCategory=this.post.tags.toString();
       });
-
-
+      this.checkVoteStatus();
       this.createdAtString = this.post.createdAt.toDateString();
     }
-
-  }
-
-  ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      signature: [ '', Validators.required]
-    });
-    this.checkVoteStatus();
   }
 
   checkVoteStatus() {
-   if(this.loggedIn === undefined || (this.loggedIn == true && this.user===undefined)){
-     setTimeout(()=>{this.checkVoteStatus()},10);
-   } else if (this.loggedIn == true){
+  if (this.loggedIn == true){
       this.httpClient.get(environment.endpointURL + "userpostvote/" + this.user?.userId + "/" + this.postId).subscribe((userPostVote: any) => {
         if(userPostVote !== null) {
           if (userPostVote.vote == 1) {
@@ -182,30 +187,22 @@ export class PostComponent implements OnInit {
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='visible';
     }
+    else if(this.post.imageId == 0 && this.post.description == '') {
+      document.getElementById('setTitle')!.style.visibility = 'hidden';
+      document.getElementById('setCategory')!.style.visibility = 'hidden';
+      document.getElementById('setDescriptionOrImage')!.style.visibility = 'visible';
+    }
     else{
-    document.getElementById('setTitle')!.style.visibility='hidden';
-    document.getElementById('setCategory')!.style.visibility='hidden';
+      document.getElementById('setTitle')!.style.visibility = 'hidden';
+      document.getElementById('setCategory')!.style.visibility = 'hidden';
+      document.getElementById('setDescriptionOrImage')!.style.visibility = 'hidden';
     this.router.navigate(['/home']);
     this.updatePost(this.post);
     }
   }
 
   findCategory(): Category{
-    switch (this.selectCategory){
-      case "restaurant": return Category.Restaurant;
-        break;
-      case "coffeeshop": return Category.Coffeeshop;
-        break;
-      case "shopping": return Category.Shopping
-        break;
-      case "sightseeing": return Category.Sightseeing;
-        break;
-      case "museum": return Category.Museum;
-        break;
-      case "university": return Category.University;
-        break;
-    }
-    return Category.Bern;
+    return CategoryFinder.findCategory(this.selectCategory)
   }
 
   createPost(): void {
@@ -216,10 +213,16 @@ export class PostComponent implements OnInit {
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='visible';
     }
+    else if(this.post.imageId == 0 && this.post.description == '') {
+      document.getElementById('setTitle')!.style.visibility = 'hidden';
+      document.getElementById('setCategory')!.style.visibility = 'hidden';
+      document.getElementById('setDescriptionOrImage')!.style.visibility = 'visible';
+    }
     else {
       this.router.navigate(['/home']);
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='hidden';
+      document.getElementById('setDescriptionOrImage')!.style.visibility = 'hidden';
     if(this.user != null){ //user might not be instantiated, this is taken care of by the html
       this.httpClient.post(environment.endpointURL + "post", {
       title: this.post.title,
@@ -290,7 +293,7 @@ export class PostComponent implements OnInit {
   }
 
 
-  // CREATE - TodoItem
+  // CREATE - Comment
   createComment(): void {
     if (!(this.newCommentDescription == '')) {
       this.httpClient.post(environment.endpointURL + "comment", {
@@ -306,7 +309,7 @@ export class PostComponent implements OnInit {
     }
   }
 
-  // UPDATE - TodoItem
+  // UPDATE - Comment
   updateComment(comment: Comment): void {
     this.httpClient.put(environment.endpointURL + "comment/" + comment.commentId, {
       description: comment.description,
@@ -314,7 +317,7 @@ export class PostComponent implements OnInit {
     }).subscribe();
   }
 
-  // DELETE - TodoItem
+  // DELETE - Comment
   deleteComment(comment: Comment): void {
     this.httpClient.delete(environment.endpointURL + "comment/" + comment.commentId).subscribe(() => {
       this.post.comments.splice(this.post.comments.indexOf(comment), 1);

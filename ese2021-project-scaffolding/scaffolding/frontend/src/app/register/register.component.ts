@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {UserService} from "../services/user.service";
 import {environment} from "../../environments/environment";
 import {Router} from "@angular/router";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-register',
@@ -41,7 +42,8 @@ export class RegisterComponent {
   constructor(
     private router: Router,
     public httpClient: HttpClient,
-    public userService: UserService
+    public userService: UserService,
+    public toastr: ToastrService
   ) {
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
@@ -71,6 +73,9 @@ export class RegisterComponent {
       }).subscribe(() => {
         //TODO: user feedback
         this.router.navigate(['/login'])
+        this.toastr.success("You were successfully registered.","",{
+          timeOut: 2500
+        });
       }, err => {
         if (err.error.name == 'SequelizeUniqueConstraintError') {
           if (err.error.fields[0] == 'userName') {

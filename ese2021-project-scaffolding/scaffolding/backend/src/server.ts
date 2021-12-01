@@ -9,7 +9,7 @@ import { Sequelize } from 'sequelize';
 import { TodoList } from './models/todolist.model';
 import { TodoItem } from './models/todoitem.model';
 import { User } from './models/user.model';
-
+import { Image } from './models/image.model';
 
 import cors from 'cors';
 import {AdminController} from './controllers/admin.controller';
@@ -42,6 +42,7 @@ export class Server {
         Order.initialize(this.sequelize);
         Comment.initialize(this.sequelize);
         UserPostVote.initialize(this.sequelize);
+        Image.initialize(this.sequelize);
         UserPostVote.createAssociations();
         TodoItem.createAssociations();
         TodoList.createAssociations();

@@ -6,9 +6,9 @@
       <mat-card-subtitle>{{post.tags}}</mat-card-subtitle>
       <mat-card-subtitle>Created At: {{createdAtString}} by {{authorName}}</mat-card-subtitle>
     </mat-card-header>
-    <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo in Post"> -->
     <mat-card-content>
         <div [innerHTML]="post.description"></div>
+        <div id="image"></div> 
     </mat-card-content>
 
     <mat-card-actions>
@@ -47,6 +47,8 @@
         <input matInput #message maxlength="256" [(ngModel)]="post.title" [ngModelOptions]="{standalone: true}">
         <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
       </mat-form-field><mat-form-field appearance="fill">
+
+      <!-- CATEGORY -->
       <mat-label>Category:</mat-label>
       <mat-select [(ngModel)]="selectCategory"(ngModelChange)="findCategory()"[ngModelOptions]="{standalone: true}" >
         <mat-option value="Restaurant">Restaurant</mat-option>
@@ -56,11 +58,24 @@
         <mat-option value="Shopping">Shopping</mat-option>
         <mat-option value="Museum">Museum</mat-option>
       </mat-select>
-
     </mat-form-field><span id="setTitle" style="visibility: hidden">Please set a title. </span>
       <span id="setCategory" style="visibility: hidden"> Please set a category.</span>
       <span id="setDescriptionOrImage" style="visibility: hidden"> Please set a Description or Image.</span>
+
+    <!-- UPLOAD IMAGE -->
+    <input type="file" class="file-input" multiple accept="image/*"
+       (change)="onFileSelected($event)" #fileUpload>
+
+    <div class="file-upload" action="image" enctype="multipart/form-data" method="post">
+      <button mat-mini-fab color="primary" class="upload-btn"
+        (click)="fileUpload.click()">
+          <mat-icon>attach_file</mat-icon>
+      </button>
+    </div>
+    
     </form>
+
+    
 
     <!-- DESCRIPTION -->
     <br><br>
@@ -69,6 +84,8 @@
 <!--    <p class="html">-->
 <!--      HTML Output:  {{ post.description }}-->
 <!--    </p>-->
+
+    <span id="image"></span>
 
     <button *ngIf="existsInBackend" (click)="save()">Save Post</button>
     <button *ngIf="!existsInBackend" (click)="createPost()">Create Post</button>

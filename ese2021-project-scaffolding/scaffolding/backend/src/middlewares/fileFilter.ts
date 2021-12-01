@@ -3,16 +3,17 @@ import multer from 'multer';
 
 // This is a middleware to handle the incoming files and images.
 
-const storage = multer.diskStorage({
-    // where the images are stored
-    destination: function (req, file, cb) {
-        cb(null, './uploads/');
-    },
-    // what the image is called.
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '_' + file.originalname);
-    }
-});
+// const storage = multer.diskStorage({
+//     // where the images are stored
+//     destination: function (req, file, cb) {
+//         cb(null, './uploads/');
+//     },
+//     // what the image is called.
+//     filename: function (req, file, cb) {
+//         cb(null, Date.now() + '_' + file.originalname);
+//     }
+// });
+const storage = multer.memoryStorage();
 
 // only certain data types are allowed
 const fileFilter = (req, file, cb) => {

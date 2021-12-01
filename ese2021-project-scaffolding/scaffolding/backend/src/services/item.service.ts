@@ -1,26 +1,27 @@
 import {upload} from '../middlewares/fileFilter';
-import {TodoItem} from '../models/todoitem.model';
+import { Image, ImageAttributes } from '../models/image.model';
 import {ItemImage, ItemImageAttributes} from '../models/itemImage.model';
 import {MulterRequest} from '../models/multerRequest.model';
+import { Post } from '../models/post.model';
 
 export class ItemService {
 
     public addImage(req: MulterRequest): Promise<ItemImageAttributes> {
-        return TodoItem.findByPk(req.params.id)
+        return Post.findByPk(req.params.id)
             .then(found => {
                 if (!found) {
                     return Promise.reject('Product not found!');
                 } else {
                     return new Promise<ItemImageAttributes>((resolve, reject) => {
                         upload.single('image')(req, null, (error: any) => {
-                            ItemImage.create({ fileName: req.file.filename, todoItemId: found.todoItemId })
+                            ItemImage.create({ fileName: 'testname'/*req.file.filename*/, postId: found.postId })
                                 .then(created => resolve(created))
                                 .catch(() => reject('Could not upload image!'));
                         });
                     });
                 }
             })
-            .catch(() => Promise.reject('Could not upload image!'));
+            .catch(() => Promise.reject('Could not find post to upload image!'));
     }
 
     public getImageItem(imageId: number): Promise<ItemImage> {
@@ -35,6 +36,10 @@ export class ItemService {
             .catch(() => Promise.reject('could not fetch the image!'));
     }
 
+    // public test(image: ImageAttributes): Promise<ImageAttributes> {
+    //     image.postId = 1;
 
+    //     return Image.create(image).then(inserted => Promise.resolve(inserted)).catch(err => Promise.reject(err));
+    // }
 
 }

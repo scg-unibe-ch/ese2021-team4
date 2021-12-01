@@ -8,11 +8,11 @@ export class Post {
         public title: string,
         public userId: number,
         public description: string,
-        public imageId: number,
         public tags: Category,
         public upvotes: number,
         public downvotes: number,
         public createdAt: Date,
         public comments: Comment[],
+        public images: File[]
     ) {}
   }

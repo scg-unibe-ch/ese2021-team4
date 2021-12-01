@@ -20,7 +20,6 @@ import { switchMap } from 'rxjs/operators';
 export class OrderFormComponent implements OnInit {
 
   user: User | undefined;
-  newOrder: Order | undefined;
 
   orderFirstName: string = '';
   orderLastName: string = '';
@@ -68,10 +67,6 @@ export class OrderFormComponent implements OnInit {
       this.httpClient.get(environment.endpointURL + "product/" + this.productId).subscribe((product: any) => {
         this.product = new Product(product.productId, product.title, product.description, product.price, product.tags, product.imageId);
       });
-
-
-      //mit product ID Order richtig instanziieren
-      this.newOrder = new Order(Status.Pending, 0, user.userId, this.productId, 0, new Date(), new Date(), this.orderFirstName, this.orderLastName, this.orderStreet, this.orderHouseNr, this.orderZipCode, this.orderCity, this.orderPhoneNr)
     });
   }
 
@@ -85,7 +80,6 @@ export class OrderFormComponent implements OnInit {
       document.getElementById('emptyFields')!.style.visibility='visible';
     }
     else {
-      this.updateShippingDetails();
       this.httpClient.post(environment.endpointURL + "order", {
         status: "Pending",
         productId: this.productId,
@@ -110,11 +104,6 @@ export class OrderFormComponent implements OnInit {
       });
       this.redirecting = true;
     }
-  }
-
-  // TODO: speichert die angegeben Shipping Details, ohne die User Attributes zu verändern
-  updateShippingDetails(): void {
-
   }
 
   formIsFilled(): boolean {
@@ -148,7 +137,7 @@ export class OrderFormComponent implements OnInit {
          "postBoxNumber":""
       },
       "fullValidation":true
-   }
+   };
     this.httpClient.post(request, payload).subscribe( res => {
       console.log(res);
     })

@@ -9,6 +9,7 @@ import {AngularEditorConfig} from '@kolkov/angular-editor';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Comment} from 'src/app/models/comment.model';
 import {Category, CategoryFinder} from "../../models/category.model";
+import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-awesome-popup";
 
 
 @Component({
@@ -255,7 +256,28 @@ export class PostComponent implements OnInit {
 
     if(this.user?.userId == post.userId || this.user?.isAdmin){
       this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {});
+      this.router.navigate(['/home']);
     }
+  }
+
+  confirmDeleting(post: Post): void{
+    const confirmBox = new ConfirmBoxInitializer();
+    confirmBox.setTitle('');
+    confirmBox.setMessage('Are you sure you want to delete this post?');
+    confirmBox.setButtonLabels('YES', 'NO');
+
+    // Choose layout color type
+    confirmBox.setConfig({
+      LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
+    });
+
+    // Simply open the popup and listen which button is clicked
+    confirmBox.openConfirmBox$().subscribe(resp => {
+
+      if (resp.ClickedButtonID=='yes'){
+        this.deletePost(post);
+      }
+    });
   }
 
   votePost(param: number): void {

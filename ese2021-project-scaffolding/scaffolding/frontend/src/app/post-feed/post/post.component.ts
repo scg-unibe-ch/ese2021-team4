@@ -139,8 +139,6 @@ export class PostComponent implements OnInit {
       this.editMode = false;
 
       this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
-        console.log(post.createdAt);
-        console.log(new Date(post.createdAt));
         this.post=new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), []);
         this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
           comments.forEach((comment: any) => {

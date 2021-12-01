@@ -23,7 +23,7 @@ export class ProfileComponent implements OnInit {
   houseNr: string = '';
   city: string = '';
   zipCode: string = '';
-  birthday: Date = new Date();
+  birthday: string = '';
   phoneNr: string = '';
 
   updateMessage: string = '';
@@ -51,7 +51,7 @@ export class ProfileComponent implements OnInit {
       this.houseNr = user.houseNr;
       this.zipCode = user.zipCode;
       this.city = user.city;
-      this.birthday = new Date(user.birthday);
+      this.birthday = user.birthday.substr(0, 10);
       this.phoneNr = user.phoneNr;
     });
   }

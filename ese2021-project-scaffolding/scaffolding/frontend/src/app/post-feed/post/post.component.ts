@@ -174,7 +174,7 @@ export class PostComponent implements OnInit {
   }
 
   checkVoteStatus() {
-  if (this.loggedIn == true){
+  if (this.user != undefined){
       this.httpClient.get(environment.endpointURL + "userpostvote/" + this.user?.userId + "/" + this.postId).subscribe((userPostVote: any) => {
         if(userPostVote !== null) {
           if (userPostVote.vote == 1) {
@@ -191,24 +191,27 @@ export class PostComponent implements OnInit {
     this.httpClient.get(environment.endpointURL + "post/" + this.postId + "/getImageIds",
     {responseType: 'text', headers: {'Content-Type': 'json/application'}}).subscribe((imgIds: any) => {
 
-      const imgIdArray :Array<String> = imgIds.split(",");
-      const imageSpan = document.getElementById("image");
-
-      imgIdArray.forEach(element => {
-        const imageId : number = +element;
-        this.httpClient.get(environment.endpointURL + "post/" + "getSingleImage/" + imageId,
-         {responseType: 'blob', headers: {'Content-Type': 'multipart/formData'}}).subscribe((image: any) =>{
-          const img = document.createElement("img");
-          const picture: File = new File([image], "test");
-          img.src = URL.createObjectURL(picture);
-          img.height = 200;
-
-          img.onload = function() {
-            URL.revokeObjectURL(img.src);
-          }
-          imageSpan?.appendChild(img);
-         });
-      });
+      if(imgIds != ""){
+        const imgIdArray :Array<String> = imgIds.split(",");
+        const imageSpan = document.getElementById("image");
+        
+        imgIdArray.forEach(element => {
+          const imageId : number = +element;
+          this.httpClient.get(environment.endpointURL + "post/" + "getSingleImage/" + imageId,
+           {responseType: 'blob', headers: {'Content-Type': 'multipart/formData'}}).subscribe((image: any) =>{
+             console.log(image);
+            const img = document.createElement("img");
+            const picture: File = new File([image], "test");
+            img.src = URL.createObjectURL(picture);
+            img.height = 200;
+  
+            img.onload = function() {
+              URL.revokeObjectURL(img.src);
+            }
+            imageSpan?.appendChild(img);
+           });
+        });
+      }
     });
   }
 

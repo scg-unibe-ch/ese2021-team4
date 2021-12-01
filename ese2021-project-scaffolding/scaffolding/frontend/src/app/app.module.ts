@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {ToastrModule} from "ngx-toastr";
+import {MatRadioModule} from '@angular/material/radio';
 
 //import { TodoListComponent } from './todo-list/todo-list.component';
 // import { TodoItemComponent } from './todo-list/todo-item/todo-item.component';
@@ -53,10 +54,13 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent},
   {path: 'home/post/:id', component: PostComponent},
   {path: 'profile/post/:id', component: PostComponent},
+  {path: 'dashboard/post/:id', component: PostComponent},
   {path: 'fan-shop', component: FanShopComponent},
   {path: 'fan-shop/product/:id', component: ProductComponent},
   {path: 'fan-shop/product/:id/order', component: OrderFormComponent},
-  {path: 'dashboard', component: AdminDashboardComponent}
+  {path: 'dashboard', component: AdminDashboardComponent},
+  {path: 'payment_cancelled/:id', redirectTo: 'fan-shop/product/:id'},
+  {path: 'success', redirectTo: 'fan-shop'}
 ];
 @NgModule({
   declarations: [
@@ -80,32 +84,33 @@ const routes: Routes = [
     UserListComponent,
     LoginFeedbackComponent
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        ToastrModule.forRoot(),
-        NgxAwesomePopupModule.forRoot(),
-        ConfirmBoxConfigModule.forRoot(),
-        HttpClientModule,
-        MatToolbarModule,
-        MatTabsModule,
-        MatCardModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatListModule,
-        FormsModule,
-        MatCheckboxModule,
-        RouterModule.forRoot(routes),
-        MatIconModule,
-        MatSelectModule,
-        AngularEditorModule,
-        ReactiveFormsModule,
-        MatGridListModule,
-        MatChipsModule,
-        NgxStripeModule.forRoot('pk_test_51K0pOrIFU9ZBSiczIlnqN7V1M1A7mf0vb6KDUJR01ajD8j3Lfht3SPgImeSnweRtNr29wjknKCEn2gGd4Zwha6Bx00VKqhuUP6')
-        // Component
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+    NgxAwesomePopupModule.forRoot(),
+    ConfirmBoxConfigModule.forRoot(),
+    HttpClientModule,
+    MatToolbarModule,
+    MatTabsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatListModule,
+    FormsModule,
+    MatCheckboxModule,
+    RouterModule.forRoot(routes),
+    MatIconModule,
+    MatSelectModule,
+    AngularEditorModule,
+    ReactiveFormsModule,
+    MatGridListModule,
+    MatChipsModule,
+    NgxStripeModule.forRoot('pk_test_51K0pOrIFU9ZBSiczIlnqN7V1M1A7mf0vb6KDUJR01ajD8j3Lfht3SPgImeSnweRtNr29wjknKCEn2gGd4Zwha6Bx00VKqhuUP6'),
+    MatRadioModule,
+    // Component
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

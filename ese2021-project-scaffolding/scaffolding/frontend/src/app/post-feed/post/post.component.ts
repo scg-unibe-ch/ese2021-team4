@@ -26,7 +26,6 @@ export class PostComponent implements OnInit {
 
   @Input()
   postId: number = 0;
-  createdAtString: string | undefined;
   authorName: string | undefined;
   hasUpvoted: boolean = false;
   hasDownvoted: boolean = false;
@@ -170,7 +169,6 @@ export class PostComponent implements OnInit {
         this.selectCategory=this.post.tags.toString();
       });
       this.checkVoteStatus();
-      this.createdAtString = this.post.createdAt.toDateString();
     }
   }
 
@@ -189,9 +187,9 @@ export class PostComponent implements OnInit {
   }
 
   loadPicturesToPost(){
-    this.httpClient.get(environment.endpointURL + "post/" + this.postId + "/getImageIds", 
+    this.httpClient.get(environment.endpointURL + "post/" + this.postId + "/getImageIds",
     {responseType: 'text', headers: {'Content-Type': 'json/application'}}).subscribe((imgIds: any) => {
-      
+
       const imgIdArray :Array<String> = imgIds.split(",");
       const imageSpan = document.getElementById("image");
 
@@ -234,7 +232,7 @@ export class PostComponent implements OnInit {
       document.getElementById('setCategory')!.style.visibility = 'hidden';
       document.getElementById('setDescriptionOrImage')!.style.visibility = 'visible';
     }
-    else{
+    else {
       document.getElementById('setTitle')!.style.visibility = 'hidden';
       document.getElementById('setCategory')!.style.visibility = 'hidden';
       document.getElementById('setDescriptionOrImage')!.style.visibility = 'hidden';
@@ -366,5 +364,4 @@ export class PostComponent implements OnInit {
       this.post.comments.splice(this.post.comments.indexOf(comment), 1);
     });
   }
-
 }

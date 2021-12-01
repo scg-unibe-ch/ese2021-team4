@@ -83,6 +83,7 @@ export class ProductComponent implements OnInit {
   productId: number = 0;
 
   selectCategory=this.product.tags.toString();
+  missingProduct: boolean = false;
 
   constructor(
     private router: Router,
@@ -123,7 +124,10 @@ export class ProductComponent implements OnInit {
             this.product = new Product(product.productId, product.title, product.description, product.price, product.tags, product.imageId);
             this.selectCategory = this.product.tags.toString();
           }
-          else(this.product = new Product(0, 'Nonexistent Product', 'This product does not exist anymore.', 0, Category.Bern, 0))
+          else{
+            this.product = new Product(0, 'Nonexistent Product', 'This product does not exist anymore.', 0, Category.Bern, 0)
+            this.missingProduct = true;
+          }
         });
       }
   }

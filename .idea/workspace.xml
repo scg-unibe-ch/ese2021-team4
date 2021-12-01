@@ -4,7 +4,10 @@
     <list default="true" id="665e9aa3-6cd1-4315-843c-4790b6472fcb" name="Default Changelist" comment="added payment methods">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/backend/db.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/backend/db.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/post-feed/post/post.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/post-feed/post/post.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/order/order.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/order/order.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/order/order.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/order/order.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/product/product.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/product/product.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +48,7 @@
       <workItem from="1638220695784" duration="643000" />
       <workItem from="1638304181006" duration="430000" />
       <workItem from="1638366808236" duration="2129000" />
+      <workItem from="1638373218936" duration="1388000" />
     </task>
     <task id="LOCAL-00001" summary="started layout for products">
       <created>1637761671615</created>

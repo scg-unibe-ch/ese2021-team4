@@ -51,9 +51,53 @@ export class OrderComponent implements OnInit {
   @Input()
   isShipped: boolean = false;
   isCancelled: boolean = false;
+  isPaid: boolean = false;
 
   @Output()
   update = new EventEmitter<Order>();
+
+  confirmPayment(): void{
+    const confirmBox = new ConfirmBoxInitializer();
+    confirmBox.setTitle('');
+    confirmBox.setMessage('Are you sure this order has been paid?');
+    confirmBox.setButtonLabels('YES', 'NO');
+
+    // Choose layout color type
+    confirmBox.setConfig({
+      LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
+    });
+
+    // Simply open the popup and listen which button is clicked
+    confirmBox.openConfirmBox$().subscribe(resp => {
+
+      if (resp.ClickedButtonID=='yes'){
+        this.setPaid()
+      }
+    });
+  }
+
+  setPaid(): void {
+    if(this.user?.isAdmin) {
+      this.isPaid = true;
+      this.httpClient.put(environment.endpointURL + "order/" + this.order.orderId, {
+        billingStatus: "paid by invoice",
+        orderId: this.order.orderId,
+        userId: this.order.userId,
+        productId: this.order.productId,
+        adminId: this.user!.userId,
+        createdDate: this.order.createdDate,
+        shippedDate: new Date(),
+        orderFirstName: this.order.orderFirstName,
+        orderLastName: this.order.orderLastName,
+        orderStreet: this.order.orderStreet,
+        orderHouseNr: this.order.orderHouseNr,
+        orderZipCode: this.order.orderZipCode,
+        orderCity: this.order.orderCity,
+        orderPhoneNr: this.order.orderPhoneNr,
+      }).subscribe();
+      this.update.emit(this.order);
+      }
+  }
 
   confirmCancelling(): void{
       const confirmBox = new ConfirmBoxInitializer();

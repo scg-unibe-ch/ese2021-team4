@@ -1,4 +1,4 @@
-<div *ngIf="preview">
+<div *ngIf="product.productId != 0"><div *ngIf="preview">
   <div> <mat-chip-list><mat-chip>{{product.tags}}</mat-chip></mat-chip-list><br><br><br><br><br><br><br>
     {{product.title}} <br>
     <mat-card-subtitle>Price: {{product.price}} CHF </mat-card-subtitle> <br><br>
@@ -75,3 +75,5 @@
     </div>
 
   </div></div>
+</div>
+<div *ngIf="product.productId == 0">This product does not exist anymore.</div>

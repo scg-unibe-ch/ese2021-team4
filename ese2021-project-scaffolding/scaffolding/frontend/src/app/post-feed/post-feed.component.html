@@ -1,21 +1,13 @@
-<mat-card>
-    <!-- <mat-form-field>
-        <input matInput placeholder="Post Title" [(ngModel)]="newPostTitle" title="title">
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput placeholder="Post Description" [(ngModel)]="newPostDescription" title="description">
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput placeholder="Post Tags, comma separated" [(ngModel)]="newPostTags" title="tags">
-    </mat-form-field> -->
-    <p *ngIf="loggedIn">
-        <a routerLink="/home/post/-1"><button mat-flat-button color="primary">Create Post</button></a>
-    </p>
-    <p *ngIf="!loggedIn">
-      Please<a routerLink="/login"> log in </a>to create a Post
-    </p>
-
-  </mat-card>
+<mat-card *ngIf="loggedIn && shouldShowPostButton()">
+  <p>
+      <a routerLink="/home/post/-1"><button mat-flat-button color="primary">Create Post</button></a>
+  </p>
+</mat-card>
+<mat-card *ngIf="!loggedIn">
+  <p>
+    Please<a routerLink="/login"> log in </a>to create a Post
+  </p>
+</mat-card>
 <mat-form-field appearance="fill">
   <mat-label>Sort by:</mat-label>
   <mat-select [(ngModel)]="sortBy"(ngModelChange)="sortPosts()">

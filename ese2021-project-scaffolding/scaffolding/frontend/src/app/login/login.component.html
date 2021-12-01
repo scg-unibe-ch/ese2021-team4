@@ -10,9 +10,14 @@
     </mat-form-field>
     <p style="color:red" *ngIf="passwordWrong"> Password wrong</p>
     <p style="color:red" *ngIf="userNameWrong"> Username not found</p>
-
     <button mat-flat-button color="primary" (click)="loginUser()">Login</button>
+    <br>
+    <span id="emptyUser" style="visibility: hidden">Please enter your username or email</span>
+    <span id="emptyPassword" style="visibility: hidden">Please enter your password</span>
 
+
+
+    <br>
     <p>
       Don't have an account yet? <a routerLink="/register">Register</a>
     </p>

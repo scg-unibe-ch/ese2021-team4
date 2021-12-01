@@ -70,6 +70,10 @@ export class PostFeedComponent implements OnInit {
 
   }
 
+  shouldShowPostButton(): boolean {
+    return this.feedType != 'flagged' && this.feedType != 'upvoted' && this.feedType != 'downvoted' && this.feedType != 'commented';
+  }
+
   readPosts(): void {
     switch (this.feedType) {
       case 'created':

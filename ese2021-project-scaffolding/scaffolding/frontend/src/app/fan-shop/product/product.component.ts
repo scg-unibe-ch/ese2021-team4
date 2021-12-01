@@ -3,7 +3,7 @@ import {Product} from 'src/app/models/product.model';
 import {User} from 'src/app/models/user.model';
 import {UserService} from 'src/app/services/user.service';
 import {environment} from 'src/environments/environment';
-import {Component, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AngularEditorConfig} from '@kolkov/angular-editor';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -119,8 +119,11 @@ export class ProductComponent implements OnInit {
         this.existsInBackend = true;
         this.editMode = false;
         this.httpClient.get(environment.endpointURL + "product/" + this.productId).subscribe((product: any) => {
-          this.product = new Product(product.productId, product.title, product.description, product.price, product.tags, product.imageId);
-          this.selectCategory=this.product.tags.toString();
+          if(product != undefined) {
+            this.product = new Product(product.productId, product.title, product.description, product.price, product.tags, product.imageId);
+            this.selectCategory = this.product.tags.toString();
+          }
+          else(this.product = new Product(0, 'Nonexistent Product', 'This product does not exist anymore.', 0, Category.Bern, 0))
         });
       }
   }

@@ -12,7 +12,7 @@
       </mat-card>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-flat-button color="warn" (click)="cancelOrder()"[disabled]="isShipped || isCancelled">CANCEL</button>
+      <button mat-flat-button color="warn" (click)="confirmCancelling()"[disabled]="isShipped || isCancelled">CANCEL</button>
       <button *ngIf="user?.isAdmin" mat-flat-button color="primary" (click)="shipOrder()"[disabled]="isShipped || isCancelled">SHIP</button>
     </mat-card-actions>
     <mat-card-footer *ngIf="user?.isAdmin">

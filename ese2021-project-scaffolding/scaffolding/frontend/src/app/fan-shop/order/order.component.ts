@@ -5,6 +5,7 @@ import {User} from "src/app//models/user.model";
 import {Status} from 'src/app/models/status.model';
 import {HttpClient} from "@angular/common/http";
 import { environment } from 'src/environments/environment';
+import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-awesome-popup";
 
 @Component({
   selector: 'app-order',
@@ -54,6 +55,35 @@ export class OrderComponent implements OnInit {
   @Output()
   update = new EventEmitter<Order>();
 
+  confirmCancelling(): void{
+
+      const confirmBox = new ConfirmBoxInitializer();
+
+      confirmBox.setTitle('');
+
+      confirmBox.setMessage('Are you sure you want to cancel this order?');
+
+      confirmBox.setButtonLabels('YES', 'NO');
+
+      // Choose layout color type
+
+      confirmBox.setConfig({
+
+        LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
+
+      });
+
+      // Simply open the popup and listen which button is clicked
+
+      confirmBox.openConfirmBox$().subscribe(resp => {
+
+        if (resp.ClickedButtonID=='yes'){
+          this.cancelOrder()
+        }
+
+      });
+
+    }
 
   cancelOrder(): void {
     this.isCancelled = true;
@@ -65,7 +95,6 @@ export class OrderComponent implements OnInit {
       adminId: this.user!.userId,
       createdDate: this.order.createdDate,
       shippedDate: new Date(),
-
       orderFirstName: this.order.orderFirstName,
       orderLastName: this.order.orderLastName,
       orderStreet: this.order.orderStreet,

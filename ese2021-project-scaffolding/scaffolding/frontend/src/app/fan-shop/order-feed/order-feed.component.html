@@ -1,0 +1,13 @@
+<mat-form-field appearance="fill">
+  <mat-label>Status:</mat-label>
+  <mat-select [(ngModel)]="selectedStatus" (ngModelChange)="filterBy(selectedStatus)">
+    <mat-option value="Pending">Pending</mat-option>
+    <mat-option value="Shipped">Shipped</mat-option>
+    <mat-option value="Cancelled">Cancelled</mat-option>
+    <mat-option value="all">Show All</mat-option>
+  </mat-select>
+</mat-form-field>
+<div *ngFor="let order of selectedOrders">
+  <app-order [order]="order"
+             (update)="updateOrder($event)"></app-order>
+</div>

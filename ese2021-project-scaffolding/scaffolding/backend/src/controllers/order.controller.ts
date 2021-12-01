@@ -74,7 +74,7 @@ orderController.post('/', async (req: Request, res: Response) => {
         ],
         mode: 'payment',
         success_url: process.env.SITE + '/success',
-        cancel_url: process.env.SITE + '/payment_cancelled',
+        cancel_url: process.env.SITE + '/payment_cancelled/' + prod.productId,
     });
 
 

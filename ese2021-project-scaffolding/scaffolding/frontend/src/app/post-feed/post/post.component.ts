@@ -187,12 +187,12 @@ export class PostComponent implements OnInit {
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='visible';
     }
-    else if(this.post.imageId == 0 && this.post.description == '') {
+    else if(this.post.imageId == null && this.post.description == '') {
       document.getElementById('setTitle')!.style.visibility = 'hidden';
       document.getElementById('setCategory')!.style.visibility = 'hidden';
       document.getElementById('setDescriptionOrImage')!.style.visibility = 'visible';
     }
-    else{
+    else {
       document.getElementById('setTitle')!.style.visibility = 'hidden';
       document.getElementById('setCategory')!.style.visibility = 'hidden';
       document.getElementById('setDescriptionOrImage')!.style.visibility = 'hidden';

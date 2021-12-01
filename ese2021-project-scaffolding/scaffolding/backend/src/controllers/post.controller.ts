@@ -41,15 +41,29 @@ postController.get('/:id', (req, res) => {
     }).catch(err => res.status(500).send(err));
 });
 
-// get images to specific post
-postController.get('/:id/getImages', (req: Request, res: Response) => {
+// get imageIds to specific post
+postController.get('/:id/getImageIds', (req: Request, res: Response) => {
     Image.findAll({where: {postId: req.params.id}}).then(found => {
         if (found != null) {
+            let imgIds = '';
             found.forEach(element => {
-                res.status(200).send(element.file);
+               imgIds = imgIds + String(element.imageId) + ',';
             });
+            imgIds = imgIds.substring(0, imgIds.length - 1);
+            res.status(200).send(imgIds);
         } else {
-            res.status(500).send("no images found");
+            res.status(500).send('no imageIds found');
+        }
+    });
+});
+
+// get specific image
+postController.get('/getSingleImage/:id', (req: Request, res: Response) => {
+    Image.findByPk(req.params.id).then(found => {
+        if (found != null) {
+            res.status(200).send(found.file);
+        } else {
+            res.status(200).send('');
         }
     });
 });
@@ -64,9 +78,16 @@ postController.post('/', (req: Request, res: Response) => {
 
 // upload image and add to a post
 postController.post('/:id/image', upload.any(), (req: MulterRequest, res: Response) => {
-    Image.create({file: req.files[0].buffer, postId: req.body.postId}).then(created => {
+    let i = 0;
+    while (i < req.files.length) {
+
+        Image.create({file: req.files[i].buffer, postId: +req.params.id}).then(created => {
         res.status(201).send(created);
-    }).catch(err => res.status(500).send(err));
+        }).catch(err => res.status(500).send(err));
+
+        i = i + 1;
+    }
+
 });
 
 // delete

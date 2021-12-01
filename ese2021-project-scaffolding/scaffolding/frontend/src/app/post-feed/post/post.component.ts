@@ -171,11 +171,14 @@ export class PostComponent implements OnInit {
 
       this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
         this.post=new Post(post.postId, post.title, post.userId, post.description, post.imageId, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []);
-        this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
-          comments.forEach((comment: any) => {
-            this.post.comments.push(new Comment(comment.commentId, comment.postId, comment.userId, comment.description, comment.upvotes, comment.downvotes, new Date(comment.createdAt)));
+        if(!this.preview){
+          this.loadPicturesToPost();
+          this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
+            comments.forEach((comment: any) => {
+              this.post.comments.push(new Comment(comment.commentId, comment.postId, comment.userId, comment.description, comment.upvotes, comment.downvotes, new Date(comment.createdAt)));
+            });
           });
-        });
+        }
         this.httpClient.get(environment.endpointURL + "user/" + post.userId).subscribe((user: any) => {
           this.authorName = user.userName;
         });
@@ -199,22 +202,29 @@ export class PostComponent implements OnInit {
       });
     }
   }
-  test(){
-    this.httpClient.get(environment.endpointURL + "post/" + this.postId + "/getImages", 
-    {responseType: 'blob', headers: {'Content-Type': 'multipart/form-data'}}).subscribe((images: any) => {
-      var file = new File([images], "name");
+
+  loadPicturesToPost(){
+    this.httpClient.get(environment.endpointURL + "post/" + this.postId + "/getImageIds", 
+    {responseType: 'text', headers: {'Content-Type': 'json/application'}}).subscribe((imgIds: any) => {
       
-      this.post.images[0] = file;
+      const imgIdArray :Array<String> = imgIds.split(",");
       const imageSpan = document.getElementById("image");
 
-      const img = document.createElement("img");
-      img.src = URL.createObjectURL(file);
-      img.height = 60;
+      imgIdArray.forEach(element => {
+        const imageId : number = +element;
+        this.httpClient.get(environment.endpointURL + "post/" + "getSingleImage/" + imageId,
+         {responseType: 'blob', headers: {'Content-Type': 'multipart/formData'}}).subscribe((image: any) =>{
+          const img = document.createElement("img");
+          const picture: File = new File([image], "test");
+          img.src = URL.createObjectURL(picture);
+          img.height = 500;
 
-      img.onload = function() {
-        URL.revokeObjectURL(img.src);
-      }
-      imageSpan?.appendChild(img);
+          img.onload = function() {
+            URL.revokeObjectURL(img.src);
+          }
+          imageSpan?.appendChild(img);
+         });
+      });
     });
   }
 

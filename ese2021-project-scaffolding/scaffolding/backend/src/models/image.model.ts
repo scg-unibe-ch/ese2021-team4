@@ -4,6 +4,7 @@ export interface ImageAttributes {
     imageId: number;
     file: Blob;
     postId: number;
+    productId: number;
 }
 
 export interface ImageCreationAttributes extends Optional<ImageAttributes, 'imageId'> { }
@@ -16,6 +17,7 @@ export class Image extends Model<ImageAttributes, ImageCreationAttributes> imple
     imageId!: number;
     file!: Blob;
     postId!: number;
+    productId!: number;
 
     public static initialize(sequelize: Sequelize) {
         Image.init(
@@ -30,6 +32,10 @@ export class Image extends Model<ImageAttributes, ImageCreationAttributes> imple
                     allowNull: false
                 },
                 postId: {
+                    type: DataTypes.INTEGER,
+                    allowNull: false
+                },
+                productId: {
                     type: DataTypes.INTEGER,
                     allowNull: false
                 }

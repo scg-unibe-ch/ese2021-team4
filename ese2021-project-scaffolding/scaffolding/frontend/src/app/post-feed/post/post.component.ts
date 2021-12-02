@@ -199,7 +199,6 @@ export class PostComponent implements OnInit {
           const imageId : number = +element;
           this.httpClient.get(environment.endpointURL + "post/" + "getSingleImage/" + imageId,
            {responseType: 'blob', headers: {'Content-Type': 'multipart/formData'}}).subscribe((image: any) =>{
-             console.log(image);
             const img = document.createElement("img");
             const picture: File = new File([image], "test");
             img.src = URL.createObjectURL(picture);

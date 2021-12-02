@@ -1,10 +1,11 @@
 import express, { Router, Request, Response } from 'express';
-import { upload } from '../middlewares/fileFilter';
 import { MulterRequest } from '../models/multerRequest.model';
 import { Post } from '../models/post.model';
 import { Image } from '../models/image.model';
+import { ImageService } from '../services/image.service';
 
 const postController: Router = express.Router();
+const imageService = new ImageService();
 
 // read
 postController.get('/', (req: Request, res: Response) => {
@@ -39,29 +40,12 @@ postController.get('/:id', (req, res) => {
 
 // get imageIds to specific post
 postController.get('/:id/getImageIds', (req: Request, res: Response) => {
-    Image.findAll({where: {postId: req.params.id}}).then(found => {
-        if (found != null) {
-            let imgIds = '';
-            found.forEach(element => {
-               imgIds = imgIds + String(element.imageId) + ',';
-            });
-            imgIds = imgIds.substring(0, imgIds.length - 1);
-            res.status(200).send(imgIds);
-        } else {
-            res.status(500).send('no imageIds found');
-        }
-    });
+    imageService.getImageIds('post', +req.params.id).then(ids => res.send(ids)).catch(err => res.status(500).send(err));
 });
 
 // get specific image
 postController.get('/getSingleImage/:id', (req: Request, res: Response) => {
-    Image.findByPk(req.params.id).then(found => {
-        if (found != null) {
-            res.status(200).send(found.file);
-        } else {
-            res.status(200).send('');
-        }
-    });
+    imageService.getSpecificImage(+req.params.id).then(image => res.send(image)).catch(err => res.status(500).send(err));
 });
 
 // create
@@ -73,17 +57,8 @@ postController.post('/', (req: Request, res: Response) => {
 });
 
 // upload image and add to a post
-postController.post('/:id/image', upload.any(), (req: MulterRequest, res: Response) => {
-    let i = 0;
-    while (i < req.files.length) {
-
-        Image.create({file: req.files[i].buffer, postId: +req.params.id}).then(created => {
-        res.status(201).send(created);
-        }).catch(err => res.status(500).send(err));
-
-        i = i + 1;
-    }
-
+postController.post('/:id/image', /*upload.any(),*/ (req: MulterRequest, res: Response) => {
+    imageService.postImage(req, 'post').then(created => res.send(created)).catch(err => res.status(500).send(err));
 });
 
 // delete

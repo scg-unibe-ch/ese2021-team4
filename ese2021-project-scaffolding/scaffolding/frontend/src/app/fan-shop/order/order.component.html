@@ -14,6 +14,7 @@
     <mat-card-actions>
       <button mat-flat-button color="warn" (click)="confirmCancelling()"[disabled]="isShipped || isCancelled">CANCEL</button>
       <button *ngIf="user?.isAdmin" mat-flat-button color="primary" (click)="confirmShipping()"[disabled]="isShipped || isCancelled">SHIP</button>
+      <button mat-flat-button color="warn" (click)="confirmPayment()"[disabled]="isPaid || isCancelled">SET PAID</button>
     </mat-card-actions>
     <mat-card-footer *ngIf="user?.isAdmin">
       Ordered by: {{order.userId}} | Shipped by: {{order.adminId}} <br><br>

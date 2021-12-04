@@ -3,6 +3,7 @@ import { Status } from 'src/app/models/status.model';
 export class Order {
 
   constructor(
+    public billingStatus: string,
     public status: Status,
     public orderId: number,
     public userId: number,

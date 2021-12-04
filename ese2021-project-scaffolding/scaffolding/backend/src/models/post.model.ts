@@ -11,6 +11,7 @@ export interface PostAttributes {
     tags: string; // contains the categories as comma-seperated-values. E.g. "Restaurant,Activities"
     upvotes: number;
     downvotes: number;
+    flags: number;
 }
 
 
@@ -32,6 +33,7 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
     tags!: string;
     upvotes!: number;
     downvotes!: number;
+    flags!: number;
 
 
     public getComments!: HasManyGetAssociationsMixin<Comment>;
@@ -77,7 +79,12 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
             downvotes: {
                 type: DataTypes.INTEGER,
                 allowNull: false
-                }
+                },
+
+            flags: {
+                type: DataTypes.INTEGER,
+                allowNull: false
+            }
         },
         { sequelize, tableName: 'posts' }
         );

@@ -57,6 +57,8 @@ const routes: Routes = [
   {path: 'dashboard/post/:id', component: PostComponent},
   {path: 'fan-shop', component: FanShopComponent},
   {path: 'fan-shop/product/:id', component: ProductComponent},
+  {path: 'dashboard/product/:id', component: ProductComponent},
+  {path: 'profile/product/:id', component: ProductComponent},
   {path: 'fan-shop/product/:id/order', component: OrderFormComponent},
   {path: 'dashboard', component: AdminDashboardComponent},
   {path: 'payment_cancelled/:id', redirectTo: 'fan-shop/product/:id'},

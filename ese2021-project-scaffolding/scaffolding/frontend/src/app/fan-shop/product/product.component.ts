@@ -217,7 +217,6 @@ export class ProductComponent implements OnInit {
     else
     {
       this.router.navigate(['login']);
-
     }
   }
 }

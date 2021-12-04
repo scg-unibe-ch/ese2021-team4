@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="665e9aa3-6cd1-4315-843c-4790b6472fcb" name="Default Changelist" comment="added payment methods">
+    <list default="true" id="665e9aa3-6cd1-4315-843c-4790b6472fcb" name="Default Changelist" comment="paid button for admins">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/backend/db.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/backend/db.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/post-feed/post/post.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/post-feed/post/post.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/order/order.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/order/order.component.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +45,8 @@
       <workItem from="1638220695784" duration="643000" />
       <workItem from="1638304181006" duration="430000" />
       <workItem from="1638366808236" duration="2129000" />
+      <workItem from="1638373218936" duration="1388000" />
+      <workItem from="1638606241868" duration="595000" />
     </task>
     <task id="LOCAL-00001" summary="started layout for products">
       <created>1637761671615</created>
@@ -95,7 +97,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638366240102</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="paid button for admins">
+      <created>1638606578222</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1638606578222</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -122,6 +131,7 @@
     <MESSAGE value="user feedback when shipping post and admin can crud other admins implemented" />
     <MESSAGE value="added routing in admin dashboard" />
     <MESSAGE value="added payment methods" />
-    <option name="LAST_COMMIT_MESSAGE" value="added payment methods" />
+    <MESSAGE value="paid button for admins" />
+    <option name="LAST_COMMIT_MESSAGE" value="paid button for admins" />
   </component>
 </project>

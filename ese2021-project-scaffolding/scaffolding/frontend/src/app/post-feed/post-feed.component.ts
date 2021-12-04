@@ -62,7 +62,7 @@ export class PostFeedComponent implements OnInit {
       upvotes: 0,
       downvotes: 0
     }).subscribe((post: any) => {
-      this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []));
+      this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags));
       this.newPostTitle = this.newPostDescription = this.newPostTags = '';
     },
         error => {console.log(error)})
@@ -88,6 +88,9 @@ export class PostFeedComponent implements OnInit {
       case 'commented' :
         this.readCommentedPosts();
         break;
+      case 'flagged':
+        this.readFlaggedPosts();
+        break;
       default:
         this.readAllPosts();
     }
@@ -98,7 +101,7 @@ export class PostFeedComponent implements OnInit {
     this.httpClient.get(environment.endpointURL + "post").subscribe((posts: any) => {
 
       posts.forEach((post: any) => {
-        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []));
+        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags));
       });
       this.selectedPosts = this.postList;
 
@@ -107,7 +110,7 @@ export class PostFeedComponent implements OnInit {
   readCreatedPosts(): void {
     this.httpClient.get(environment.endpointURL + "post/" + "createdBy/" + this.user?.userId).subscribe((posts: any) => {
       posts.forEach((post: any) => {
-        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []));
+        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags));
       });
       this.postsLoaded = true;
       this.selectedPosts = this.postList
@@ -119,7 +122,7 @@ export class PostFeedComponent implements OnInit {
       votes.forEach((vote: any) => {
         if(vote.vote == dir) {
           this.httpClient.get(environment.endpointURL + "post/" + vote.postId).subscribe((post:any) => {
-            this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []));
+            this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags));
           })
         }
       });
@@ -135,7 +138,7 @@ export class PostFeedComponent implements OnInit {
       comments.forEach((comment: any) => {
         this.httpClient.get(environment.endpointURL + "post/" + comment.postId).subscribe((post:any) => {
           if(!this.postList.find(existingPost => existingPost.postId == post.postId)) {
-            this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []))
+            this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags))
           }
         })
       });
@@ -143,6 +146,16 @@ export class PostFeedComponent implements OnInit {
       this.selectedPosts = this.postList
     }, error => {
       console.log(error);
+    });
+  }
+
+  readFlaggedPosts(): void {
+    this.httpClient.get(environment.endpointURL + "post/flagged").subscribe((posts: any) => {
+      posts.forEach((post: any) => {
+        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags));
+      });
+      this.postsLoaded = true;
+      this.selectedPosts = this.postList
     });
   }
 
@@ -163,6 +176,8 @@ export class PostFeedComponent implements OnInit {
       case "tags": this.sortByTags();
         break;
       case "total": this.sortByTotalVotes();
+        break;
+      case "flags": this.sortByFlags();
         break;
       default: console.log('invalid sort')
 
@@ -214,4 +229,7 @@ export class PostFeedComponent implements OnInit {
     this.selectedPosts.sort((a, b) => (b.upvotes-b.downvotes)-(a.upvotes-a.downvotes))
   }
 
+  sortByFlags(): void {
+    this.selectedPosts.sort((a, b) => b.flags-a.flags)
+  }
 }

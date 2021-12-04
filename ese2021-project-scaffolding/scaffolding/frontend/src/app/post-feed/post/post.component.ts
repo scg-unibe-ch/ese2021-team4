@@ -133,9 +133,10 @@ export class PostComponent implements OnInit {
       img.onload = function() {
         URL.revokeObjectURL(img.src);
       }
+      this.post.images.push(files[i]);
       imageSpan?.appendChild(img);
+
     }
-    this.post.images = files;
   }
 
   ngOnInit(): void {

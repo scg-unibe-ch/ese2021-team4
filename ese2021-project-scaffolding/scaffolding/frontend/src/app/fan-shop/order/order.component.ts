@@ -15,9 +15,16 @@ import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-a
 export class OrderComponent implements OnInit {
 
   user: User|undefined;
-
   loggedIn: boolean|undefined;
+  isShipped: boolean = false;
+  isCancelled: boolean = false;
+  isPaid: boolean = false;
 
+  @Input()
+  order: Order = new Order('', Status.Pending, 0, 0, 0, 0, new Date(), new Date(), '', '', '', 0, 0, '', '');
+
+  @Output()
+  update = new EventEmitter<Order>();
 
   constructor(
     public httpClient: HttpClient,
@@ -30,7 +37,6 @@ export class OrderComponent implements OnInit {
     // Current value
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
-
   }
 
   ngOnInit(): void {
@@ -43,18 +49,11 @@ export class OrderComponent implements OnInit {
     {
       this.isCancelled = true;
     }
+    if(this.order.billingStatus == "paidByInvoice")
+    {
+      this.isPaid = true;
+    }
   }
-
-  @Input()
-  order: Order = new Order(Status.Pending, 0, 0, 0, 0, new Date(), new Date(), '', '', '', 0, 0, '', '');
-
-  @Input()
-  isShipped: boolean = false;
-  isCancelled: boolean = false;
-  isPaid: boolean = false;
-
-  @Output()
-  update = new EventEmitter<Order>();
 
   confirmPayment(): void{
     const confirmBox = new ConfirmBoxInitializer();
@@ -79,21 +78,9 @@ export class OrderComponent implements OnInit {
   setPaid(): void {
     if(this.user?.isAdmin) {
       this.isPaid = true;
+      this.order.billingStatus = "paidByInvoice";
       this.httpClient.put(environment.endpointURL + "order/" + this.order.orderId, {
-        billingStatus: "paid by invoice",
-        orderId: this.order.orderId,
-        userId: this.order.userId,
-        productId: this.order.productId,
-        adminId: this.user!.userId,
-        createdDate: this.order.createdDate,
-        shippedDate: new Date(),
-        orderFirstName: this.order.orderFirstName,
-        orderLastName: this.order.orderLastName,
-        orderStreet: this.order.orderStreet,
-        orderHouseNr: this.order.orderHouseNr,
-        orderZipCode: this.order.orderZipCode,
-        orderCity: this.order.orderCity,
-        orderPhoneNr: this.order.orderPhoneNr,
+        billingStatus: "paidByInvoice",
       }).subscribe();
       this.update.emit(this.order);
       }
@@ -123,19 +110,6 @@ export class OrderComponent implements OnInit {
     this.isCancelled = true;
     this.httpClient.put(environment.endpointURL + "order/" + this.order.orderId, {
       status: Status.Cancelled,
-      orderId: this.order.orderId,
-      userId: this.order.userId,
-      productId: this.order.productId,
-      adminId: this.user!.userId,
-      createdDate: this.order.createdDate,
-      shippedDate: new Date(),
-      orderFirstName: this.order.orderFirstName,
-      orderLastName: this.order.orderLastName,
-      orderStreet: this.order.orderStreet,
-      orderHouseNr: this.order.orderHouseNr,
-      orderZipCode: this.order.orderZipCode,
-      orderCity: this.order.orderCity,
-      orderPhoneNr: this.order.orderPhoneNr,
     }).subscribe();
     this.update.emit(this.order);
   }
@@ -165,20 +139,6 @@ export class OrderComponent implements OnInit {
       this.isShipped = true;
       this.httpClient.put(environment.endpointURL + "order/" + this.order.orderId, {
         status: Status.Shipped,
-        orderId: this.order.orderId,
-        userId: this.order.userId,
-        productId: this.order.productId,
-        adminId: this.user!.userId,
-        createdDate: this.order.createdDate,
-        shippedDate: new Date(),
-
-        orderFirstName: this.order.orderFirstName,
-        orderLastName: this.order.orderLastName,
-        orderStreet: this.order.orderStreet,
-        orderHouseNr: this.order.orderHouseNr,
-        orderZipCode: this.order.orderZipCode,
-        orderCity: this.order.orderCity,
-        orderPhoneNr: this.order.orderPhoneNr,
       }).subscribe();
 
       this.update.emit(this.order);

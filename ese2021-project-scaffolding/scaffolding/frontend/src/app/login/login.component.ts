@@ -41,31 +41,6 @@ export class LoginComponent implements OnInit{
   }
 
   ngOnInit() : void {
-    setTimeout( () => {
-      this.initLoginButton();
-    },1);
-
-  }
-
-  initLoginButton(): void {
-    console.log("loginButtons loaded");
-    const usernameField = document.getElementById("usernameInput");
-    const passwordField = document.getElementById("passwordInput");
-    usernameField?.addEventListener("keyup", function(event){
-      // console.log(event.key);
-      if (event.key === "Enter") {
-        event.preventDefault();
-        document.getElementById("loginButton")?.click();
-      }
-    })
-
-    passwordField?.addEventListener("keyup", function(event){
-      // console.log(event.key);
-      if (event.key === "Enter") {
-        event.preventDefault();
-        document.getElementById("loginButton")?.click();
-      }
-    })
   }
 
 
@@ -124,7 +99,6 @@ export class LoginComponent implements OnInit{
   }
 
   accessAdminEndpoint(): void {
-    this.initLoginButton();
     this.httpClient.get(environment.endpointURL + "admin").subscribe(() => {
       this.endpointMsgAdmin = "Access granted";
     }, () => {

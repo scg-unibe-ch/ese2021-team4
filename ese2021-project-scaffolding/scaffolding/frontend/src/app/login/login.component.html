@@ -2,18 +2,21 @@
   <h3>Login</h3>
 
   <div *ngIf="!loggedIn" >
-    <mat-form-field>
-      <input matInput type="text" placeholder="Username or E-mail" name="name" [(ngModel)]="userToLogin.username" id="usernameInput">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToLogin.password" id="passwordInput">
-    </mat-form-field>
-    <p style="color:red" *ngIf="passwordWrong"> Password wrong</p>
-    <p style="color:red" *ngIf="userNameWrong"> Username not found</p>
-    <button mat-flat-button color="primary" (click)="loginUser()" id="loginButton">Login</button>
-    <br>
-    <span id="emptyUser" style="visibility: hidden">Please enter your username or email</span>
-    <span id="emptyPassword" style="visibility: hidden">Please enter your password</span>
+    <form (ngSubmit)="loginUser()">
+      <mat-form-field>
+        <input matInput type="text" placeholder="Username or E-mail" name="name" [(ngModel)]="userToLogin.username" id="usernameInput">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToLogin.password" id="passwordInput">
+      </mat-form-field>
+      <p style="color:red" *ngIf="passwordWrong"> Password wrong</p>
+      <p style="color:red" *ngIf="userNameWrong"> Username not found</p>
+      <button type="submit" mat-flat-button color="primary" (click)="loginUser()" >Login</button>
+      <br>
+      <span id="emptyUser" style="visibility: hidden">Please enter your username or email</span>
+      <span id="emptyPassword" style="visibility: hidden">Please enter your password</span>
+    </form>
+    
 
 
 

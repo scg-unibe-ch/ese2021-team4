@@ -88,6 +88,9 @@ export class PostFeedComponent implements OnInit {
       case 'commented' :
         this.readCommentedPosts();
         break;
+      case 'flagged':
+        this.readFlaggedPosts();
+        break;
       default:
         this.readAllPosts();
     }
@@ -146,6 +149,16 @@ export class PostFeedComponent implements OnInit {
     });
   }
 
+  readFlaggedPosts(): void {
+    this.httpClient.get(environment.endpointURL + "post/flagged").subscribe((posts: any) => {
+      posts.forEach((post: any) => {
+        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags));
+      });
+      this.postsLoaded = true;
+      this.selectedPosts = this.postList
+    });
+  }
+
   sortPosts(): void {
     switch (this.sortBy) {
       case "id": this.sortById();
@@ -163,6 +176,8 @@ export class PostFeedComponent implements OnInit {
       case "tags": this.sortByTags();
         break;
       case "total": this.sortByTotalVotes();
+        break;
+      case "flags": this.sortByFlags();
         break;
       default: console.log('invalid sort')
 
@@ -214,4 +229,7 @@ export class PostFeedComponent implements OnInit {
     this.selectedPosts.sort((a, b) => (b.upvotes-b.downvotes)-(a.upvotes-a.downvotes))
   }
 
+  sortByFlags(): void {
+    this.selectedPosts.sort((a, b) => b.flags-a.flags)
+  }
 }

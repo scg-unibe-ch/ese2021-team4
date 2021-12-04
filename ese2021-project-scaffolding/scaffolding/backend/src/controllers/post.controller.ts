@@ -3,6 +3,7 @@ import { MulterRequest } from '../models/multerRequest.model';
 import { Post } from '../models/post.model';
 import { Image } from '../models/image.model';
 import { ImageService } from '../services/image.service';
+import {Op} from 'sequelize';
 
 const postController: Router = express.Router();
 const imageService = new ImageService();
@@ -19,6 +20,19 @@ postController.get('/createdBy/:id', (req, res) => {
     Post.findAll({
         where: {
             userId: req.params.id
+        }
+    }).then((posts) => {
+        res.status(200).send(posts);
+    }).catch(err => {
+        res.sendStatus(500);
+    });
+});
+
+postController.get('/flagged', (req, res) => {
+    console.log('createdby');
+    Post.findAll({
+        where: {
+            flags: {[Op.gt]: 0}
         }
     }).then((posts) => {
         res.status(200).send(posts);

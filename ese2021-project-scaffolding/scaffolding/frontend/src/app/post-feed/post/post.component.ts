@@ -275,7 +275,8 @@ export class PostComponent implements OnInit {
       tags: this.findCategory(),
       userId: this.user.userId,
       upvotes: 0,
-      downvotes: 0
+      downvotes: 0,
+      flags: 0
     }).subscribe((post: any) => {
       const formData = new FormData();
       for (let i=0; i < this.post.images.length; i++){

@@ -13,6 +13,7 @@ import{MatRadioModule} from '@angular/material/radio';
 import { StripeService } from 'ngx-stripe';
 import { switchMap } from 'rxjs/operators';
 import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-awesome-popup";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-order-form',
@@ -39,6 +40,7 @@ export class OrderFormComponent implements OnInit {
   loggedIn: boolean | undefined;
 
   constructor(
+    public toastr: ToastrService,
     private router: Router,
     public httpClient: HttpClient,
     private stripeService: StripeService,
@@ -99,6 +101,7 @@ export class OrderFormComponent implements OnInit {
       }
     });
   }}
+
   createOrder(): void{
     if(this.paymentType == "stripe") {
       this.createOrderStripe();
@@ -123,6 +126,8 @@ export class OrderFormComponent implements OnInit {
       orderPhoneNr: this.orderPhoneNr,
       billingStatus: "invoice open"
     }).subscribe();
+    this.router.navigate(['/fan-shop']);
+    this.toastr.success("Thank you for your order!")
   }
 
   createOrderStripe(): void {

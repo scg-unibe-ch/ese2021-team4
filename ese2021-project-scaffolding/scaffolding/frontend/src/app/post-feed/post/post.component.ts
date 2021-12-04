@@ -10,6 +10,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Comment} from 'src/app/models/comment.model';
 import {Category, CategoryFinder} from "../../models/category.model";
 import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-awesome-popup";
+import {ToastrService} from "ngx-toastr";
 
 
 @Component({
@@ -85,7 +86,7 @@ export class PostComponent implements OnInit {
   };
 
   @Input()
-  post: Post = new Post(0, '', 0, '', Category.Bern, 0, 0, new Date(), [], []);
+  post: Post = new Post(0, '', 0, '', Category.Bern, 0, 0, new Date(), [], [], 0);
   @Input()
   preview: boolean = false;
 
@@ -103,7 +104,8 @@ export class PostComponent implements OnInit {
     private formBuilder: FormBuilder,
     public httpClient: HttpClient,
     public userService: UserService,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute,
+    public toastr: ToastrService) {
 
     this.activatedRoute.params.subscribe(params => {
       if(!isNaN(+params.id)) {
@@ -154,7 +156,7 @@ export class PostComponent implements OnInit {
       this.editMode = false;
 
       this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
-        this.post=new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], []);
+        this.post=new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags);
         if(!this.preview){
           this.loadPicturesToPost();
           this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
@@ -194,7 +196,7 @@ export class PostComponent implements OnInit {
       if(imgIds != ""){
         const imgIdArray :Array<String> = imgIds.split(",");
         const imageSpan = document.getElementById("image");
-        
+
         imgIdArray.forEach(element => {
           const imageId : number = +element;
           this.httpClient.get(environment.endpointURL + "post/" + "getSingleImage/" + imageId,
@@ -203,7 +205,7 @@ export class PostComponent implements OnInit {
             const picture: File = new File([image], "test");
             img.src = URL.createObjectURL(picture);
             img.height = 200;
-  
+
             img.onload = function() {
               URL.revokeObjectURL(img.src);
             }
@@ -273,7 +275,8 @@ export class PostComponent implements OnInit {
       tags: this.findCategory(),
       userId: this.user.userId,
       upvotes: 0,
-      downvotes: 0
+      downvotes: 0,
+      flags: 0
     }).subscribe((post: any) => {
       const formData = new FormData();
       for (let i=0; i < this.post.images.length; i++){
@@ -372,6 +375,26 @@ export class PostComponent implements OnInit {
         this.newCommentDescription = '';
       });
     }
+  }
+
+  flagPost(): void {
+    this.post.flags += 1;
+    this.httpClient.put(environment.endpointURL + "post/" + this.post.postId, {
+      flags: this.post.flags
+    }).subscribe(() => this.toastr.success("This post has been flagged for review.","",{
+      timeOut: 2500
+    })
+    )
+  }
+
+  unflagPost(): void {
+    this.post.flags = 0;
+    this.httpClient.put(environment.endpointURL + "post/" + this.post.postId, {
+      flags: this.post.flags
+    }).subscribe(() => this.toastr.success("The flag count has been reset.","",{
+        timeOut: 2500
+      })
+    )
   }
 
   // UPDATE - Comment

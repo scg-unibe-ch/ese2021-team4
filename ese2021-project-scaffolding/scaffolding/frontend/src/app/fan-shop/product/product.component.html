@@ -16,6 +16,7 @@
     </mat-card-header>
    <mat-card-content>
       <div [innerHTML]="product.description"></div>
+      <span id="image"></span>
     </mat-card-content>
     <mat-card-actions>
       <button mat-flat-button color="primary" (click) = "checkLoggedIn()" *ngIf="!user?.isAdmin">Buy now</button > <!-- buy now redirects to login-->
@@ -59,9 +60,20 @@
 
       </mat-form-field><span id="setTitle" style="visibility: hidden">Please set a title. </span>
         <span id="setCategory" style="visibility: hidden"> Please set a category.</span>
-        <span id="setPrice" style="visibility: hidden"> Please set a price.</span>
+        <span id="setPrice" style="visibility: hidden"> Please set a price.</span>      
       </form>
 
+      <!-- UPLOAD IMAGE -->
+        <input type="file" class="file-input" multiple accept="image/*"
+        (change)="onFileSelected($event)" #fileUpload>
+
+        <div class="file-upload" action="image" enctype="multipart/form-data" method="post">
+        <button mat-mini-fab color="primary" class="upload-btn"
+          (click)="fileUpload.click()">
+            <mat-icon>attach_file</mat-icon>
+        </button>
+        </div>
+        <span id="image"></span>
       <!-- DESCRIPTION -->
       <br><br>
       <angular-editor id="editor1" [(ngModel)]="product.description" [config]="config1" (ngModelChange)="onChange($event)"
@@ -76,4 +88,5 @@
 
   </div></div>
 </div>
+
 <div *ngIf="missingProduct">This product does not exist anymore.</div>

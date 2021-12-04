@@ -26,30 +26,11 @@ productController.get('/:id', (req, res) => {
 // get imageIds to specific post
 productController.get('/:id/getImageIds', (req: Request, res: Response) => {
     imageService.getImageIds('product', +req.params.id).then(ids => res.send(ids)).catch(err => res.status(500).send(err));
-    // Image.findAll({where: {productId: req.params.id}}).then(found => {
-    //     if (found != null) {
-    //         let imgIds = '';
-    //         found.forEach(element => {
-    //            imgIds = imgIds + String(element.imageId) + ',';
-    //         });
-    //         imgIds = imgIds.substring(0, imgIds.length - 1);
-    //         res.status(200).send(imgIds);
-    //     } else {
-    //         res.status(500).send('no imageIds found');
-    //     }
-    // });
 });
 
 // get specific image
 productController.get('/getSingleImage/:id', (req: Request, res: Response) => {
     imageService.getSpecificImage(+req.params.id).then(image => res.send(image)).catch(err => res.status(500).send(err));
-    // Image.findByPk(req.params.id).then(found => {
-    //     if (found != null) {
-    //         res.status(200).send(found.file);
-    //     } else {
-    //         res.status(200).send('');
-    //     }
-    // });
 });
 
 // create
@@ -61,8 +42,8 @@ productController.post('/', (req: Request, res: Response) => {
 });
 
 // upload image and add to a product
-productController.post('/:id/image', upload.any(), (req: MulterRequest, res: Response) => {
-    imageService.postImage(req, 'post').then(created => res.send(created)).catch(err => res.status(500).send(err));
+productController.post('/:id/image', (req: MulterRequest, res: Response) => {
+    imageService.postImage(req, 'product').then(created => res.send(created)).catch(err => res.status(500).send(err));
 });
 
 // delete

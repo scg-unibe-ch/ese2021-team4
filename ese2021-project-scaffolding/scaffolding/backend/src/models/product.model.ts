@@ -4,7 +4,6 @@ export interface ProductAttributes {
     productId: number;
     title: string;
     description: Text;
-    imageId: number;
     tags: string; // contains the categories as comma-seperated-values. E.g. "Restaurant,Activities"
     price: number;
 }
@@ -24,7 +23,6 @@ export class Product extends Model<ProductAttributes, ProductCreationAttributes>
     title!: string;
     userId!: number;
     description!: Text;
-    imageId!: number;
     tags!: string;
     price!: number;
 
@@ -42,10 +40,6 @@ export class Product extends Model<ProductAttributes, ProductCreationAttributes>
                 },
                 description: {
                     type: DataTypes.TEXT,
-                    allowNull: true
-                },
-                imageId: {
-                    type: DataTypes.INTEGER,
                     allowNull: true
                 },
                 tags: {

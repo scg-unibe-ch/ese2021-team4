@@ -8,6 +8,6 @@ export class Product {
     public description: string,
     public price: number,
     public tags: Category,
-    public imageId: number
+    public images: File[]
    ) {}
 }

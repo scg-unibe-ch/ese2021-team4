@@ -74,7 +74,7 @@ export class ProductComponent implements OnInit {
     ]
       };
 
-  product: Product = new Product(0, '', '', 0, Category.Bern, 0);
+  product: Product = new Product(0, '', '', 0, Category.Bern, []);
 
   @Input()
   preview: boolean = false;
@@ -107,6 +107,24 @@ export class ProductComponent implements OnInit {
 
   }
 
+  onFileSelected(event : any) {
+
+    const files : File[] = event.target.files;
+
+    for (let i=0; i < files.length; i++){
+      const imageSpan = document.getElementById("image");
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(files[i]);
+      img.height = 60;
+
+      img.onload = function() {
+        URL.revokeObjectURL(img.src);
+      }
+      this.product.images.push(files[i]);
+      imageSpan?.appendChild(img);
+    }
+  }
+
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       signature: ['', Validators.required]
@@ -123,9 +141,10 @@ export class ProductComponent implements OnInit {
           if(product != undefined) {
             this.product = new Product(product.productId, product.title, product.description, product.price, product.tags, product.imageId);
             this.selectCategory = this.product.tags.toString();
+            this.loadPicturesToProduct();
           }
           else{
-            this.product = new Product(0, 'Nonexistent Product', 'This product does not exist anymore.', 0, Category.Bern, 0)
+            this.product = new Product(0, 'Nonexistent Product', 'This product does not exist anymore.', 0, Category.Bern, [])
             this.missingProduct = true;
           }
         });
@@ -138,6 +157,33 @@ export class ProductComponent implements OnInit {
 
   onBlur(event : any) {
     console.log('blur ' + event);
+  }
+
+  loadPicturesToProduct(){
+    this.httpClient.get(environment.endpointURL + "product/" + this.productId + "/getImageIds",
+    {responseType: 'text', headers: {'Content-Type': 'json/application'}}).subscribe((imgIds: any) => {
+
+      if(imgIds != ""){
+        const imgIdArray :Array<String> = imgIds.split(",");
+        const imageSpan = document.getElementById("image");
+
+        imgIdArray.forEach(element => {
+          const imageId : number = +element;
+          this.httpClient.get(environment.endpointURL + "product/" + "getSingleImage/" + imageId,
+           {responseType: 'blob', headers: {'Content-Type': 'multipart/formData'}}).subscribe((image: any) =>{
+            const img = document.createElement("img");
+            const picture: File = new File([image], "test");
+            img.src = URL.createObjectURL(picture);
+            img.height = 200;
+
+            img.onload = function() {
+              URL.revokeObjectURL(img.src);
+            }
+            imageSpan?.appendChild(img);
+           });
+        });
+      }
+    });
   }
 
   save(){
@@ -173,9 +219,7 @@ export class ProductComponent implements OnInit {
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='visible';
       document.getElementById('setPrice')!.style.visibility='hidden';
-    }
-
-    else {
+    } else {
       this.router.navigate(['/fan-shop']);
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setPrice')!.style.visibility='hidden';
@@ -185,14 +229,18 @@ export class ProductComponent implements OnInit {
           title: this.product.title,
           description: this.product.description,
           price: this.product.price,
-          imageId: this.product.imageId,
           tags: this.findCategory()
-        }).subscribe((product: any) => {
-          },
-          error => {console.log(error)});
-
+      }).subscribe((product: any) => {
+        const formData = new FormData();
+        for (let i=0; i < this.product.images.length; i++){
+          formData.append("file"+i, this.product.images[i]);
+        }
+        this.httpClient.post(environment.endpointURL + "product/" + product.productId + "/image", formData).subscribe((image: any) => {
+        });
+      }, error => {console.log(error)});
       }
-    }}
+    }
+  }
 
   updateProduct(product: Product): void {
     this.httpClient.put(environment.endpointURL + "product/" + product.productId, {
@@ -200,7 +248,7 @@ export class ProductComponent implements OnInit {
       description: product.description,
       tags: this.findCategory(),
       price: product.price,
-      imageId: product.imageId
+      images: product.images
     }).subscribe();
   }
 

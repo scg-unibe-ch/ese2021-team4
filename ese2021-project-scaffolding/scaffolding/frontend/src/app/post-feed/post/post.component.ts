@@ -307,6 +307,7 @@ export class PostComponent implements OnInit {
     }
   }
 
+
   confirmDeleting(post: Post): void{
     const confirmBox = new ConfirmBoxInitializer();
     confirmBox.setTitle('');

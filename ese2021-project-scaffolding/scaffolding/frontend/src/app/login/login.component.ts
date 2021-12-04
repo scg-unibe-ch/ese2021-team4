@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {UserService} from "../services/user.service";
 import {environment} from "../../environments/environment";
 import {Router} from "@angular/router";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,8 @@ export class LoginComponent implements OnInit{
   constructor(
     private router: Router,
     public httpClient: HttpClient,
-    public userService: UserService
+    public userService: UserService,
+    public toastr: ToastrService
   ) {
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
@@ -42,7 +44,7 @@ export class LoginComponent implements OnInit{
     setTimeout( () => {
       this.initLoginButton();
     },1);
-    
+
   }
 
   initLoginButton(): void {
@@ -89,7 +91,8 @@ export class LoginComponent implements OnInit{
 
       this.userService.setLoggedIn(true);
       this.userService.setUser(new User(res.user.userId, res.user.userName, res.user.password, res.user.admin));
-      this.router.navigate(['/login/feedback']);
+      this.router.navigate(['/home']);
+      this.toastr.success("You were successfully logged in.")
 
     }, (error: any ) => {
       if (error.error.message.message === 'not authorized'){

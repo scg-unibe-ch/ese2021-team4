@@ -8,12 +8,13 @@
     </mat-card-header>
     <mat-card-content>
         <div [innerHTML]="post.description"></div>
-        <div id="image"></div> 
+        <div id="image"></div>
     </mat-card-content>
 
     <mat-card-actions>
       <button mat-flat-button color="primary" (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn">Upvotes: {{post.upvotes}}</button>
       <button mat-flat-button color="primary" (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn">Downvotes: {{post.downvotes}}</button>
+      <button mat-flat-button color="warn" (click)="flagPost()" [disabled]="!loggedIn">report <div *ngIf="user.isAdmin">({{post.flags}})</div></button>
       <span *ngIf="user?.userId === post.userId || user?.isAdmin">
         <button  mat-flat-button color="primary" (click)="editMode = true">Edit Post</button>
         <button mat-flat-button color="warn" (click)="confirmDeleting(post)">Delete Post</button>
@@ -72,10 +73,10 @@
           <mat-icon>attach_file</mat-icon>
       </button>
     </div>
-    
+
     </form>
 
-    
+
 
     <!-- DESCRIPTION -->
     <br><br>

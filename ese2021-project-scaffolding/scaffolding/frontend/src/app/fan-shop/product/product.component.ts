@@ -175,7 +175,7 @@ export class ProductComponent implements OnInit {
             const picture: File = new File([image], "test");
             img.src = URL.createObjectURL(picture);
             img.height = 200;
-
+            this.product.images.push(picture);
             img.onload = function() {
               URL.revokeObjectURL(img.src);
             }

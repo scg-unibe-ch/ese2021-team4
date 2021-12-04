@@ -157,7 +157,7 @@ export class PostComponent implements OnInit {
       this.editMode = false;
 
       this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
-        this.post=new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags);
+        this.post=new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], new Array<File>(), post.flags);
         if(!this.preview){
           this.loadPicturesToPost();
           this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
@@ -206,7 +206,7 @@ export class PostComponent implements OnInit {
             const picture: File = new File([image], "test");
             img.src = URL.createObjectURL(picture);
             img.height = 200;
-
+            this.post.images.push(picture);
             img.onload = function() {
               URL.revokeObjectURL(img.src);
             }

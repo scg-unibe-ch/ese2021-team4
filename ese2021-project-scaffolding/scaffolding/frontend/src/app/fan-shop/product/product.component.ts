@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AngularEditorConfig} from '@kolkov/angular-editor';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Category, CategoryFinder} from "../../models/category.model";
+import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-awesome-popup";
 
 
 @Component({
@@ -253,9 +254,29 @@ export class ProductComponent implements OnInit {
   }
 
   deleteProduct(product: Product): void {
+    this.router.navigate(["/fan-shop"]);
     if(this.user?.isAdmin){
       this.httpClient.delete(environment.endpointURL + "product/" + product.productId).subscribe(() => {});
     }
+  }
+
+  confirmDeleteProduct (product: Product): void{
+    const confirmBox = new ConfirmBoxInitializer();
+    confirmBox.setTitle('You are about to delete this product.');
+    confirmBox.setMessage('Do you want to proceed?');
+    confirmBox.setButtonLabels('YES', 'NO');
+
+    // Choose layout color type
+    confirmBox.setConfig({
+      LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
+    });
+    // Simply open the popup and listen which button is clicked
+    confirmBox.openConfirmBox$().subscribe(resp => {
+
+      if (resp.ClickedButtonID=='yes'){
+        this.deleteProduct(product)
+      }
+    });
   }
 
   checkLoggedIn() {

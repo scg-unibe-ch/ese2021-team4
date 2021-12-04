@@ -5,6 +5,6 @@
   </mat-card>
   <mat-card *ngIf="!user.isAdmin">
     <p><b>User</b> {{user.username}}</p>
-    <button mat-flat-button color="primary" (click) = "promoteAdmin(user)">promote to admin</button>
+    <button mat-flat-button color="primary" (click) = "confirmPromoteAdmin(user)">promote to admin</button>
   </mat-card>
 </div>

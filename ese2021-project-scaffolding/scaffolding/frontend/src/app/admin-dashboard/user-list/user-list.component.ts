@@ -39,6 +39,24 @@ export class UserListComponent implements OnInit {
     })
   }
 
+  confirmPromoteAdmin(admin: User): void {
+    const confirmBox = new ConfirmBoxInitializer();
+    confirmBox.setTitle('You are about to promote a user to admin.');
+    confirmBox.setMessage('Do you want to proceed?');
+    confirmBox.setButtonLabels('YES', 'NO');
+
+    // Choose layout color type
+    confirmBox.setConfig({
+      LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
+    });
+    // Simply open the popup and listen which button is clicked
+    confirmBox.openConfirmBox$().subscribe(resp => {
+
+      if (resp.ClickedButtonID=='yes'){
+        this.promoteAdmin(admin)
+      }
+    });
+  }
   confirmRemoveAdmin(admin: User): void{
     const confirmBox = new ConfirmBoxInitializer();
     confirmBox.setTitle('You are about to revoke admin rights.');

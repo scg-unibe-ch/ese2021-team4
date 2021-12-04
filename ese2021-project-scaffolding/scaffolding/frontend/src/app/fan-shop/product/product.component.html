@@ -22,7 +22,7 @@
       <button mat-flat-button color="primary" (click) = "checkLoggedIn()" *ngIf="!user?.isAdmin">Buy now</button > <!-- buy now redirects to login-->
       <span *ngIf="user?.isAdmin">
         <button  mat-flat-button color="primary" (click)="editMode = true">Edit Product</button>
-        <a routerLink="/fan-shop"> <button mat-flat-button color="warn" (click)="deleteProduct(product)">Delete Product</button></a>
+        <button mat-flat-button color="warn" (click)="confirmDeleteProduct(product)">Delete Product</button>
       </span>
     </mat-card-actions>
   </mat-card>

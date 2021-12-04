@@ -100,4 +100,15 @@ export class ImageService {
             }).catch(() => Promise.reject('could not fetch the imageids!'));
         }
     }
+
+    public deleteSingleImage(id: number): Promise<Image> {
+        return Image.findByPk(id).then(found => {
+            if (found != null) {
+                found.destroy();
+                return Promise.resolve(found);
+            } else {
+                return Promise.reject('no image found that matches id');
+            }
+        }).catch(() => Promise.reject('could not destroy the image!'));
+    }
 }

@@ -17,7 +17,7 @@
       <button mat-flat-button color="warn" (click)="flagPost()" [disabled]="!loggedIn"><mat-icon>flag</mat-icon> <div *ngIf="user?.isAdmin">({{post.flags}})</div></button>
       <button mat-flat-button color="primary" (click)="unflagPost()" *ngIf="user?.isAdmin">unflag post</button>
       <span *ngIf="user?.userId === post.userId || user?.isAdmin">
-        <button  mat-flat-button color="primary" (click)="editMode = true">Edit Post</button>
+        <button  mat-flat-button color="primary" (click)="editMode = true; loadPicturesToPost()">Edit Post</button>
         <button mat-flat-button color="warn" (click)="confirmDeleting(post)">Delete Post</button>
       </span>
       <br><br>
@@ -88,6 +88,7 @@
 <!--    </p>-->
 
     <span id="image"></span>
+    <button (click)="deleteImages()">delete all images attached to this post</button><br>
 
     <button *ngIf="existsInBackend" (click)="save()">Save Post</button>
     <button *ngIf="!existsInBackend" (click)="createPost()">Create Post</button>

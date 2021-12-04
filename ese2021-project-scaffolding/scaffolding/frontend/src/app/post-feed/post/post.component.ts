@@ -190,6 +190,25 @@ export class PostComponent implements OnInit {
     }
   }
 
+  deleteImages() {
+    this.httpClient.get(environment.endpointURL + "post/" + this.postId + "/getImageIds",
+    {responseType: 'text', headers: {'Content-Type': 'json/application'}}).subscribe((imgIds: any) => {
+      
+      if(imgIds != ""){
+        const imgIdArray :Array<String> = imgIds.split(",");
+        imgIdArray.forEach(element => {
+          const imageId : number = +element;
+          this.httpClient.delete(environment.endpointURL + "post/images/" + imageId).subscribe((deleted:any) => {});
+        });
+      }
+    });
+    this.post.images = new Array<File>();
+    const ImgSpan = document.getElementById("image");
+    if(ImgSpan != undefined){
+      ImgSpan.innerHTML = '';
+    }
+  }
+
   loadPicturesToPost(){
     this.httpClient.get(environment.endpointURL + "post/" + this.postId + "/getImageIds",
     {responseType: 'text', headers: {'Content-Type': 'json/application'}}).subscribe((imgIds: any) => {
@@ -297,7 +316,14 @@ export class PostComponent implements OnInit {
       tags: this.findCategory(),
       upvotes: post.upvotes,
       downvotes: post.downvotes,
-    }).subscribe();
+    }).subscribe((post: any) => {
+      const formData = new FormData();
+      for (let i=0; i < this.post.images.length; i++){
+        formData.append("file"+i, this.post.images[i]);
+      }
+      this.httpClient.post(environment.endpointURL + "post/" + post.postId + "/image", formData).subscribe((post: any) => {
+      });
+    }, error => {console.log(error)});
   }
 
   deletePost(post: Post): void {

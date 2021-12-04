@@ -97,6 +97,10 @@ postController.delete('/:id', (req: Request, res: Response) => {
         .catch(err => res.status(500).send(err));
 });
 
+postController.delete('/images/:id', (req: Request, res: Response) => {
+    imageService.deleteSingleImage(+req.params.id).then(destroyed => res.send(destroyed)).catch(err => res.status(500).send(err));
+});
+
 // update
 postController.put('/:id', (req: Request, res: Response) => {
     Post.findByPk(req.params.id)

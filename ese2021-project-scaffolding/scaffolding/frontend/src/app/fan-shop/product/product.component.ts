@@ -135,12 +135,13 @@ export class ProductComponent implements OnInit {
       if (this.productId === -1) {
         this.editMode = true;
         this.existsInBackend = false;
+
       } else {
         this.existsInBackend = true;
         this.editMode = false;
         this.httpClient.get(environment.endpointURL + "product/" + this.productId).subscribe((product: any) => {
           if(product != undefined) {
-            this.product = new Product(product.productId, product.title, product.description, product.price, product.tags, product.imageId);
+            this.product = new Product(product.productId, product.title, product.description, product.price, product.tags, new Array<File>());
             this.selectCategory = this.product.tags.toString();
             this.loadPicturesToProduct();
           }
@@ -158,6 +159,25 @@ export class ProductComponent implements OnInit {
 
   onBlur(event : any) {
     console.log('blur ' + event);
+  }
+
+  deleteImages() {
+    this.httpClient.get(environment.endpointURL + "product/" + this.productId + "/getImageIds",
+    {responseType: 'text', headers: {'Content-Type': 'json/application'}}).subscribe((imgIds: any) => {
+      
+      if(imgIds != ""){
+        const imgIdArray :Array<String> = imgIds.split(",");
+        imgIdArray.forEach(element => {
+          const imageId : number = +element;
+          this.httpClient.delete(environment.endpointURL + "post/images/" + imageId).subscribe((deleted:any) => {});
+        });
+      }
+    });
+    this.product.images = new Array<File>();
+    const ImgSpan = document.getElementById("image");
+    if(ImgSpan != undefined){
+      ImgSpan.innerHTML = '';
+    }
   }
 
   loadPicturesToProduct(){
@@ -250,7 +270,14 @@ export class ProductComponent implements OnInit {
       tags: this.findCategory(),
       price: product.price,
       images: product.images
-    }).subscribe();
+    }).subscribe((post: any) => {
+      const formData = new FormData();
+      for (let i=0; i < this.product.images.length; i++){
+        formData.append("file"+i, this.product.images[i]);
+      }
+      this.httpClient.post(environment.endpointURL + "product/" + product.productId + "/image", formData).subscribe((post: any) => {
+      });
+    }, error => {console.log(error)});
   }
 
   deleteProduct(product: Product): void {

@@ -21,7 +21,7 @@
     <mat-card-actions>
       <button mat-flat-button color="primary" (click) = "checkLoggedIn()" *ngIf="!user?.isAdmin">Buy now</button > <!-- buy now redirects to login-->
       <span *ngIf="user?.isAdmin">
-        <button  mat-flat-button color="primary" (click)="editMode = true">Edit Product</button>
+        <button  mat-flat-button color="primary" (click)="editMode = true; loadPicturesToProduct()">Edit Product</button>
         <button mat-flat-button color="warn" (click)="confirmDeleteProduct(product)">Delete Product</button>
       </span>
     </mat-card-actions>
@@ -74,6 +74,7 @@
         </button>
         </div>
         <span id="image"></span>
+        <button (click)="deleteImages()">delete all images attached to this post</button><br>
       <!-- DESCRIPTION -->
       <br><br>
       <angular-editor id="editor1" [(ngModel)]="product.description" [config]="config1" (ngModelChange)="onChange($event)"

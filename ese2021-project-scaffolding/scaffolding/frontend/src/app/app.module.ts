@@ -43,9 +43,9 @@ import { UserListComponent } from './admin-dashboard/user-list/user-list.compone
 import {ConfirmBoxConfigModule, NgxAwesomePopupModule} from "@costlydeveloper/ngx-awesome-popup";
 
 
-
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
+  {path: 'postfeed', component: PostFeedComponent},
   {path: '', redirectTo: '/home', pathMatch:'full'},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},

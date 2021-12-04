@@ -51,4 +51,12 @@ export class AppComponent implements OnInit {
 
   }
 
+  logoutUser(): void {
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userToken');
+
+    this.userService.setLoggedIn(false);
+    this.userService.setUser(undefined);
+  }
+
 }

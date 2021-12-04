@@ -1,8 +1,29 @@
-
+<!-- HEADER -->
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <mat-icon><a routerLink="/home">home</a></mat-icon> <span class="example-spacer"></span> <a routerLink="/fan-shop">Fan-Shop</a><span class="example-spacer"></span><a routerLink="/login">Login</a> <span class="example-spacer"> </span> <a routerLink="/register" *ngIf="!loggedIn">Register </a><a routerLink="/dashboard" *ngIf="loggedIn && user?.isAdmin">Dashboard</a><span class="example-spacer" *ngIf="loggedIn && user?.isAdmin"></span> <mat-icon *ngIf="loggedIn"><a routerLink="/profile">face</a></mat-icon>
+    <mat-icon><a routerLink="/home">home</a></mat-icon>
+    <span class="example-spacer"></span>
+    <a routerLink="/postfeed">Posts</a>
+    <span class="example-spacer"></span>
+    <a routerLink="/fan-shop">Fan-Shop</a>
+    <span class="example-spacer"></span>
+
+    <span *ngIf="!loggedIn"><a routerLink="/login"><button mat-raised-button color="accent">Login</button></a></span>
+    <span *ngIf="loggedIn" >
+      <div class="dropdown">
+        <mat-icon class="dropbtn">face</mat-icon>
+        <div class="dropdown-content">
+          <a routerLink="/profile">Profile</a>
+          <a routerLink="" (click)="logoutUser()">Logout</a>
+          <a routerLink="/dashboard" *ngIf="loggedIn && user?.isAdmin">Dashboard</a>
+        </div>
+      </div>
+    </span>
   </mat-toolbar-row>
 </mat-toolbar>
+<div class="main-content">
+  <router-outlet></router-outlet>
 
-<router-outlet></router-outlet>
+
+</div>
+

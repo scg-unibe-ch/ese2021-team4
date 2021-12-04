@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder} from "@angular/forms";
 import { Order } from 'src/app/models/order.model';
 import { Status } from 'src/app/models/status.model';
+import{MatRadioModule} from '@angular/material/radio';
 
 import { StripeService } from 'ngx-stripe';
 import { switchMap } from 'rxjs/operators';
@@ -21,6 +22,7 @@ import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-a
 export class OrderFormComponent implements OnInit {
 
   user: User | undefined;
+  paymentType: string = "invoice"
 
   orderFirstName: string = '';
   orderLastName: string = '';
@@ -97,8 +99,38 @@ export class OrderFormComponent implements OnInit {
       }
     });
   }}
-  createOrder(): void {
-      this.httpClient.post(environment.endpointURL + "order", {
+  createOrder(): void{
+    if(this.paymentType == "stripe") {
+      this.createOrderStripe();
+    }
+    else {
+      this.createOrderInvoice();
+    }
+  }
+
+  createOrderInvoice() {
+    this.httpClient.post(environment.endpointURL + "order/invoice", {
+      status: "Pending",
+      productId: this.productId,
+      userId: this.user?.userId,
+      adminId: 0,
+      orderFirstName: this.orderFirstName,
+      orderLastName: this.orderLastName,
+      orderStreet: this.orderStreet,
+      orderHouseNr: this.orderHouseNr,
+      orderZipCode: this.orderZipCode,
+      orderCity: this.orderCity,
+      orderPhoneNr: this.orderPhoneNr,
+      billingStatus: "invoice open"
+    }).subscribe();
+  }
+
+  createOrderStripe(): void {
+    if(!this.formIsFilled()){
+      document.getElementById('emptyFields')!.style.visibility='visible';
+    }
+    else {
+      this.httpClient.post(environment.endpointURL + "order/stripe", {
         status: "Pending",
         productId: this.productId,
         userId: this.user?.userId,
@@ -110,18 +142,19 @@ export class OrderFormComponent implements OnInit {
         orderZipCode: this.orderZipCode,
         orderCity: this.orderCity,
         orderPhoneNr: this.orderPhoneNr,
-        billingStatus: ''
-
+        billingStatus: "paid with stripe"
       })
-      .pipe(
-        switchMap((session : any) => {
-          return this.stripeService.redirectToCheckout({ sessionId: session.id })
-        })
-      )
-      .subscribe(() => {
-      });
+        .pipe(
+          switchMap((session : any) => {
+            return this.stripeService.redirectToCheckout({ sessionId: session.id })
+          })
+        )
+        .subscribe(() => {
+        });
       this.redirecting = true;
     }
+  }
+
 
   formIsFilled(): boolean {
     if (this.orderFirstName==='' || this.orderLastName === '' || this.orderStreet === '' ||

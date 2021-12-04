@@ -142,7 +142,7 @@ export class OrderFormComponent implements OnInit {
         orderZipCode: this.orderZipCode,
         orderCity: this.orderCity,
         orderPhoneNr: this.orderPhoneNr,
-        billingStatus: "paid with stripe"
+        billingStatus: ''
       })
         .pipe(
           switchMap((session : any) => {
@@ -150,6 +150,7 @@ export class OrderFormComponent implements OnInit {
           })
         )
         .subscribe(() => {
+
         });
       this.redirecting = true;
     }

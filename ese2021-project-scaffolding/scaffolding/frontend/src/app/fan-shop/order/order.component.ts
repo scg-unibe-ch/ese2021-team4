@@ -44,12 +44,11 @@ export class OrderComponent implements OnInit {
     {
       this.isShipped = true;
     }
-
     if(this.order.status == Status.Cancelled)
     {
       this.isCancelled = true;
     }
-    if(this.order.billingStatus == "paidByInvoice")
+    if(this.order.billingStatus == "paidByInvoice" || this.order.billingStatus == "paid with stripe")
     {
       this.isPaid = true;
     }

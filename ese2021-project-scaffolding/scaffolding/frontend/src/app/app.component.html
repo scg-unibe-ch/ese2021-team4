@@ -1,7 +1,13 @@
 
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <mat-icon><a routerLink="/home">home</a></mat-icon> <span class="example-spacer"></span> <a routerLink="/fan-shop">Fan-Shop</a><span class="example-spacer"></span><a routerLink="/login">Login</a> <span class="example-spacer"> </span> <a routerLink="/register" *ngIf="!loggedIn">Register </a><a routerLink="/dashboard" *ngIf="loggedIn && user?.isAdmin">Dashboard</a><span class="example-spacer" *ngIf="loggedIn && user?.isAdmin"></span> <mat-icon *ngIf="loggedIn"><a routerLink="/profile">face</a></mat-icon>
+    <mat-icon><a routerLink="/home">home</a></mat-icon> <span class="example-spacer"></span>
+    <a routerLink="/postfeed">Postfeed</a><span class="example-spacer"></span>
+    <a routerLink="/fan-shop">Fanshop</a><span class="example-spacer"></span>
+    <a routerLink="/login">Login</a><span class="example-spacer"> </span>
+    <a routerLink="/register" *ngIf="!loggedIn">Register </a>
+    <a routerLink="/dashboard" *ngIf="loggedIn && user?.isAdmin">Dashboard</a><span class="example-spacer" *ngIf="loggedIn && user?.isAdmin"></span>
+    <mat-icon *ngIf="loggedIn"><a routerLink="/profile">face</a></mat-icon>
   </mat-toolbar-row>
 </mat-toolbar>
 

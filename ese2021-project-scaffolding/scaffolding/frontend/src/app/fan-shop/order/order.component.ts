@@ -138,6 +138,7 @@ export class OrderComponent implements OnInit {
       this.isShipped = true;
       this.httpClient.put(environment.endpointURL + "order/" + this.order.orderId, {
         status: Status.Shipped,
+        shippedDate: new Date(),
       }).subscribe();
 
       this.update.emit(this.order);

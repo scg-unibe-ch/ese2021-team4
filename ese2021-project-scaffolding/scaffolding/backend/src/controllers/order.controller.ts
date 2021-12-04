@@ -7,7 +7,7 @@ const orderController: Router = express.Router();
 
 // read
 orderController.get('/', (req: Request, res: Response) => {
-    Order.findAll({})
+    Order.findAll()
         .then(list => {
             console.log(list);
             list.forEach(async (order) => {

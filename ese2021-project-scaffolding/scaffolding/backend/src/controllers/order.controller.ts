@@ -12,25 +12,9 @@ orderController.get('/', (req: Request, res: Response) => {
         .then(list => {
             const orders = [];
             list.forEach(async (order) => {
-                if (order.billingStatus === '') { // if billing status has not yet been set, check payment status of stripe session
-                    const path = require('path');
-                    require('dotenv').config({ path: path.resolve(__dirname, '../../src/.env') });
-
-                    // Stripe private key should never be published
-                    const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
-                    const session = await stripe.checkout.sessions.retrieve(order.sessionId);
-                    if (session.payment_status === 'unpaid') {
-                        Order.findByPk(order.orderId)
-                            .then((toDelete) => toDelete.destroy()); // delete stripe orders that have not been paid
-                    } else {
-                        order.billingStatus = 'paid with stripe';
-                        const updatedOrder = order.toJSON();
-                        Order.findByPk(order.orderId).then(found => found.update(updatedOrder));
-                    }
-                } else {
-                    orders.push(order);
-                }
+                await order.checkBillingStatus(orders);
             });
+            console.log(orders.length);
             res.status(200).send(orders); })
         .catch(err => res.status(500).send(err));
 });
@@ -40,11 +24,14 @@ orderController.get('/createdBy/:id', (req, res) => {
         where: {
             userId: req.params.id
         }
-    }).then((orders) => {
-        res.status(200).send(orders);
-    }).catch(err => {
-        res.sendStatus(500);
-    });
+    }).then(list => {
+        const orders = [];
+        list.forEach(async (order) => {
+            await order.checkBillingStatus(orders);
+        });
+        console.log(orders.length);
+        res.status(200).send(orders); })
+        .catch(err => res.status(500).send(err));
 });
 
 orderController.get('/:id', (req, res) => {

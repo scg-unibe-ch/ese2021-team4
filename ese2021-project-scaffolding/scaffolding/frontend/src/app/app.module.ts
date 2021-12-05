@@ -50,7 +50,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
-  {path: 'home/post/:id', component: PostComponent},
+  {path: 'postfeed/post/:id', component: PostComponent},
   {path: 'profile/post/:id', component: PostComponent},
   {path: 'dashboard/post/:id', component: PostComponent},
   {path: 'fan-shop', component: FanShopComponent},

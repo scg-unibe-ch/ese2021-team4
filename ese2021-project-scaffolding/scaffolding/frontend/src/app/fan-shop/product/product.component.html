@@ -60,7 +60,7 @@
 
       </mat-form-field><span id="setTitle" style="visibility: hidden">Please set a title. </span>
         <span id="setCategory" style="visibility: hidden"> Please set a category.</span>
-        <span id="setPrice" style="visibility: hidden"> Please set a price.</span>      
+        <span id="setPrice" style="visibility: hidden"> Please set a price.</span>
       </form>
 
       <!-- UPLOAD IMAGE -->
@@ -74,7 +74,7 @@
         </button>
         </div>
         <span id="image"></span>
-        <button (click)="deleteImages()">delete all images attached to this post</button><br>
+        <button (click)="deleteImages()">delete all images attached to this product</button><br>
       <!-- DESCRIPTION -->
       <br><br>
       <angular-editor id="editor1" [(ngModel)]="product.description" [config]="config1" (ngModelChange)="onChange($event)"

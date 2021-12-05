@@ -40,9 +40,9 @@ export class LoginComponent implements OnInit{
     this.user = userService.getUser();
   }
 
+
   ngOnInit() : void {
   }
-
 
   loginUser(): void {
     if (this.userToLogin.username == ''){

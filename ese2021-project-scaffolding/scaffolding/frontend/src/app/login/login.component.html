@@ -1,36 +1,28 @@
-<mat-card>
-  <h3>Login</h3>
+<div class="background">
 
-  <div *ngIf="!loggedIn" >
-    <form (ngSubmit)="loginUser()">
+  <div *ngIf="!loggedIn" class="container">
+    <form (ngSubmit)="loginUser()" class="form">
       <mat-form-field>
-        <input matInput type="text" placeholder="Username or E-mail" name="name" [(ngModel)]="userToLogin.username" id="usernameInput">
+        <mat-label>Enter your Username or E-Mail</mat-label>
+        <input matInput type="text" name="name" [(ngModel)]="userToLogin.username" id="usernameInput">
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field>  
         <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToLogin.password" id="passwordInput">
+        <mat-error *ngIf="passwordWrong">Password wrong</mat-error>
       </mat-form-field>
+      <button type="submit" mat-flat-button color="primary" (click)="loginUser()" >Login</button>
+      
       <p style="color:red" *ngIf="passwordWrong"> Password wrong</p>
       <p style="color:red" *ngIf="userNameWrong"> Username not found</p>
-      <button type="submit" mat-flat-button color="primary" >Login</button>
-      <br>
       <span id="emptyUser" style="visibility: hidden">Please enter your username or email</span>
       <span id="emptyPassword" style="visibility: hidden">Please enter your password</span>
     </form>
-
-
-
-
-    <br>
+    <!-- <br>
     <p>
       Don't have an account yet? <a routerLink="/register">Register</a>
-    </p>
-
+    </p> -->
   </div>
-
-  <div *ngIf="loggedIn">
-    <button mat-flat-button color="warn" (click)="logoutUser()">Logout</button>
-  </div>
-</mat-card>
+</div>
 
 <!--<mat-card>-->
 <!--  <h3>Secure Endpoints</h3>-->

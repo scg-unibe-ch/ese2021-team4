@@ -106,25 +106,4 @@ export class Order extends Model<OrderAttributes, OrderCreationAttributes> imple
             {sequelize, tableName: 'orders'}
         );
     }
-
-    public async checkBillingStatus(orders: Order[]): Promise<void> {
-        if (this.billingStatus === '') { // if billing status has not yet been set, check payment status of stripe session
-            const path = require('path');
-            require('dotenv').config({ path: path.resolve(__dirname, '../../src/.env') });
-
-            // Stripe private key should never be published
-            const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
-            const session = await stripe.checkout.sessions.retrieve(this.sessionId);
-            if (session.payment_status === 'unpaid') {
-                Order.findByPk(this.orderId)
-                    .then((toDelete) => toDelete.destroy()); // delete stripe orders that have not been paid
-            } else {
-                this.billingStatus = 'paid with stripe';
-                const updatedOrder = this.toJSON();
-                Order.findByPk(this.orderId).then(found => found.update(updatedOrder));
-            }
-        } else {
-            orders.push(this);
-        }
-    }
 }

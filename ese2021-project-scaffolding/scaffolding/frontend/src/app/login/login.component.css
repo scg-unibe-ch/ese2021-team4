@@ -13,7 +13,7 @@
     display: flex;
     /* border: solid 1px black; */
     width: 30vw;
-    height: 50vh;
+    height: 60vh;
     justify-content: center;
     align-self: center;
     background-color: aliceblue;
@@ -27,10 +27,11 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-
 }
 
+h1 {
+    text-align: center;
+}
 
 
 .mat-form-field {

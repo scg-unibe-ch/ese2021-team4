@@ -1,6 +1,9 @@
 <div class="background">
 
   <div *ngIf="!loggedIn" class="container">
+    <h1>
+      Login
+    </h1>
     <form (ngSubmit)="loginUser()" class="form">
       <mat-form-field appearance="fill">
         <mat-label>Enter your Username or E-Mail</mat-label>

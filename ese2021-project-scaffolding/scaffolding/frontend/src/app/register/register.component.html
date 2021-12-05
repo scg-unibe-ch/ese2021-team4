@@ -1,52 +1,93 @@
-<mat-card>
-  <h3>Register</h3>
-  <mat-form-field>
-    <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="userToRegister.username" (ngModelChange)="updateUsernameMessage()">
-    <div><br>{{usernameMessage}}</div>
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput type="email" placeholder="E-Mail" name="email" [(ngModel)]="userEmail" (ngModelChange)="updateEmailMessage()">
-    <div><br>{{emailMessage}}</div>
-  </mat-form-field>
-  <br>
-  <mat-form-field>
-    <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToRegister.password" (ngModelChange)="checkPassword()">
-  </mat-form-field>
-  <div>
-    <p *ngIf="!passwordLength">Your password must contain 8 or more characters.</p>
-    <p *ngIf="!passwordUpperCharacter">Your password must contain at least one uppercase character.</p>
-    <p *ngIf="!passwordLowerCharacter">Your password must contain at least one lowercase character.</p>
-    <p *ngIf="!passwordSpecialCharacter">Your password must contain at least one special character.</p>
-    <p *ngIf="!passwordNumber">Your password must contain at least one number.</p>
+<div class="background">
+  <div class="flexbox">
+    <div class="passwordChecks">
+      <h2 style="text-align: center;">Password Checks</h2>
+      <span class="alignment">
+        <span> Minimum length 8</span>
+        <mat-icon [ngStyle]="{'color': passwordLength?'green':'red'}">{{passwordLength ? 'check_circle_outline' : 'highlight_off'}}</mat-icon>
+      </span>
+      <span class="alignment">
+        <span> Contains Upper Character</span>
+        <mat-icon [ngStyle]="{'color': passwordUpperCharacter?'green':'red'}">{{passwordUpperCharacter ? 'check_circle_outline' : 'highlight_off'}}</mat-icon>
+      </span>
+      <span class="alignment">
+        <span> Contains Lower Character</span>
+        <mat-icon [ngStyle]="{'color': passwordLowerCharacter?'green':'red'}">{{passwordLowerCharacter ? 'check_circle_outline' : 'highlight_off'}}</mat-icon>
+      </span>
+      <span class="alignment">
+        <span> Contains Special Character</span>
+        <mat-icon [ngStyle]="{'color': passwordSpecialCharacter?'green':'red'}">{{passwordSpecialCharacter ? 'check_circle_outline' : 'highlight_off'}}</mat-icon>
+      </span>
+      <span class="alignment">
+        <span> Contains Digit</span>
+        <mat-icon [ngStyle]="{'color': passwordNumber?'green':'red'}">{{passwordNumber ? 'check_circle_outline' : 'highlight_off'}}</mat-icon>
+      </span>
+    </div>
   </div>
-  <br>
-  <mat-form-field>
-    <input matInput type="text" placeholder="first name" name="first name" [(ngModel)]="firstName">
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput type="text" placeholder="last name" name="last name" [(ngModel)]="lastName">
-  </mat-form-field>
-  <br>
-  <mat-form-field>
-    <input matInput type="text" placeholder="street" name="street" [(ngModel)]="street">
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput type="text" placeholder="house number" name="house number" [(ngModel)]="houseNr">
-  </mat-form-field>
-  <br>
-  <mat-form-field>
-    <input matInput type="text" placeholder="zip code" name="zip code" [(ngModel)]="zipCode">
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput type="text" placeholder="city" name="city" [(ngModel)]="city">
-  </mat-form-field>
-  <br>
-  <mat-form-field>
-    <input matInput type="date" placeholder="birthday" name="date of birth" [(ngModel)]="birthday">
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput type="text" placeholder="phone number" name="phone number" [(ngModel)]="phoneNr">
-  </mat-form-field>
-  <br>
-  <button mat-flat-button color="primary" (click)="registerUser()" [disabled]="!checkPassword() || !isValidEmail() || !isValidUsername()">Register</button>
-</mat-card>
+  
+  <div class="flexbox">
+    <div class="form" >
+      <h1>  
+        Register
+      </h1>
+      <form class="form" (ngSubmit)="registerUser()">
+        <h2>Required Information</h2>
+        <!-- Required Information -->
+        <mat-form-field>
+          <input matInput type="text" placeholder="Username" name="name" [(ngModel)]="userToRegister.username" (ngModelChange)="updateUsernameMessage()">
+          <mat-hint style="color: red" *ngIf="usernameMessage!=''">{{usernameMessage}}</mat-hint>
+
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type="email" placeholder="E-Mail" name="email" [(ngModel)]="userEmail" (ngModelChange)="updateEmailMessage()">
+          <mat-hint style="color: red" *ngIf="emailMessage!=''">{{emailMessage}}</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" name="password" [(ngModel)]="userToRegister.password" (ngModelChange)="checkPassword()">
+          <button type="button" mat-icon-button matSuffix (click)="hide = !hide">
+            <mat-icon style="font-size: 16px;">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput type="password" placeholder="Repeat Password" name="repeat password" [(ngModel)]="repeatPassword" >
+          <mat-icon style="margin-right: 0.9rem;" [ngStyle]="{'color': passwordRepeatCheck()?'red':'green'}" matSuffix>{{passwordRepeatCheck() ? 'highlight_off' : 'check_circle_outline'}}</mat-icon>
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" type="submit" [disabled]="!checkPassword() || !isValidEmail() || !isValidUsername() || passwordRepeatCheck()">Register</button>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Additional Info -->
+  <div class="flexbox">
+    <div class="additionalInfo">
+      <h2>Optional Information</h2>
+      <mat-form-field>
+        <input matInput type="text" placeholder="first name" name="first name" [(ngModel)]="firstName">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="last name" name="last name" [(ngModel)]="lastName">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="street" name="street" [(ngModel)]="street">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="house number" name="house number" [(ngModel)]="houseNr">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="zip code" name="zip code" [(ngModel)]="zipCode">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="city" name="city" [(ngModel)]="city">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="date" placeholder="birthday" name="date of birth" [(ngModel)]="birthday">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="phone number" name="phone number" [(ngModel)]="phoneNr">
+      </mat-form-field>
+    </div>
+  </div>
+</div>

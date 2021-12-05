@@ -25,8 +25,10 @@ export class RegisterComponent {
   emailMessage: string = '';
   registrationMessage: string = '';
 
-  user: User | undefined;
+  repeatPassword: string = '';
+  hide: boolean = true;
 
+  user: User | undefined;
   userToRegister: User = new User(0, '', '', false);
   userEmail: string = '';
   firstName: string = '';
@@ -111,7 +113,7 @@ export class RegisterComponent {
 
   updateUsernameMessage(): void {
     if(!this.isValidUsername()){
-     this.usernameMessage='Your username must not contain an @-Symbol.'
+     this.usernameMessage='No @-Symbols allowed'
     }
     else{
       this.usernameMessage=''
@@ -127,6 +129,13 @@ export class RegisterComponent {
     this.passwordSpecialCharacter = !!this.userToRegister.password.match(/[!@#$%&*()_+\-=\[\]{}\\|\/?~]/);
 
     return this.passwordLength && this.passwordNumber && this.passwordLowerCharacter && this.passwordUpperCharacter && this.passwordSpecialCharacter;
+  }
+
+  passwordRepeatCheck(): boolean {
+    console.log(this.userToRegister.password);
+    console.log("repeat"+this.repeatPassword);
+
+    return !(this.userToRegister.password === this.repeatPassword && this.repeatPassword !== '');
   }
 
 }

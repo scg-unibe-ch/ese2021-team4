@@ -5,31 +5,33 @@ import { Product } from '../models/product.model';
 
 const orderController: Router = express.Router();
 
+
 // read
 orderController.get('/', (req: Request, res: Response) => {
     Order.findAll()
         .then(list => {
-            console.log(list);
+            const orders = [];
             list.forEach(async (order) => {
-                if (order.billingStatus === '') {
-                    console.log('jetzt drin');
-                    const path = require('path'); // dotenv requires absolute path to file.
+                if (order.billingStatus === '') { // if billing status has not yet been set, check payment status of stripe session
+                    const path = require('path');
                     require('dotenv').config({ path: path.resolve(__dirname, '../../src/.env') });
 
                     // Stripe private key should never be published
                     const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
                     const session = await stripe.checkout.sessions.retrieve(order.sessionId);
                     if (session.payment_status === 'unpaid') {
-                        list.splice(list.indexOf(order), 1);
-                        Order.findByPk(order.orderId).then((toDelete) => toDelete.destroy());
+                        Order.findByPk(order.orderId)
+                            .then((toDelete) => toDelete.destroy()); // delete stripe orders that have not been paid
                     } else {
                         order.billingStatus = 'paid with stripe';
                         const updatedOrder = order.toJSON();
                         Order.findByPk(order.orderId).then(found => found.update(updatedOrder));
                     }
-            }});
-            // console.log(list);
-            res.status(200).send(list); })
+                } else {
+                    orders.push(order);
+                }
+            });
+            res.status(200).send(orders); })
         .catch(err => res.status(500).send(err));
 });
 

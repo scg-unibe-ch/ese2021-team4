@@ -38,7 +38,6 @@ export class OrderFeedComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getOrders();
   }
 
   getOrders(): void {

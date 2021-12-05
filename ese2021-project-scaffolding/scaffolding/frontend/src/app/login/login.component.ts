@@ -16,7 +16,11 @@ export class LoginComponent implements OnInit{
 
   passwordWrong: boolean = false;
   userNameWrong: boolean = false;
+  emptyUser : boolean = false;
+  emptyPassword : boolean = false;
 
+
+  hide : boolean = true;
 
   user: User | undefined;
 
@@ -46,15 +50,21 @@ export class LoginComponent implements OnInit{
 
   loginUser(): void {
     if (this.userToLogin.username == ''){
-      document.getElementById("emptyUser")!.style.visibility='visible';
+      this.emptyUser = true;
+      this.emptyPassword = false;
+      // document.getElementById("emptyUser")!.style.visibility='visible';
     }
     else if (this.userToLogin.password == ''){
-      document.getElementById("emptyUser")!.style.visibility='hidden';
-      document.getElementById("emptyPassword")!.style.visibility='visible';
+      this.emptyUser = false;
+      this.emptyPassword = true;
+      // document.getElementById("emptyUser")!.style.visibility='hidden';
+      // document.getElementById("emptyPassword")!.style.visibility='visible';
     }
     else{
-      document.getElementById("emptyUser")!.style.visibility='hidden';
-      document.getElementById("emptyPassword")!.style.visibility='hidden';
+      this.emptyPassword = false;
+      this.emptyUser = false;
+      // document.getElementById("emptyUser")!.style.visibility='hidden';
+      // document.getElementById("emptyPassword")!.style.visibility='hidden';
     this.httpClient.post(environment.endpointURL + "user/login", {
       userName: this.userToLogin.username,
       password: this.userToLogin.password

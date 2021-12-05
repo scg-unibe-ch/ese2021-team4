@@ -2,26 +2,35 @@
 
   <div *ngIf="!loggedIn" class="container">
     <form (ngSubmit)="loginUser()" class="form">
-      <mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Enter your Username or E-Mail</mat-label>
         <input matInput type="text" name="name" [(ngModel)]="userToLogin.username" id="usernameInput">
       </mat-form-field>
-      <mat-form-field>  
-        <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToLogin.password" id="passwordInput">
-        <mat-error *ngIf="passwordWrong">Password wrong</mat-error>
+      <mat-form-field appearance="fill">
+        <mat-label>Enter your password</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" name="password" [(ngModel)]="userToLogin.password" id="passwordInput">
+        <button type="button" mat-icon-button matSuffix (click)="hide = !hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
       </mat-form-field>
-      <button type="submit" mat-flat-button color="primary" (click)="loginUser()" >Login</button>
-      
+      <button type="submit" mat-flat-button color="primary" >Login</button>
+     
+      <!-- placeholder if nothing is wrong yet --> 
+      <p *ngIf="!(passwordWrong || userNameWrong || emptyUser || emptyPassword)"><br></p>
       <p style="color:red" *ngIf="passwordWrong"> Password wrong</p>
       <p style="color:red" *ngIf="userNameWrong"> Username not found</p>
-      <span id="emptyUser" style="visibility: hidden">Please enter your username or email</span>
-      <span id="emptyPassword" style="visibility: hidden">Please enter your password</span>
+      <p style="color:red" *ngIf="emptyUser"> Please enter a Username or E-Mail</p>
+      <p style="color:red" *ngIf="emptyPassword"> Enter a password</p>  
+      
     </form>
-    <!-- <br>
     <p>
       Don't have an account yet? <a routerLink="/register">Register</a>
-    </p> -->
+    </p>
   </div>
+  <div class="form">
+    
+  </div>
+
 </div>
 
 <!--<mat-card>-->

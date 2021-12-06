@@ -6,6 +6,7 @@ export interface UserPostVoteAttributes {
     postId: number;
     userId: number;
     vote: number;
+    flag: number;
 }
 
 
@@ -15,13 +16,10 @@ export interface UserPostVoteCreationAttributes extends Optional<UserPostVote, '
 
 export class UserPostVote extends Model<UserPostVoteAttributes, UserPostVoteCreationAttributes> implements UserPostVoteAttributes {
 
-    // public static associations: {
-    //     images: Association<TodoItem, ItemImage>
-    // };
-
     postId!: number;
     userId!: number;
     vote!: number;
+    flag!: number;
 
 
     public static initialize(sequelize: Sequelize) { // definition for database
@@ -36,8 +34,12 @@ export class UserPostVote extends Model<UserPostVoteAttributes, UserPostVoteCrea
             },
             vote: {
                 type: DataTypes.INTEGER,
-                allowNull: false
-                }
+                allowNull: true
+                },
+            flag: {
+                type: DataTypes.INTEGER,
+                allowNull: true
+            }
         },
         { sequelize, tableName: 'UserPostVote' }
         );

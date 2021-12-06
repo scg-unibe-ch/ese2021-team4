@@ -14,7 +14,7 @@
     <mat-card-actions>
       <button mat-flat-button color="primary" (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn">Upvotes: {{post.upvotes}}</button>
       <button mat-flat-button color="primary" (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn">Downvotes: {{post.downvotes}}</button>
-      <button mat-flat-button color="warn" (click)="flagPost()" [disabled]="!loggedIn"><mat-icon>flag</mat-icon> <div *ngIf="user?.isAdmin">({{post.flags}})</div></button>
+      <button mat-flat-button color="warn" (click)="flagPost()" [disabled]="hasFlagged||!loggedIn"><mat-icon>flag</mat-icon> <div *ngIf="user?.isAdmin">({{post.flags}})</div></button>
       <button mat-flat-button color="primary" (click)="unflagPost()" *ngIf="user?.isAdmin">unflag post</button>
       <span *ngIf="user?.userId === post.userId || user?.isAdmin">
         <button  mat-flat-button color="primary" (click)="editMode = true; loadPicturesToPost()">Edit Post</button>
@@ -104,6 +104,6 @@
     <a [routerLink]="['post', post.postId]"> View Post </a><br><br>
     <button  mat-flat-button color="primary" (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn"><mat-icon>thumb_up</mat-icon></button>{{post.upvotes}}<span style="margin-left: 20px"></span>
     <button  mat-flat-button color="primary" (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn"><mat-icon>thumb_down</mat-icon></button> {{post.downvotes}}
-    <button mat-flat-button color="warn" (click)="flagPost()" *ngIf="user?.isAdmin"><mat-icon>flag</mat-icon> ({{post.flags}})</button>
+    <button *ngIf="user?.isAdmin" mat-flat-button color="warn" (click)="flagPost()" [disabled]="hasFlagged||!loggedIn"><mat-icon>flag</mat-icon> ({{post.flags}})</button>
   </div></div>
 

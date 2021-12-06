@@ -97,7 +97,7 @@
 </div></div>
 
 
-<div *ngIf="preview"><!-- <mat-card> -->
+<div *ngIf="preview">
   <div> <mat-chip-list><mat-chip>{{post.tags}}</mat-chip></mat-chip-list><br><br><br><br><br><br><br>
     {{post.title}} <span style="display: inline-block;">&nbsp;</span>
 
@@ -105,5 +105,5 @@
     <button  mat-flat-button color="primary" (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn"><mat-icon>thumb_up</mat-icon></button>{{post.upvotes}}<span style="margin-left: 20px"></span>
     <button  mat-flat-button color="primary" (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn"><mat-icon>thumb_down</mat-icon></button> {{post.downvotes}}
     <button mat-flat-button color="warn" (click)="flagPost()" *ngIf="user?.isAdmin"><mat-icon>flag</mat-icon> ({{post.flags}})</button>
-    <!-- </mat-card> -->
   </div></div>
+

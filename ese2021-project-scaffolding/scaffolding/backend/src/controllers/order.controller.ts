@@ -5,10 +5,15 @@ import { Product } from '../models/product.model';
 
 const orderController: Router = express.Router();
 
+
 // read
 orderController.get('/', (req: Request, res: Response) => {
-    Order.findAll({ })
-        .then(list => res.status(200).send(list))
+    Order.findAll()
+        .then(list => {
+            getAllOrders(list).then((orders: any ) => {
+                res.status(200).send(orders);
+            });
+        })
         .catch(err => res.status(500).send(err));
 });
 
@@ -17,17 +22,56 @@ orderController.get('/createdBy/:id', (req, res) => {
         where: {
             userId: req.params.id
         }
-    }).then((orders) => {
-        res.status(200).send(orders);
-    }).catch(err => {
-        res.sendStatus(500);
-    });
+    })
+        .then(list => {
+            getAllOrders(list).then((orders: any ) => {
+                res.status(200).send(orders);
+            });
+    })
+        .catch(err => res.status(500).send(err));
 });
+
+// collects all promises from every checkBillingStatus call into a single promise
+function getAllOrders(list) {
+    const promises = [];
+    const orders = [];
+    list.forEach((order: any) => {
+        promises.push(
+            checkBillingStatus(order, orders)
+        );
+    });
+    return Promise.all(promises).then(() => orders );
+}
+
+// deletes order if it was created from an unpaid stripe session.
+// otherwise updates billingStatus if necessary and pushes order to the given orders list
+async function checkBillingStatus(order, orders) {
+    if (order.billingStatus === '') {
+        const path = require('path');
+        require('dotenv').config({ path: path.resolve(__dirname, '../../src/.env') });
+
+        // Stripe private key should never be published
+        const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
+        const session = await stripe.checkout.sessions.retrieve(order.sessionId);
+        if (session.payment_status === 'unpaid') {
+            Order.findByPk(order.orderId)
+                .then((toDelete) => toDelete.destroy());
+        } else {
+            order.billingStatus = 'paid with stripe';
+            orders.push(order);
+            const updatedOrder = order.toJSON();
+            Order.findByPk(order.orderId).then(found => found.update(updatedOrder));
+        }
+    } else {
+        orders.push(order);
+    }
+}
 
 orderController.get('/:id', (req, res) => {
     Order.findByPk(req.params.id)
         .then(found => {
             if (found != null) {
+
                 res.status(200).send(found);
             } else {
                 res.sendStatus(404);
@@ -86,8 +130,10 @@ orderController.post('/stripe', async (req: Request, res: Response) => {
         cancel_url: process.env.SITE + '/payment_cancelled/' + prod.productId,
     });
 
+    const newBody = req.body;
+    newBody['sessionId'] = session.id;
 
-    Order.create(req.body).then(created => {
+    Order.create(newBody).then(created => {
         const obj = created.toJSON();
         obj['id'] = session.id;
 

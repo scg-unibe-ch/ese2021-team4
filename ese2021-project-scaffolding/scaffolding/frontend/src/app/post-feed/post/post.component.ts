@@ -261,7 +261,7 @@ export class PostComponent implements OnInit {
       document.getElementById('setTitle')!.style.visibility = 'hidden';
       document.getElementById('setCategory')!.style.visibility = 'hidden';
       document.getElementById('setDescriptionOrImage')!.style.visibility = 'hidden';
-    this.router.navigate(['/home']);
+    this.router.navigate(['/postfeed']);
     this.updatePost(this.post);
     }
   }
@@ -284,7 +284,7 @@ export class PostComponent implements OnInit {
       document.getElementById('setDescriptionOrImage')!.style.visibility = 'visible';
     }
     else {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/postfeed']);
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='hidden';
       document.getElementById('setDescriptionOrImage')!.style.visibility = 'hidden';
@@ -329,9 +329,10 @@ export class PostComponent implements OnInit {
   deletePost(post: Post): void {
     if(this.user?.userId == post.userId || this.user?.isAdmin){
       this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {});
-      this.router.navigate(['/home']);
+      this.router.navigate(['/postfeed']);
     }
   }
+
 
   confirmDeleting(post: Post): void{
     const confirmBox = new ConfirmBoxInitializer();

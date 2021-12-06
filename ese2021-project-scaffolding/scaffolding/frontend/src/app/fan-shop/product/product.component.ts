@@ -164,7 +164,7 @@ export class ProductComponent implements OnInit {
   deleteImages() {
     this.httpClient.get(environment.endpointURL + "product/" + this.productId + "/getImageIds",
     {responseType: 'text', headers: {'Content-Type': 'json/application'}}).subscribe((imgIds: any) => {
-      
+
       if(imgIds != ""){
         const imgIdArray :Array<String> = imgIds.split(",");
         imgIdArray.forEach(element => {

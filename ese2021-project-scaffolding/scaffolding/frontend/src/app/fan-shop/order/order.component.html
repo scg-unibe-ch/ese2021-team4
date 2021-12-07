@@ -18,7 +18,7 @@
       <button *ngIf="user?.isAdmin" mat-flat-button color="warn" (click)="confirmPayment()"[disabled]="isPaid || isCancelled">SET PAID</button>
     </mat-card-actions>
     <mat-card-footer *ngIf="user?.isAdmin">
-      Ordered by: {{order.userId}} | Shipped by: {{order.adminId}} <br><br>
+      Ordered by: {{orderUserName}} <span *ngIf="isShipped"> | Shipped by: {{orderAdminName}} </span><br><br>
     </mat-card-footer>
 
 </mat-card>

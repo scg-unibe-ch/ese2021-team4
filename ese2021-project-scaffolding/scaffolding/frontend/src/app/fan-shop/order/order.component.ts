@@ -20,6 +20,9 @@ export class OrderComponent implements OnInit {
   isCancelled: boolean = false;
   isPaid: boolean = false;
 
+  orderUserName = '';
+  orderAdminName = '';
+
   @Input()
   order: Order = new Order('', Status.Pending, 0, 0, 0, 0, new Date(), new Date(), '', '', '', 0, 0, '', '');
 
@@ -51,6 +54,12 @@ export class OrderComponent implements OnInit {
     if(this.order.billingStatus == "paidByInvoice" || this.order.billingStatus == "paid with stripe")
     {
       this.isPaid = true;
+    }
+
+    this.httpClient.get(environment.endpointURL + 'user/' + this.order.userId).subscribe((user:any) => this.orderUserName = user.userName);
+
+    if(this.isShipped){
+      this.httpClient.get(environment.endpointURL + 'user/' + this.order.adminId).subscribe((user:any) => this.orderAdminName = user.userName)
     }
   }
 
@@ -138,8 +147,9 @@ export class OrderComponent implements OnInit {
       this.isShipped = true;
       this.httpClient.put(environment.endpointURL + "order/" + this.order.orderId, {
         status: Status.Shipped,
+        adminId: this.user?.userId,
         shippedDate: new Date(),
-      }).subscribe();
+      }).subscribe(() => this.orderAdminName = this.user!.username);
 
       this.update.emit(this.order);
     }

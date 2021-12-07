@@ -23,7 +23,7 @@ import { ToastrService } from 'ngx-toastr';
 export class OrderFormComponent implements OnInit {
 
   user: User | undefined;
-  paymentType: string = "invoice"
+  paymentType: string = "invoice";
 
   orderFirstName: string = '';
   orderLastName: string = '';

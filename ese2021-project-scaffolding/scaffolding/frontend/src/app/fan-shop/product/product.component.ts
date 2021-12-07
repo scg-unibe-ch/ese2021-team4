@@ -58,6 +58,7 @@ export class ProductComponent implements OnInit {
       ],
       [
         'insertVideo',
+        'insertImage',
         'backgroundColor',
         'textColor',
         'removeFormat',

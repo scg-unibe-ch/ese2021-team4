@@ -89,13 +89,14 @@
               <mat-icon>attach_file</mat-icon>
           </button>
           </div>
-          <span id="image"></span>
-          <button (click)="deleteImages()">delete all images attached to this product</button><br>
 
         <!-- DESCRIPTION -->
         <br><br>
         <angular-editor id="editor1" [(ngModel)]="product.description" [config]="config1" (ngModelChange)="onChange($event)"
                         (blur)="onBlur($event)"></angular-editor>
+
+      <span id="image"></span>
+      <button (click)="deleteImages()">delete all images attached to this product</button><br>
 
         <button *ngIf="existsInBackend" (click)="save()">Save</button>
         <button *ngIf="!existsInBackend" (click)="createProduct()">Create</button>

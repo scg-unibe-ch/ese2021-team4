@@ -75,6 +75,7 @@ export class PostComponent implements OnInit {
       ],
       [
         'insertVideo',
+        'insertImage',
         'backgroundColor',
         'textColor',
         'removeFormat',

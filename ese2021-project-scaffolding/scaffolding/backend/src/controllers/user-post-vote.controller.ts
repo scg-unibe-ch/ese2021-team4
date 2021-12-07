@@ -1,5 +1,4 @@
 import express, { Router, Request, Response } from 'express';
-import { Post } from '../models/post.model';
 import { UserPostVote } from '../models/user-post-vote.model';
 
 
@@ -13,9 +12,11 @@ userPostVoteController.get('/', (req: Request, res: Response) => {
 });
 
 userPostVoteController.get('/votedBy/:userId', (req, res) => {
+    const { Op } = require('sequelize');
     UserPostVote.findAll({
         where: {
-            userId: req.params.userId
+            userId: req.params.userId,
+            vote: {[Op.not]: 0}
         }
     })
         .then(list => res.status(200).send(list))
@@ -49,7 +50,7 @@ userPostVoteController.post('/', (req: Request, res: Response) => {
 });
 
 // delete
-userPostVoteController.delete('/:userId/:postId', (req, res) => {
+userPostVoteController.delete('/single/:userId/:postId', (req, res) => {
     const paramUserId = +req.params.userId;
     const paramPostId = +req.params.postId;
     const { Op } = require('sequelize');
@@ -73,21 +74,65 @@ userPostVoteController.delete('/:userId/:postId', (req, res) => {
     .catch(err => res.status(500).send(err));
 });
 
-// // update
-// userPostVoteController.put('/:id', (req: Request, res: Response) => {
-//     Post.findByPk(req.params.id)
-//         .then(found => {
-//             if (found != null) {
-//                 found.update(req.body).then(updated => {
-//                     res.status(200).send(updated);
-//                 });
-//             } else {
-//                 res.sendStatus(404);
-//             }
+userPostVoteController.delete('/unflag/:postId', (req, res) => {
+    console.log('here we are');
+    console.log(req.params.postId);
+    const paramPostId = +req.params.postId;
+    console.log('postid: ', paramPostId);
+    const promises = [];
+    const { Op } = require('sequelize');
+    UserPostVote.findAll({
+        where: {
+            postId: paramPostId
+        }
+    })
+        .then(found => {
+            console.log(found);
+            found.forEach(entry => {
+                if (entry.vote != null) {
+                    entry.flag = null;
+                    const newEntry = entry.toJSON();
+                    promises.push(entry.update(newEntry)
+                        .then(deleted => deleted)
+                        .catch(err => res.status(500).send(err)));
+                } else {
+                    promises.push(entry.destroy()
+                        .then(deleted => deleted)
+                        .catch(err => {
+                            console.log('delete error');
+                            res.status(500).send(err);
+                        }));
+                }
+        });
+        })
+        .catch(err => res.status(500).send(err));
+    Promise.all(promises).then(deleted => res.status(200).send(deleted));
+});
 
-//         })
-//         .catch(err => res.status(500).send(err));
-// });
+// update
+userPostVoteController.put('/:userId/:postId', (req: Request, res: Response) => {
+    const paramUserId = +req.params.userId;
+    const paramPostId = +req.params.postId;
+    const { Op } = require('sequelize');
+    UserPostVote.findOne({
+        where: {
+            [Op.and]: [
+                {userId: paramUserId},
+                {postId: paramPostId}
+            ]
+        }
+    })
+        .then(found => {
+            if (found != null) {
+                found.update(req.body).then(updated => {
+                    res.status(200).send(updated);
+                });
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(err => res.status(500).send(err));
+});
 
 
 export const UserPostVoteController: Router = userPostVoteController;

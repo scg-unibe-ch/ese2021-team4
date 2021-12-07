@@ -38,7 +38,9 @@ export class OrderFeedComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(this.user != undefined) {
       this.getOrders();
+    }
   }
 
   getOrders(): void {

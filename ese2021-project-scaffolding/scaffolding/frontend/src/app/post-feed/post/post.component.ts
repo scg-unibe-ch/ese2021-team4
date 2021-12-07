@@ -11,6 +11,8 @@ import {Comment} from 'src/app/models/comment.model';
 import {Category, CategoryFinder} from "../../models/category.model";
 import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-awesome-popup";
 import {ToastrService} from "ngx-toastr";
+import {retry} from "rxjs/operators";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -31,6 +33,7 @@ export class PostComponent implements OnInit {
   authorName: string | undefined;
   hasUpvoted: boolean = false;
   hasDownvoted: boolean = false;
+  hasFlagged: boolean = false;
 
   existsInBackend : boolean = true;
   form: FormGroup = new FormGroup({});
@@ -169,7 +172,6 @@ export class PostComponent implements OnInit {
         this.httpClient.get(environment.endpointURL + "user/" + post.userId).subscribe((user: any) => {
           this.authorName = user.userName;
         });
-
         this.selectCategory=this.post.tags.toString();
       });
       this.checkVoteStatus();
@@ -185,6 +187,9 @@ export class PostComponent implements OnInit {
           } else if (userPostVote.vote == -1) {
             this.hasDownvoted = true;
           }
+          if (userPostVote.flag == 1) {
+            this.hasFlagged = true;
+          }
         }
       });
     }
@@ -193,7 +198,7 @@ export class PostComponent implements OnInit {
   deleteImages() {
     this.httpClient.get(environment.endpointURL + "post/" + this.postId + "/getImageIds",
     {responseType: 'text', headers: {'Content-Type': 'json/application'}}).subscribe((imgIds: any) => {
-      
+
       if(imgIds != ""){
         const imgIdArray :Array<String> = imgIds.split(",");
         imgIdArray.forEach(element => {
@@ -228,7 +233,7 @@ export class PostComponent implements OnInit {
             this.post.images.push(picture);
             img.onload = function() {
               URL.revokeObjectURL(img.src);
-            }
+            };
             imageSpan?.appendChild(img);
            });
         });
@@ -316,6 +321,7 @@ export class PostComponent implements OnInit {
       tags: this.findCategory(),
       upvotes: post.upvotes,
       downvotes: post.downvotes,
+      flags: post.flags
     }).subscribe((post: any) => {
       const formData = new FormData();
       for (let i=0; i < this.post.images.length; i++){
@@ -335,58 +341,119 @@ export class PostComponent implements OnInit {
 
 
   confirmDeleting(post: Post): void{
+    this.confirm('Are you sure you want to delete this post?')
+      .then(confirmed => {
+        if(confirmed){
+          this.deletePost(post);
+        }
+      })
+  }
+
+  confirmFlagging(): void{
+    this.confirm('Are you sure you want to report this post? This cannot be undone.')
+      .then(confirmed => {
+        if(confirmed){
+          this.flagPost();
+        }
+      })
+  }
+
+  confirmUnflagging(): void{
+    this.confirm('Are you sure you want to remove all flags from this post?')
+      .then(confirmed => {
+        if(confirmed){
+          this.unflagPost();
+        }
+      })
+  }
+
+  async confirm(message: string): Promise<boolean> {
     const confirmBox = new ConfirmBoxInitializer();
     confirmBox.setTitle('');
-    confirmBox.setMessage('Are you sure you want to delete this post?');
+    confirmBox.setMessage(message);
     confirmBox.setButtonLabels('YES', 'NO');
 
     // Choose layout color type
     confirmBox.setConfig({
       LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
     });
-
-    // Simply open the popup and listen which button is clicked
-    confirmBox.openConfirmBox$().subscribe(resp => {
-
-      if (resp.ClickedButtonID=='yes'){
-        this.deletePost(post);
-      }
-    });
+    return await confirmBox.openConfirmBox$().toPromise().then(resp => resp.ClickedButtonID == 'yes')
   }
 
   votePost(param: number): void {
-    if(!this.hasDownvoted && !this.hasUpvoted){
-      this.httpClient.post(environment.endpointURL + "userpostvote", {
-        userId: this.user?.userId,
-        postId: this.post.postId,
-        vote: param
-      }).subscribe((vote: any) => {
-        if(param == 1){
-          this.post.upvotes += 1;
-          this.hasUpvoted = true;
-        } else {
-          this.post.downvotes += 1;
-          this.hasDownvoted = true;
-        }
-        this.updatePost(this.post);
-        this.checkVoteStatus();
-      }, error => {
-        console.log(error);
-      });
-    } else {
-      this.httpClient.delete(environment.endpointURL + "userpostvote/" + this.user?.userId + "/" + this.postId).subscribe(()=>{
-        if(param == 1){
-          this.post.upvotes = this.post.upvotes - 1;
-          this.hasUpvoted = false;
-        } else {
-          this.post.downvotes--;
-          this.hasDownvoted = false;
-        }
-        this.updatePost(this.post);
-        this.checkVoteStatus();
+    if (!this.hasDownvoted && !this.hasUpvoted) {
+      if (!this.hasFlagged) {
+        // create new userpostvote entry
+        this.httpClient.post(environment.endpointURL + "userpostvote", {
+          userId: this.user?.userId,
+          postId: this.post.postId,
+          vote: param
+        })
+          .subscribe((vote: any) => {
+            this.setVote(param);
+            }, error => {
+            console.log(error);
+          });
+      }
+      else {
+        // update existing userpostvote entry
+        this.httpClient.put(environment.endpointURL + "userpostvote/" + this.user?.userId + "/" + this.postId, {
+          userId: this.user?.userId,
+          postId: this.post.postId,
+          vote: param
+        })
+          .subscribe((vote: any) => {
+            this.setVote(param);
+            }, error => {
+            console.log(error);
+          });
+      }
+    }
+    else if (!this.hasFlagged) {
+      this.httpClient.delete(environment.endpointURL + "userpostvote/single/" + this.user?.userId + "/" + this.postId).subscribe(() => {
+        this.removeVote(param);
       });
     }
+    else {
+      this.httpClient.put(environment.endpointURL + "userpostvote/" + this.user?.userId + "/" + this.postId, {
+        userId: this.user?.userId,
+        postId: this.post.postId,
+        vote: null
+      })
+        .subscribe((vote: any) => {
+          this.removeVote(param);
+          }, error => {
+          console.log(error);
+        });
+    }
   }
+
+  setVote(param: number): void {
+    if (param == 1) {
+      this.post.upvotes += 1;
+      this.hasUpvoted = true;
+    }
+    else {
+      this.post.downvotes += 1;
+      this.hasDownvoted = true;
+    }
+    this.updatePost(this.post);
+    this.checkVoteStatus();
+  }
+
+  removeVote(param: number): void {
+    if (param == 1) {
+      this.post.upvotes = this.post.upvotes - 1;
+      this.hasUpvoted = false;
+    }
+    else {
+      this.post.downvotes = this.post.downvotes -1;
+      this.hasDownvoted = false;
+    }
+    this.updatePost(this.post);
+    this.checkVoteStatus();
+  }
+
 
   // CREATE - Comment
   createComment(): void {
@@ -405,23 +472,50 @@ export class PostComponent implements OnInit {
   }
 
   flagPost(): void {
-    this.post.flags += 1;
-    this.httpClient.put(environment.endpointURL + "post/" + this.post.postId, {
-      flags: this.post.flags
-    }).subscribe(() => this.toastr.success("This post has been flagged for review.","",{
-      timeOut: 2500
-    })
-    )
+    if(this.hasUpvoted || this.hasDownvoted){
+      this.httpClient.put(environment.endpointURL + "userpostvote/" + this.user?.userId + "/" + this.postId, {
+        userId: this.user?.userId,
+        postId: this.post.postId,
+        flag: 1
+      }).subscribe(() => {
+        this.post.flags += 1;
+        this.updatePost(this.post);
+        this.toastr.success("This post has been flagged for review.", "", {
+          timeOut: 2500
+        });
+        this.checkVoteStatus();
+      })
+    }
+    else {
+      this.httpClient.post(environment.endpointURL + "userpostvote/", {
+        userId: this.user?.userId,
+        postId: this.post.postId,
+        flag: 1
+      }).subscribe(() => {
+        this.post.flags += 1;
+        this.updatePost(this.post);
+        this.toastr.success("This post has been flagged for review.", "", {
+          timeOut: 2500
+        });
+        this.checkVoteStatus();
+      })
+    }
   }
 
   unflagPost(): void {
-    this.post.flags = 0;
-    this.httpClient.put(environment.endpointURL + "post/" + this.post.postId, {
-      flags: this.post.flags
-    }).subscribe(() => this.toastr.success("The flag count has been reset.","",{
-        timeOut: 2500
-      })
-    )
+    this.httpClient.delete(environment.endpointURL + "userpostvote/unflag/" + this.post.postId)
+      .subscribe(() => {
+        this.post.flags = 0;
+        this.httpClient.put(environment.endpointURL + "post/" + this.post.postId, {
+          flags: 0
+        })
+          .subscribe(() => {
+              this.toastr.success("The flag count has been reset.", "", {
+                timeOut: 2500
+              });
+              this.checkVoteStatus();
+            }
+          )}, error => console.log(error));
   }
 
   // UPDATE - Comment

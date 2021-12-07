@@ -12,9 +12,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {ToastrModule} from "ngx-toastr";
 import {MatRadioModule} from '@angular/material/radio';
-
-//import { TodoListComponent } from './todo-list/todo-list.component';
-// import { TodoItemComponent } from './todo-list/todo-item/todo-item.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatListModule } from '@angular/material/list';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -65,8 +62,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    // TodoListComponent,
-    // TodoItemComponent,
     HomeComponent,
     LoginComponent,
     RegisterComponent,
@@ -108,7 +103,6 @@ const routes: Routes = [
     MatChipsModule,
     NgxStripeModule.forRoot('pk_test_51K0pOrIFU9ZBSiczIlnqN7V1M1A7mf0vb6KDUJR01ajD8j3Lfht3SPgImeSnweRtNr29wjknKCEn2gGd4Zwha6Bx00VKqhuUP6'),
     MatRadioModule,
-    // Component
   ],
   providers: [
     {

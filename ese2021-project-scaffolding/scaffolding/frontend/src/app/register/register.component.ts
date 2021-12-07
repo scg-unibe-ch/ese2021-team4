@@ -23,7 +23,6 @@ export class RegisterComponent {
 
   usernameMessage: string = '';
   emailMessage: string = '';
-  registrationMessage: string = '';
 
   repeatPassword: string = '';
   hide: boolean = true;
@@ -73,8 +72,7 @@ export class RegisterComponent {
         birthday: this.birthday,
         phoneNr: this.phoneNr
       }).subscribe(() => {
-        //TODO: user feedback
-        this.router.navigate(['/login'])
+        this.router.navigate(['/login']);
         this.toastr.success("You were successfully registered.","",{
           timeOut: 2500
         });

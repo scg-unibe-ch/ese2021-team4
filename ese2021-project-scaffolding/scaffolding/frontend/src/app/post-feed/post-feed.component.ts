@@ -4,7 +4,6 @@ import { environment } from 'src/environments/environment';
 import { Post } from '../models/post.model';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
-import {MatGridListModule} from '@angular/material/grid-list';
 import {Category, CategoryFinder} from "../models/category.model";
 
 
@@ -51,29 +50,6 @@ export class PostFeedComponent implements OnInit {
     }
   }
 
-  //CREATE POST
-  createPost(): void {
-    if(this.user != null){ //user might not be instantiated, this is taken care of by the html
-      this.httpClient.post(environment.endpointURL + "post", {
-      title: this.newPostTitle,
-      description: this.newPostDescription,
-      tags: this.newPostTags,
-      userId: this.user.userId,
-      upvotes: 0,
-      downvotes: 0
-    }).subscribe((post: any) => {
-      this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags));
-      this.newPostTitle = this.newPostDescription = this.newPostTags = '';
-    },
-        error => {console.log(error)})
-    }
-
-  }
-
-  shouldShowPostButton(): boolean {
-    return this.feedType != 'flagged' && this.feedType != 'upvoted' && this.feedType != 'downvoted' && this.feedType != 'commented';
-  }
-
   readPosts(): void {
     switch (this.feedType) {
       case 'created':
@@ -107,6 +83,7 @@ export class PostFeedComponent implements OnInit {
 
     });
   }
+
   readCreatedPosts(): void {
     this.httpClient.get(environment.endpointURL + "post/" + "createdBy/" + this.user?.userId).subscribe((posts: any) => {
       posts.forEach((post: any) => {
@@ -179,8 +156,7 @@ export class PostFeedComponent implements OnInit {
         break;
       case "flags": this.sortByFlags();
         break;
-      default: console.log('invalid sort')
-
+      default:
     }
   }
 
@@ -201,6 +177,7 @@ export class PostFeedComponent implements OnInit {
   sortByTags():void{
     this.selectedPosts.sort((a, b) => a.tags.localeCompare(b.tags))
   }
+
   sortByTitle(): void {
     this.selectedPosts.sort((a, b) => a.title.localeCompare(b.title))
   }
@@ -231,5 +208,9 @@ export class PostFeedComponent implements OnInit {
 
   sortByFlags(): void {
     this.selectedPosts.sort((a, b) => b.flags-a.flags)
+  }
+
+  shouldShowPostButton(): boolean {
+    return this.feedType != 'flagged' && this.feedType != 'upvoted' && this.feedType != 'downvoted' && this.feedType != 'commented';
   }
 }

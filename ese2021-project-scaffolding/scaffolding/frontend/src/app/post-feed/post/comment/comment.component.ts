@@ -1,10 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Comment } from 'src/app/models/comment.model';
-import {HttpClient} from "@angular/common/http";
 import {UserService} from "../../../services/user.service";
 import {User} from "../../../models/user.model";
-import {TodoItem} from "../../../models/todo-item.model";
-import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-awesome-popup";
+import {ConfirmationAsker} from "../../../models/confirmation-asker";
 
 @Component({
   selector: 'app-comment',
@@ -33,7 +31,7 @@ export class CommentComponent implements OnInit {
   }
 
   @Input()
-  comment: Comment = new Comment(0, 0, 0, '', 0, 0, new Date());
+  comment!: Comment;
 
   @Output()
   update = new EventEmitter<Comment>();
@@ -41,32 +39,15 @@ export class CommentComponent implements OnInit {
   @Output()
   delete = new EventEmitter<Comment>();
 
-  updateComment(): void {
-    // Emits event to parent component that TodoItem got updated
-    this.update.emit(this.comment);
-  }
-
   confirmDeleteComment(): void{
-    const confirmBox = new ConfirmBoxInitializer();
-    confirmBox.setTitle('');
-    confirmBox.setMessage('Are you sure you want to delete this comment?');
-    confirmBox.setButtonLabels('YES', 'NO');
-
-    // Choose layout color type
-    confirmBox.setConfig({
-      LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
-    });
-
-    // Simply open the popup and listen which button is clicked
-    confirmBox.openConfirmBox$().subscribe(resp => {
-
-      if (resp.ClickedButtonID=='yes'){
-        this.deleteComment()
-      }
-    });
+    ConfirmationAsker.confirm('Are you sure you want to delete this comment?')
+      .then(confirmed => {
+        if(confirmed){
+          this.deleteComment();
+        }
+      })
   }
   deleteComment(): void {
-    // Emits event to parent component that TodoItem got deleted
     this.delete.emit(this.comment);
   }
 

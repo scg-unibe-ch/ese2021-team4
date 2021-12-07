@@ -1,6 +1,8 @@
 <mat-card>
-<div>
-  {{comment.description}}<br><br>
-  <button mat-flat-button color="warn" (click)="confirmDeleteComment()" *ngIf="user?.userId === comment.userId || user?.isAdmin">Delete Comment</button>
-</div>
+  <div>
+    {{comment.description}}<br><br>
+    <button mat-flat-button color="warn" (click)="confirmDeleteComment()" *ngIf="user?.userId === comment.userId || user?.isAdmin">
+      Delete Comment
+    </button>
+  </div>
 </mat-card>

@@ -3,22 +3,21 @@
       <a routerLink="/postfeed/post/-1"><button mat-flat-button color="primary">Create Post</button></a>
   </p>
 </mat-card>
+
 <mat-card *ngIf="!loggedIn">
   <p>
     Please<a routerLink="/login"> log in </a>to create a Post
   </p>
 </mat-card>
+
 <mat-form-field appearance="fill">
   <mat-label>Sort by:</mat-label>
   <mat-select [(ngModel)]="sortBy"(ngModelChange)="sortPosts()">
-<!--    <mat-option value="title">Title</mat-option>-->
-<!--    <mat-option value="id">ID</mat-option>-->
     <mat-option value="flags" *ngIf="feedType == 'flagged'">Flags</mat-option>
     <mat-option value="recent">Newest</mat-option>
     <mat-option value="oldest">Oldest</mat-option>
     <mat-option value="upvotes">Upvotes</mat-option>
     <mat-option value="downvotes">Downvotes</mat-option>
-<!--    <mat-option value="tags">Tags</mat-option>-->
     <mat-option value="total">Score</mat-option>
   </mat-select>
 </mat-form-field>
@@ -40,13 +39,7 @@
   <mat-grid-tile *ngFor="let post of selectedPosts">
     <app-post [post]="post"
               [preview]="true"
-              [postId]="post.postId"></app-post>
+              [postId]="post.postId">
+    </app-post>
   </mat-grid-tile>
-
 </mat-grid-list>
-<!-- <mat-grid-list cols="2" rowHeight="2:1">
-  <mat-grid-tile>1</mat-grid-tile>
-  <mat-grid-tile>2</mat-grid-tile>
-  <mat-grid-tile>3</mat-grid-tile>
-  <mat-grid-tile>4</mat-grid-tile>
-</mat-grid-list> -->

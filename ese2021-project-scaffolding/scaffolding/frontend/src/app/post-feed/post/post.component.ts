@@ -399,7 +399,7 @@ export class PostComponent implements OnInit {
       }
     }
       else if (!this.hasFlagged) {
-          this.httpClient.delete(environment.endpointURL + "userpostvote/" + this.user?.userId + "/" + this.postId).subscribe(() => {
+          this.httpClient.delete(environment.endpointURL + "userpostvote/single/" + this.user?.userId + "/" + this.postId).subscribe(() => {
             if (param == 1) {
               this.post.upvotes = this.post.upvotes - 1;
               this.hasUpvoted = false;
@@ -455,6 +455,10 @@ export class PostComponent implements OnInit {
         flag: 1
       }).subscribe(() => {
         this.post.flags += 1;
+        this.updatePost(this.post);
+        this.toastr.success("This post has been flagged for review.", "", {
+          timeOut: 2500
+        });
         this.checkVoteStatus();
       })
     }
@@ -465,30 +469,26 @@ export class PostComponent implements OnInit {
         flag: 1
       }).subscribe(() => {
         this.post.flags += 1;
-        this.checkVoteStatus();
-      })
-    }
-    this.httpClient.put(environment.endpointURL + "post/" + this.post.postId, {
-      flags: this.post.flags
-    }).subscribe(() => {
+        this.updatePost(this.post);
         this.toastr.success("This post has been flagged for review.", "", {
           timeOut: 2500
         });
-      }
-    )
+        this.checkVoteStatus();
+      })
+    }
   }
 
   unflagPost(): void {
     this.httpClient.delete(environment.endpointURL + "userpostvote/unflag/" + this.post.postId)
-      .subscribe(() => this.post.flags = 0);
-
-    this.httpClient.put(environment.endpointURL + "post/" + this.post.postId, {
-      flags: this.post.flags
-    })
-      .subscribe(() => this.toastr.success("The flag count has been reset.","",{
-        timeOut: 2500
-      })
-    )
+      .subscribe(() => {
+        this.post.flags = 0;
+        this.httpClient.put(environment.endpointURL + "post/" + this.post.postId, {
+          flags: 0
+        })
+          .subscribe(() => this.toastr.success("The flag count has been reset.","",{
+              timeOut: 2500
+            })
+          )}, error => console.log(error));
   }
 
   // UPDATE - Comment

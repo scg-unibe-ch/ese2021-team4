@@ -64,7 +64,7 @@ export class FanShopComponent implements OnInit {
         break;
       case "price": this.sortByPrice();
         break;
-      default: console.log('invalid sort')
+      default:
     }
   }
 

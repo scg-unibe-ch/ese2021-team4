@@ -1,10 +1,14 @@
 <div *ngFor="let user of userList">
   <mat-card *ngIf="user.isAdmin">
-    <p><b>Admin</b> {{user.username}}</p>
+    <p>
+      <b>Admin</b> {{user.username}}
+    </p>
     <button mat-flat-button color="warn" (click)="confirmRemoveAdmin(user)">revoke admin rights</button>
   </mat-card>
   <mat-card *ngIf="!user.isAdmin">
-    <p><b>User</b> {{user.username}}</p>
+    <p>
+      <b>User</b> {{user.username}}
+    </p>
     <button mat-flat-button color="primary" (click) = "confirmPromoteAdmin(user)">promote to admin</button>
   </mat-card>
 </div>

@@ -130,9 +130,6 @@ export class RegisterComponent {
   }
 
   passwordRepeatCheck(): boolean {
-    console.log(this.userToRegister.password);
-    console.log("repeat"+this.repeatPassword);
-
     return !(this.userToRegister.password === this.repeatPassword && this.repeatPassword !== '');
   }
 

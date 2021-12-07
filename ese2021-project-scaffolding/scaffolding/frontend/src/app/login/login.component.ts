@@ -52,68 +52,41 @@ export class LoginComponent implements OnInit{
     if (this.userToLogin.username == ''){
       this.emptyUser = true;
       this.emptyPassword = false;
-      // document.getElementById("emptyUser")!.style.visibility='visible';
     }
     else if (this.userToLogin.password == ''){
       this.emptyUser = false;
       this.emptyPassword = true;
-      // document.getElementById("emptyUser")!.style.visibility='hidden';
-      // document.getElementById("emptyPassword")!.style.visibility='visible';
     }
     else{
       this.emptyPassword = false;
       this.emptyUser = false;
-      // document.getElementById("emptyUser")!.style.visibility='hidden';
-      // document.getElementById("emptyPassword")!.style.visibility='hidden';
-    this.httpClient.post(environment.endpointURL + "user/login", {
-      userName: this.userToLogin.username,
-      password: this.userToLogin.password
-    }).subscribe((res: any) => {
-      this.userToLogin.username = this.userToLogin.password = '';
 
-      localStorage.setItem('userName', res.user.userName);
-      localStorage.setItem('userToken', res.token);
+      this.httpClient.post(environment.endpointURL + "user/login", {
+        userName: this.userToLogin.username,
+        password: this.userToLogin.password
+      })
+        .subscribe((res: any) => {
+        this.userToLogin.username = this.userToLogin.password = '';
 
-      this.userService.setLoggedIn(true);
-      this.userService.setUser(new User(res.user.userId, res.user.userName, res.user.password, res.user.admin));
-      this.router.navigate(['/home']);
-      this.toastr.success("You were successfully logged in.")
+        localStorage.setItem('userName', res.user.userName);
+        localStorage.setItem('userToken', res.token);
 
-    }, (error: any ) => {
-      if (error.error.message.message === 'not authorized'){
-        this.passwordWrong = true;
-        this.userNameWrong = false;
-      } else {
-        this.userNameWrong = true;
-        this.passwordWrong = false;
+        this.userService.setLoggedIn(true);
+        this.userService.setUser(new User(res.user.userId, res.user.userName, res.user.password, res.user.admin));
+        this.router.navigate(['/home']);
+        this.toastr.success("You were successfully logged in.")
 
-      }
+      }, (error: any ) => {
+        if (error.error.message.message === 'not authorized'){
+          this.passwordWrong = true;
+          this.userNameWrong = false;
+        } else {
+          this.userNameWrong = true;
+          this.passwordWrong = false;
 
-    });
-  }}
+        }
 
-  logoutUser(): void {
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userToken');
-
-    this.userService.setLoggedIn(false);
-    this.userService.setUser(undefined);
+      });
+    }
   }
-
-  accessUserEndpoint(): void {
-    this.httpClient.get(environment.endpointURL + "secured").subscribe(() => {
-      this.endpointMsgUser = "Access granted";
-    }, () => {
-      this.endpointMsgUser = "Unauthorized";
-    });
-  }
-
-  accessAdminEndpoint(): void {
-    this.httpClient.get(environment.endpointURL + "admin").subscribe(() => {
-      this.endpointMsgAdmin = "Access granted";
-    }, () => {
-      this.endpointMsgAdmin = "Unauthorized";
-    });
-  }
-
 }

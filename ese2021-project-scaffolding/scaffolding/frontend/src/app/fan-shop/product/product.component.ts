@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AngularEditorConfig} from '@kolkov/angular-editor';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Category, CategoryFinder} from "../../models/category.model";
-import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-awesome-popup";
+import {ConfirmationAsker} from "../../models/confirmation-asker";
 
 
 @Component({
@@ -17,14 +17,6 @@ import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-a
   styleUrls: ['./product.component.css']
 })
 export class ProductComponent implements OnInit {
-
-  loggedIn: boolean | undefined;
-
-  user: User | undefined;
-
-  existsInBackend : boolean = true;
-  form: FormGroup = new FormGroup({});
-  editMode: boolean = false;
 
   config1: AngularEditorConfig = {
     editable: true,
@@ -73,9 +65,14 @@ export class ProductComponent implements OnInit {
         'insertHorizontalRule'
       ]
     ]
-      };
+  };
 
-  product: Product = new Product(0, '', '', 0, Category.Bern, []);
+  user: User | undefined;
+  loggedIn: boolean | undefined;
+
+  existsInBackend : boolean = true;
+  form: FormGroup = new FormGroup({});
+  editMode: boolean = false;
 
   @Input()
   preview: boolean = false;
@@ -83,6 +80,7 @@ export class ProductComponent implements OnInit {
   @Input()
   productId: number = 0;
 
+  product: Product = new Product(0, '', '', 0, Category.Bern, []);
   selectCategory=this.product.tags.toString();
   missingProduct: boolean = false;
 
@@ -98,6 +96,7 @@ export class ProductComponent implements OnInit {
         this.productId = +params.id;
       }
     });
+
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
     userService.user$.subscribe(res => this.user = res);
@@ -107,6 +106,8 @@ export class ProductComponent implements OnInit {
     this.user = userService.getUser();
 
   }
+
+
 
   onFileSelected(event : any) {
 
@@ -139,26 +140,60 @@ export class ProductComponent implements OnInit {
       } else {
         this.existsInBackend = true;
         this.editMode = false;
-        this.httpClient.get(environment.endpointURL + "product/" + this.productId).subscribe((product: any) => {
-          if(product != undefined) {
-            this.product = new Product(product.productId, product.title, product.description, product.price, product.tags, new Array<File>());
-            this.selectCategory = this.product.tags.toString();
-            this.loadPicturesToProduct();
-          }
-          else{
-            this.product = new Product(0, 'Nonexistent Product', 'This product does not exist anymore.', 0, Category.Bern, [])
-            this.missingProduct = true;
-          }
-        });
+        this.loadProduct();
       }
   }
 
+
+  //do we need this?
   onChange(event : any) {
     console.log('changed');
   }
 
+  //do we need this?
   onBlur(event : any) {
     console.log('blur ' + event);
+  }
+
+  loadProduct(): void {
+    this.httpClient.get(environment.endpointURL + "product/" + this.productId).subscribe((product: any) => {
+      if(product != undefined) {
+        this.product = new Product(product.productId, product.title, product.description, product.price, product.tags, new Array<File>());
+        this.selectCategory = this.product.tags.toString();
+        this.loadPicturesToProduct();
+      }
+      else{
+        this.product = new Product(0, 'Nonexistent Product', 'This product does not exist anymore.', 0, Category.Bern, []);
+        this.missingProduct = true;
+      }
+    });
+  }
+
+  loadPicturesToProduct(){
+    this.httpClient.get(environment.endpointURL + "product/" + this.productId + "/getImageIds",
+      {responseType: 'text', headers: {'Content-Type': 'json/application'}}).subscribe((imgIds: any) => {
+
+      if(imgIds != ""){
+        const imgIdArray :Array<String> = imgIds.split(",");
+        const imageSpan = document.getElementById("image");
+
+        imgIdArray.forEach(element => {
+          const imageId : number = +element;
+          this.httpClient.get(environment.endpointURL + "product/" + "getSingleImage/" + imageId,
+            {responseType: 'blob', headers: {'Content-Type': 'multipart/formData'}}).subscribe((image: any) =>{
+            const img = document.createElement("img");
+            const picture: File = new File([image], "test");
+            img.src = URL.createObjectURL(picture);
+            img.height = 200;
+            this.product.images.push(picture);
+            img.onload = function() {
+              URL.revokeObjectURL(img.src);
+            };
+            imageSpan?.appendChild(img);
+          });
+        });
+      }
+    });
   }
 
   deleteImages() {
@@ -178,33 +213,6 @@ export class ProductComponent implements OnInit {
     if(ImgSpan != undefined){
       ImgSpan.innerHTML = '';
     }
-  }
-
-  loadPicturesToProduct(){
-    this.httpClient.get(environment.endpointURL + "product/" + this.productId + "/getImageIds",
-    {responseType: 'text', headers: {'Content-Type': 'json/application'}}).subscribe((imgIds: any) => {
-
-      if(imgIds != ""){
-        const imgIdArray :Array<String> = imgIds.split(",");
-        const imageSpan = document.getElementById("image");
-
-        imgIdArray.forEach(element => {
-          const imageId : number = +element;
-          this.httpClient.get(environment.endpointURL + "product/" + "getSingleImage/" + imageId,
-           {responseType: 'blob', headers: {'Content-Type': 'multipart/formData'}}).subscribe((image: any) =>{
-            const img = document.createElement("img");
-            const picture: File = new File([image], "test");
-            img.src = URL.createObjectURL(picture);
-            img.height = 200;
-            this.product.images.push(picture);
-            img.onload = function() {
-              URL.revokeObjectURL(img.src);
-            }
-            imageSpan?.appendChild(img);
-           });
-        });
-      }
-    });
   }
 
   save(){
@@ -245,7 +253,9 @@ export class ProductComponent implements OnInit {
       document.getElementById('setTitle')!.style.visibility='hidden';
       document.getElementById('setPrice')!.style.visibility='hidden';
       document.getElementById('setCategory')!.style.visibility='hidden';
-      if(this.user != null){ //user might not be instantiated, this is taken care of by the html
+
+      //what is this check for?
+      if(this.user != null){
         this.httpClient.post(environment.endpointURL + "product", {
           title: this.product.title,
           description: this.product.description,
@@ -280,30 +290,20 @@ export class ProductComponent implements OnInit {
     }, error => {console.log(error)});
   }
 
-  deleteProduct(product: Product): void {
-    this.router.navigate(["/fan-shop"]);
-    if(this.user?.isAdmin){
-      this.httpClient.delete(environment.endpointURL + "product/" + product.productId).subscribe(() => {});
-    }
+  confirmDeleteProduct (product: Product): void{
+    ConfirmationAsker.confirmTitle('You are about to delete this product.', 'Do you want to proceed?')
+      .then(confirmed => {
+        if(confirmed){
+          this.deleteProduct(product)
+        }
+      })
   }
 
-  confirmDeleteProduct (product: Product): void{
-    const confirmBox = new ConfirmBoxInitializer();
-    confirmBox.setTitle('You are about to delete this product.');
-    confirmBox.setMessage('Do you want to proceed?');
-    confirmBox.setButtonLabels('YES', 'NO');
 
-    // Choose layout color type
-    confirmBox.setConfig({
-      LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
-    });
-    // Simply open the popup and listen which button is clicked
-    confirmBox.openConfirmBox$().subscribe(resp => {
-
-      if (resp.ClickedButtonID=='yes'){
-        this.deleteProduct(product)
-      }
-    });
+  deleteProduct(product: Product): void {
+    if(this.user?.isAdmin){
+      this.httpClient.delete(environment.endpointURL + "product/" + product.productId).subscribe(() => {this.router.navigate(["/fan-shop"]);});
+    }
   }
 
   checkLoggedIn() {

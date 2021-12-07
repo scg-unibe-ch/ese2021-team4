@@ -7,7 +7,9 @@
     <mat-option value="all">Show All</mat-option>
   </mat-select>
 </mat-form-field>
+
 <div *ngFor="let order of selectedOrders">
   <app-order [order]="order"
-             (update)="updateOrder($event)"></app-order>
+             (update)="updateOrder($event)">
+  </app-order>
 </div>

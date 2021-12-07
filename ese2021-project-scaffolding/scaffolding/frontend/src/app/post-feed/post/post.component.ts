@@ -13,6 +13,7 @@ import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-a
 import {ToastrService} from "ngx-toastr";
 import {retry} from "rxjs/operators";
 import {Subscription} from "rxjs";
+import {ConfirmationAsker} from "../../models/confirmation-asker";
 
 
 @Component({
@@ -341,7 +342,7 @@ export class PostComponent implements OnInit {
 
 
   confirmDeleting(post: Post): void{
-    this.confirm('Are you sure you want to delete this post?')
+    ConfirmationAsker.confirm('Are you sure you want to delete this post?')
       .then(confirmed => {
         if(confirmed){
           this.deletePost(post);
@@ -350,7 +351,7 @@ export class PostComponent implements OnInit {
   }
 
   confirmFlagging(): void{
-    this.confirm('Are you sure you want to report this post? This cannot be undone.')
+    ConfirmationAsker.confirm('Are you sure you want to report this post? This cannot be undone.')
       .then(confirmed => {
         if(confirmed){
           this.flagPost();
@@ -359,25 +360,12 @@ export class PostComponent implements OnInit {
   }
 
   confirmUnflagging(): void{
-    this.confirm('Are you sure you want to remove all flags from this post?')
+    ConfirmationAsker.confirm('Are you sure you want to remove all flags from this post?')
       .then(confirmed => {
         if(confirmed){
           this.unflagPost();
         }
       })
-  }
-
-  async confirm(message: string): Promise<boolean> {
-    const confirmBox = new ConfirmBoxInitializer();
-    confirmBox.setTitle('');
-    confirmBox.setMessage(message);
-    confirmBox.setButtonLabels('YES', 'NO');
-
-    // Choose layout color type
-    confirmBox.setConfig({
-      LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
-    });
-    return await confirmBox.openConfirmBox$().toPromise().then(resp => resp.ClickedButtonID == 'yes')
   }
 
   votePost(param: number): void {

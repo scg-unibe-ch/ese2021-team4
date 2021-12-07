@@ -5,7 +5,7 @@ import {User} from "src/app//models/user.model";
 import {Status} from 'src/app/models/status.model';
 import {HttpClient} from "@angular/common/http";
 import { environment } from 'src/environments/environment';
-import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-awesome-popup";
+import {ConfirmationAsker} from "../../models/confirmation-asker";
 
 @Component({
   selector: 'app-order',
@@ -16,18 +16,20 @@ export class OrderComponent implements OnInit {
 
   user: User|undefined;
   loggedIn: boolean|undefined;
+
+
+  @Input()
+  order!: Order;
+
+  @Output()
+  update = new EventEmitter<Order>();
+
   isShipped: boolean = false;
   isCancelled: boolean = false;
   isPaid: boolean = false;
 
   orderUserName = '';
   orderAdminName = '';
-
-  @Input()
-  order: Order = new Order('', Status.Pending, 0, 0, 0, 0, new Date(), new Date(), '', '', '', 0, 0, '', '');
-
-  @Output()
-  update = new EventEmitter<Order>();
 
   constructor(
     public httpClient: HttpClient,
@@ -43,18 +45,7 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.order.status == Status.Shipped)
-    {
-      this.isShipped = true;
-    }
-    if(this.order.status == Status.Cancelled)
-    {
-      this.isCancelled = true;
-    }
-    if(this.order.billingStatus == "paidByInvoice" || this.order.billingStatus == "paid with stripe")
-    {
-      this.isPaid = true;
-    }
+    this.checkOrderStatus();
 
     this.httpClient.get(environment.endpointURL + 'user/' + this.order.userId).subscribe((user:any) => this.orderUserName = user.userName);
 
@@ -63,24 +54,25 @@ export class OrderComponent implements OnInit {
     }
   }
 
+  checkOrderStatus(): void {
+    if(this.order.status == Status.Shipped) {
+      this.isShipped = true;
+    }
+    if(this.order.status == Status.Cancelled) {
+      this.isCancelled = true;
+    }
+    if(this.order.billingStatus == "paidByInvoice" || this.order.billingStatus == "paid with stripe") {
+      this.isPaid = true;
+    }
+  }
+
   confirmPayment(): void{
-    const confirmBox = new ConfirmBoxInitializer();
-    confirmBox.setTitle('');
-    confirmBox.setMessage('Are you sure this order has been paid?');
-    confirmBox.setButtonLabels('YES', 'NO');
-
-    // Choose layout color type
-    confirmBox.setConfig({
-      LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
-    });
-
-    // Simply open the popup and listen which button is clicked
-    confirmBox.openConfirmBox$().subscribe(resp => {
-
-      if (resp.ClickedButtonID=='yes'){
-        this.setPaid()
-      }
-    });
+    ConfirmationAsker.confirm('Are you sure this order has been paid?')
+      .then(confirmed => {
+        if(confirmed){
+          this.setPaid();
+        }
+      })
   }
 
   setPaid(): void {
@@ -95,23 +87,12 @@ export class OrderComponent implements OnInit {
   }
 
   confirmCancelling(): void{
-      const confirmBox = new ConfirmBoxInitializer();
-      confirmBox.setTitle('');
-      confirmBox.setMessage('Are you sure you want to cancel this order?');
-      confirmBox.setButtonLabels('YES', 'NO');
-
-      // Choose layout color type
-      confirmBox.setConfig({
-        LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
-      });
-
-      // Simply open the popup and listen which button is clicked
-      confirmBox.openConfirmBox$().subscribe(resp => {
-
-        if (resp.ClickedButtonID=='yes'){
-          this.cancelOrder()
+    ConfirmationAsker.confirm('Are you sure you want to cancel this order?')
+      .then(confirmed => {
+        if(confirmed){
+          this.cancelOrder();
         }
-      });
+      })
     }
 
   cancelOrder(): void {
@@ -124,22 +105,12 @@ export class OrderComponent implements OnInit {
 
 
   confirmShipping(): void{
-    const confirmBox = new ConfirmBoxInitializer();
-    confirmBox.setTitle('');
-    confirmBox.setMessage('Are you sure you want to ship this order?');
-    confirmBox.setButtonLabels('YES', 'NO');
-
-    // Choose layout color type
-    confirmBox.setConfig({
-      LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
-    });
-    // Simply open the popup and listen which button is clicked
-    confirmBox.openConfirmBox$().subscribe(resp => {
-
-      if (resp.ClickedButtonID=='yes'){
-        this.shipOrder()
-      }
-    });
+    ConfirmationAsker.confirm('Are you sure you want to ship this order?')
+      .then(confirmed => {
+        if(confirmed){
+          this.shipOrder();
+        }
+      })
   }
 
   shipOrder(): void {
@@ -154,4 +125,5 @@ export class OrderComponent implements OnInit {
       this.update.emit(this.order);
     }
   }
+
 }

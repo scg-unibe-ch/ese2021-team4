@@ -47,15 +47,18 @@ export class OrderFeedComponent implements OnInit {
     this.orders = [];
     if (this.feedType == 'admin') {
       this.httpClient.get(environment.endpointURL + 'order/').subscribe((orders: any) => {
-        orders.forEach((order: any) => this.orders.push(new Order(order.billingStatus, StatusFinder.status(order.status), order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)));
-        this.selectedOrders = this.orders;
+        this.pushOrders(orders);
       })
     } else {
       this.httpClient.get(environment.endpointURL + 'order/createdBy/' + this.user?.userId).subscribe((orders: any) => {
-        orders.forEach((order: any) => this.orders.push(new Order(order.billingStatus, StatusFinder.status(order.status), order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)));
-        this.selectedOrders = this.orders;
+        this.pushOrders(orders);
       })
     }
+  }
+
+  pushOrders(orders: Order[]): void {
+    orders.forEach((order: any) => this.orders.push(new Order(order.billingStatus, StatusFinder.status(order.status), order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)));
+    this.selectedOrders = this.orders;
   }
 
   filterBy(status: string): void {

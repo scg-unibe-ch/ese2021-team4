@@ -1,6 +1,9 @@
 <div *ngIf=!redirecting>
-  <mat-card><app-product [productId]="productId"
-                         [preview]="true"></app-product></mat-card>
+  <mat-card>
+    <app-product [productId]="productId"
+                 [preview]="true"></app-product>
+  </mat-card>
+
   <mat-card>
     <h3>Payment Options</h3>
     <mat-radio-group [(ngModel)]="paymentType">
@@ -12,39 +15,45 @@
     <mat-form-field>
       <input matInput type="text" placeholder="first name" name="first name" [(ngModel)]="orderFirstName">
     </mat-form-field>
+
     <mat-form-field>
       <input matInput type="text" placeholder="last name" name="last name" [(ngModel)]="orderLastName">
     </mat-form-field>
+
     <br>
+
     <mat-form-field>
       <input matInput type="text" placeholder="street" name="street" [(ngModel)]="orderStreet">
     </mat-form-field>
+
     <mat-form-field>
       <input matInput type="text" placeholder="house number" name="house number" [(ngModel)]="orderHouseNr">
     </mat-form-field>
+
     <br>
+
     <mat-form-field>
       <input matInput type="text" placeholder="zip code" name="zip code" [(ngModel)]="orderZipCode">
     </mat-form-field>
+
     <mat-form-field>
       <input matInput type="text" placeholder="city" name="city" [(ngModel)]="orderCity">
     </mat-form-field>
+
     <br>
+
     <mat-form-field>
       <input matInput type="text" placeholder="phone number" name="phone number" [(ngModel)]="orderPhoneNr">
     </mat-form-field>
     <br>
 
   </mat-card>
-
   <span id="emptyFields" style="visibility: hidden"> Please fill out all the address details. </span>
-
   <p>
     <button (click)="confirmOrder()" > Confirm Order </button>
   </p>
 
   <button (click)="postAPI()">Make api call to post</button>
-
 </div>
 
 <div *ngIf="redirecting">

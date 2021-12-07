@@ -5,15 +5,11 @@ import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
 import { Product } from 'src/app/models/product.model';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder} from "@angular/forms";
-import { Order } from 'src/app/models/order.model';
-import { Status } from 'src/app/models/status.model';
-import{MatRadioModule} from '@angular/material/radio';
 
 import { StripeService } from 'ngx-stripe';
 import { switchMap } from 'rxjs/operators';
-import {ConfirmBoxInitializer, DialogLayoutDisplay} from "@costlydeveloper/ngx-awesome-popup";
 import { ToastrService } from 'ngx-toastr';
+import {ConfirmationAsker} from "../../models/confirmation-asker";
 
 @Component({
   selector: 'app-order-form',
@@ -54,13 +50,22 @@ export class OrderFormComponent implements OnInit {
     });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
-    userService.user$.subscribe(res => this.user = res);
+    userService.user$.subscribe(res => {this.user = res; this.getUserDetails();});
 
     // Current value
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
+  }
 
-    this.httpClient.get(environment.endpointURL + "user/" + localStorage.getItem('userName')).subscribe((user: any) => {
+
+  ngOnInit(): void {
+    if(this.user != undefined){
+      this.getUserDetails();
+    }
+  }
+
+  getUserDetails(): void{
+    this.httpClient.get(environment.endpointURL + "user/" + this.user?.userId).subscribe((user: any) => {
       this.orderFirstName = user.firstName;
       this.orderLastName = user.lastName;
       this.orderStreet = user.street;
@@ -73,33 +78,20 @@ export class OrderFormComponent implements OnInit {
         this.product = new Product(product.productId, product.title, product.description, product.price, product.tags, product.imageId);
       });
     });
-  }
-
-
-  ngOnInit(): void {
-  }
+}
 
   confirmOrder(): void {
     if(!this.formIsFilled()){
       document.getElementById('emptyFields')!.style.visibility='visible';
     }
     else{
-    const confirmBox = new ConfirmBoxInitializer();
-    confirmBox.setTitle('You are about to place an order.');
-    confirmBox.setMessage('Do you want to proceed?');
-    confirmBox.setButtonLabels('YES', 'NO');
 
-    // Choose layout color type
-    confirmBox.setConfig({
-      LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
-    });
-    // Simply open the popup and listen which button is clicked
-    confirmBox.openConfirmBox$().subscribe(resp => {
-
-      if (resp.ClickedButtonID=='yes'){
-        this.createOrder()
-      }
-    });
+      ConfirmationAsker.confirmTitle('You are about to place an order.', 'Do you want to proceed?')
+        .then(confirmed => {
+          if(confirmed){
+            this.createOrder();
+          }
+        });
   }}
 
   createOrder(): void{

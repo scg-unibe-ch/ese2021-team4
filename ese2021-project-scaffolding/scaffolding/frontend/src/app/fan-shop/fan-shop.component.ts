@@ -4,7 +4,6 @@ import { environment } from 'src/environments/environment';
 import { Product } from '../models/product.model';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
-import {MatGridListModule} from '@angular/material/grid-list';
 import {Category, CategoryFinder} from "../models/category.model";
 
 
@@ -16,9 +15,6 @@ import {Category, CategoryFinder} from "../models/category.model";
 export class FanShopComponent implements OnInit {
 
   productList: Product[] = [];
-  newProductTitle = '';
-  newProductDescription = '';
-  newProductTags = '';
 
   sortBy = '';
   selectedCategory = '';
@@ -44,22 +40,6 @@ export class FanShopComponent implements OnInit {
 
   ngOnInit(): void {
     this.readProducts();
-  }
-
-  //CREATE PRODUCT (ONLY FOR ADMINS)
-  createProduct(): void {
-    if(this.user != null){ //user might not be instantiated, this is taken care of by the html
-      this.httpClient.post(environment.endpointURL + "product", {
-        title: this.newProductTitle,
-        description: this.newProductDescription,
-        tags: this.newProductTags,
-      }).subscribe((product: any) => {
-          this.productList.push(new Product(product.productId, product.title, product.description, product.price, product.tags, product.imageId));
-          this.newProductTitle = this.newProductDescription = this.newProductTags = '';
-        },
-        error => {console.log(error)})
-    }
-
   }
 
   // READ - Products

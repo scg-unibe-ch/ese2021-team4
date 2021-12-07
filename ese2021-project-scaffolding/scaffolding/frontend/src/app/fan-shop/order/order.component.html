@@ -3,20 +3,27 @@
     <mat-card-title>{{order.status}}</mat-card-title>
     <mat-card-subtitle>{{order.billingStatus}}</mat-card-subtitle>
   </mat-card-header>
+
   <mat-card-content>
-      <mat-card><app-product [productId]="order.productId"
-                             [preview]="true"></app-product></mat-card>
-      <mat-card>{{order.orderFirstName}} {{order.orderLastName}} <br>
-                {{order.orderStreet}} {{order.orderHouseNr}} <br>
-                {{order.orderZipCode}} {{order.orderZipCode}} <br>
-                {{order.orderPhoneNr}}
+      <mat-card>
+        <app-product [productId]="order.productId"
+                     [preview]="true">
+        </app-product>
+      </mat-card>
+      <mat-card>
+        {{order.orderFirstName}} {{order.orderLastName}} <br>
+        {{order.orderStreet}} {{order.orderHouseNr}} <br>
+        {{order.orderZipCode}} {{order.orderZipCode}} <br>
+        {{order.orderPhoneNr}}
       </mat-card>
     </mat-card-content>
+
     <mat-card-actions>
       <button mat-flat-button color="warn" (click)="confirmCancelling()"[disabled]="isShipped || isCancelled">CANCEL</button>
       <button *ngIf="user?.isAdmin" mat-flat-button color="primary" (click)="confirmShipping()"[disabled]="isShipped || isCancelled">SHIP</button>
       <button *ngIf="user?.isAdmin" mat-flat-button color="warn" (click)="confirmPayment()"[disabled]="isPaid || isCancelled">SET PAID</button>
     </mat-card-actions>
+
     <mat-card-footer *ngIf="user?.isAdmin">
       Ordered by: {{orderUserName}} <span *ngIf="isShipped"> | Shipped by: {{orderAdminName}} </span><br><br>
     </mat-card-footer>

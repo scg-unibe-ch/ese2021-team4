@@ -1,39 +1,55 @@
-<div *ngIf="!missingProduct"><div *ngIf="preview">
-  <div> <mat-chip-list><mat-chip>{{product.tags}}</mat-chip></mat-chip-list><br><br><br><br><br><br><br>
-    {{product.title}} <br>
-    <mat-card-subtitle>Price: {{product.price}} CHF </mat-card-subtitle> <br><br>
-    <a [routerLink]="['product', product.productId]"> View Product Details </a><br><br>
-  </div></div>
+<div *ngIf="missingProduct">This product does not exist anymore.</div>
+
+<div *ngIf="!missingProduct">
+  <div *ngIf="preview">
+    <div>
+      <mat-chip-list>
+        <mat-chip>
+          {{product.tags}}
+        </mat-chip>
+      </mat-chip-list>
+      <br><br><br><br><br><br><br>
+    {{product.title}}
+      <br>
+      <mat-card-subtitle>Price: {{product.price}} CHF </mat-card-subtitle> <br><br>
+      <a [routerLink]="['product', product.productId]"> View Product Details </a><br><br>
+    </div>
+  </div>
 
 
-<div *ngIf="!preview"><div *ngIf="!editMode">
-  <mat-card>
-    <mat-card-header>
-      <div mat-card-avatar></div>
-      <mat-card-title>{{product.title}}</mat-card-title>
-      <mat-card-subtitle>{{product.tags}}</mat-card-subtitle>
-      <mat-card-subtitle>Price: {{product.price}} CHF </mat-card-subtitle>
-    </mat-card-header>
-   <mat-card-content>
-      <div [innerHTML]="product.description"></div>
-      <span id="image"></span>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-flat-button color="primary" (click) = "checkLoggedIn()" *ngIf="!user?.isAdmin">Buy now</button > <!-- buy now redirects to login-->
-      <span *ngIf="user?.isAdmin">
-        <button  mat-flat-button color="primary" (click)="editMode = true; loadPicturesToProduct()">Edit Product</button>
-        <button mat-flat-button color="warn" (click)="confirmDeleteProduct(product)">Delete Product</button>
-      </span>
-    </mat-card-actions>
-  </mat-card>
-</div>
+
+
+
+  <div *ngIf="!preview">
+    <div *ngIf="!editMode">
+      <mat-card>
+        <mat-card-header>
+          <div mat-card-avatar></div>
+          <mat-card-title>{{product.title}}</mat-card-title>
+          <mat-card-subtitle>{{product.tags}}</mat-card-subtitle>
+          <mat-card-subtitle>Price: {{product.price}} CHF </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div [innerHTML]="product.description"></div>
+          <span id="image"></span>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-flat-button color="primary" (click) = "checkLoggedIn()" *ngIf="!user?.isAdmin">Buy now</button > <!-- buy now redirects to login-->
+          <span *ngIf="user?.isAdmin">
+            <button  mat-flat-button color="primary" (click)="editMode = true; loadPicturesToProduct()">Edit Product</button>
+            <button mat-flat-button color="warn" (click)="confirmDeleteProduct(product)">Delete Product</button>
+          </span>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+
 
 
 
   <div *ngIf="editMode">
 
     <div class="container">
-
       <form class="title-form">
         <mat-form-field appearance="fill">
           <mat-label>Title</mat-label>
@@ -58,36 +74,32 @@
           <mat-option value="Museum">Museum</mat-option>
         </mat-select>
 
-      </mat-form-field><span id="setTitle" style="visibility: hidden">Please set a title. </span>
-        <span id="setCategory" style="visibility: hidden"> Please set a category.</span>
-        <span id="setPrice" style="visibility: hidden"> Please set a price.</span>
-      </form>
+        </mat-form-field><span id="setTitle" style="visibility: hidden">Please set a title. </span>
+          <span id="setCategory" style="visibility: hidden"> Please set a category.</span>
+          <span id="setPrice" style="visibility: hidden"> Please set a price.</span>
+        </form>
 
-      <!-- UPLOAD IMAGE -->
-        <input type="file" class="file-input" multiple accept="image/*"
-        (change)="onFileSelected($event)" #fileUpload>
+        <!-- UPLOAD IMAGE -->
+          <input type="file" class="file-input" multiple accept="image/*"
+          (change)="onFileSelected($event)" #fileUpload>
 
-        <div class="file-upload" action="image" enctype="multipart/form-data" method="post">
-        <button mat-mini-fab color="primary" class="upload-btn"
-          (click)="fileUpload.click()">
-            <mat-icon>attach_file</mat-icon>
-        </button>
-        </div>
-        <span id="image"></span>
-        <button (click)="deleteImages()">delete all images attached to this product</button><br>
-      <!-- DESCRIPTION -->
-      <br><br>
-      <angular-editor id="editor1" [(ngModel)]="product.description" [config]="config1" (ngModelChange)="onChange($event)"
-                      (blur)="onBlur($event)"></angular-editor>
-<!--      <p class="html">-->
-<!--        HTML Output:  {{ product.description }}-->
-<!--      </p>-->
+          <div class="file-upload" action="image" enctype="multipart/form-data" method="post">
+          <button mat-mini-fab color="primary" class="upload-btn"
+            (click)="fileUpload.click()">
+              <mat-icon>attach_file</mat-icon>
+          </button>
+          </div>
+          <span id="image"></span>
+          <button (click)="deleteImages()">delete all images attached to this product</button><br>
 
-      <button *ngIf="existsInBackend" (click)="save()">Save</button>
-      <button *ngIf="!existsInBackend" (click)="createProduct()">Create</button>
+        <!-- DESCRIPTION -->
+        <br><br>
+        <angular-editor id="editor1" [(ngModel)]="product.description" [config]="config1" (ngModelChange)="onChange($event)"
+                        (blur)="onBlur($event)"></angular-editor>
+
+        <button *ngIf="existsInBackend" (click)="save()">Save</button>
+        <button *ngIf="!existsInBackend" (click)="createProduct()">Create</button>
+      </div>
     </div>
-
-  </div></div>
+  </div>
 </div>
-
-<div *ngIf="missingProduct">This product does not exist anymore.</div>

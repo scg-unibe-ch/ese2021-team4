@@ -1,7 +1,7 @@
 <mat-card *ngIf="user?.isAdmin">
   <p>
-  <a routerLink="/fan-shop/product/-1"><button mat-flat-button color="primary">Create Product</button></a>
-</p>
+    <a routerLink="/fan-shop/product/-1"><button mat-flat-button color="primary">Create Product</button></a>
+  </p>
 </mat-card>
 
 
@@ -9,7 +9,6 @@
   <mat-label>Sort by:</mat-label>
   <mat-select [(ngModel)]="sortBy"(ngModelChange)="sortProducts()">
     <mat-option value="title">Name</mat-option>
-<!--    <mat-option value="id">ID</mat-option>-->
     <mat-option value="tags">Tags</mat-option>
     <mat-option value="price">Price</mat-option>
   </mat-select>

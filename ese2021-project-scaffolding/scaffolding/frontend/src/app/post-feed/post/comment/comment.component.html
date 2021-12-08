@@ -1,8 +1,13 @@
 <mat-card>
   <div>
+    <mat-card-subtitle>
+      {{comment.createdAt.toDateString()}}, {{comment.createdAt.toLocaleTimeString()}}<br>
+      <b>{{authorName}}: </b>
+    </mat-card-subtitle>
     {{comment.description}}<br><br>
     <button mat-flat-button color="warn" (click)="confirmDeleteComment()" *ngIf="user?.userId === comment.userId || user?.isAdmin">
       Delete Comment
     </button>
+
   </div>
 </mat-card>

@@ -3,6 +3,8 @@ import { Comment } from 'src/app/models/comment.model';
 import {UserService} from "../../../services/user.service";
 import {User} from "../../../models/user.model";
 import {ConfirmationAsker} from "../../../models/confirmation-asker";
+import {environment} from "../../../../environments/environment";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-comment',
@@ -15,7 +17,10 @@ export class CommentComponent implements OnInit {
 
   loggedIn: boolean|undefined;
 
+  authorName = '';
+
   constructor(
+    public httpClient: HttpClient,
     public userService: UserService
   ) {
     // Listen for changes
@@ -28,6 +33,9 @@ export class CommentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.httpClient.get(environment.endpointURL + "user/" + this.comment.userId).subscribe((user: any) => {
+      this.authorName = user.userName;
+    });
   }
 
   @Input()

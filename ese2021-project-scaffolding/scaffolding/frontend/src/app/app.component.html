@@ -15,7 +15,7 @@
         <div class="dropdown-content">
           <a routerLink="/profile">Profile</a>
           <a routerLink="/dashboard" *ngIf="loggedIn && user?.isAdmin">Dashboard</a>
-          <a routerLink="" (click)="logoutUser()">Logout</a>
+          <a routerLink="/home" (click)="logoutUser()">Logout</a>
         </div>
       </div>
     </span>

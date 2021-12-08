@@ -18,9 +18,6 @@ export class PostFeedComponent implements OnInit {
   feedType: string = '';
 
   postList: Post[] = [];
-  newPostTitle = '';
-  newPostDescription = '';
-  newPostTags = '';
 
   sortBy = '';
   selectedCategory = '';

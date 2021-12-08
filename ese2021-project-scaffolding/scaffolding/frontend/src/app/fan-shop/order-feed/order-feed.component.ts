@@ -38,7 +38,7 @@ export class OrderFeedComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.user != undefined) {
+    if(this.user != null) {
       this.getOrders();
     }
   }
@@ -59,6 +59,7 @@ export class OrderFeedComponent implements OnInit {
   pushOrders(orders: Order[]): void {
     orders.forEach((order: any) => this.orders.push(new Order(order.billingStatus, StatusFinder.status(order.status), order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)));
     this.selectedOrders = this.orders;
+    this.filterBy(this.selectedStatus);
   }
 
   filterBy(status: string): void {
@@ -72,6 +73,6 @@ export class OrderFeedComponent implements OnInit {
   updateOrder(order: Order): void {
     this.httpClient.put(environment.endpointURL + "order/" + order.orderId, {
       status: order.status
-    })
+    }).subscribe(() => this.getOrders())
   }
 }

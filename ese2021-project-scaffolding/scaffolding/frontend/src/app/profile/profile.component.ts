@@ -38,13 +38,21 @@ export class ProfileComponent implements OnInit {
   ) {
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
-    userService.user$.subscribe(res => this.user = res);
+    userService.user$.subscribe(res => {this.user = res; this.getUserDetails()});
 
     // Current value
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
+  }
 
-    this.httpClient.get(environment.endpointURL + "user/" + localStorage.getItem('userName')).subscribe((user: any) => {
+  ngOnInit(): void {
+    if(this.user != undefined){
+      this.getUserDetails();
+    }
+  }
+
+  getUserDetails(){
+    this.httpClient.get(environment.endpointURL + "user/" + this.user?.userId).subscribe((user: any) => {
       this.changedUser = new User(user.userId, user.userName, user.password, user.admin);
       this.userEmail = user.userEmail;
       this.firstName = user.firstName;
@@ -56,9 +64,6 @@ export class ProfileComponent implements OnInit {
       this.birthday = user.birthday.substr(0, 10);
       this.phoneNr = user.phoneNr;
     });
-  }
-
-  ngOnInit(): void {
   }
 
   updateUser(user: User): void {
@@ -77,6 +82,7 @@ export class ProfileComponent implements OnInit {
         birthday: this.birthday,
         phoneNr: this.phoneNr
       }).subscribe(() => {
+          localStorage.setItem('userName', this.changedUser.username);
           this.toastr.success("Your information has been updated.","",{
             timeOut: 2500
           });

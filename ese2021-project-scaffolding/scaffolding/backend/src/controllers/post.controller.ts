@@ -16,7 +16,6 @@ postController.get('/', (req: Request, res: Response) => {
 });
 
 postController.get('/createdBy/:id', (req, res) => {
-    console.log('createdby');
     Post.findAll({
         where: {
             userId: req.params.id
@@ -29,7 +28,6 @@ postController.get('/createdBy/:id', (req, res) => {
 });
 
 postController.get('/flagged', (req, res) => {
-    console.log('createdby');
     Post.findAll({
         where: {
             flags: {[Op.gt]: 0}
@@ -54,12 +52,16 @@ postController.get('/:id', (req, res) => {
 
 // get imageIds to specific post
 postController.get('/:id/getImageIds', (req: Request, res: Response) => {
-    imageService.getImageIds('post', +req.params.id).then(ids => res.send(ids)).catch(err => res.status(500).send(err));
+    imageService.getImageIds('post', +req.params.id)
+        .then(ids => res.send(ids))
+        .catch(err => res.status(500).send(err));
 });
 
 // get specific image
 postController.get('/getSingleImage/:id', (req: Request, res: Response) => {
-    imageService.getSpecificImage(+req.params.id).then(image => res.send(image)).catch(err => res.status(500).send(err));
+    imageService.getSpecificImage(+req.params.id)
+        .then(image => res.send(image))
+        .catch(err => res.status(500).send(err));
 });
 
 // create
@@ -72,7 +74,9 @@ postController.post('/', (req: Request, res: Response) => {
 
 // upload image and add to a post
 postController.post('/:id/image', (req: MulterRequest, res: Response) => {
-    imageService.postImage(req, 'post').then(created => res.send(created)).catch(err => res.status(500).send(err));
+    imageService.postImage(req, 'post')
+        .then(created => res.send(created))
+        .catch(err => res.status(500).send(err));
 });
 
 // delete
@@ -98,7 +102,9 @@ postController.delete('/:id', (req: Request, res: Response) => {
 });
 
 postController.delete('/images/:id', (req: Request, res: Response) => {
-    imageService.deleteSingleImage(+req.params.id).then(destroyed => res.send(destroyed)).catch(err => res.status(500).send(err));
+    imageService.deleteSingleImage(+req.params.id)
+        .then(destroyed => res.send(destroyed))
+        .catch(err => res.status(500).send(err));
 });
 
 // update

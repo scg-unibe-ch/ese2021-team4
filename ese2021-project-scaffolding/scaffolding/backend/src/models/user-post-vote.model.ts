@@ -1,4 +1,4 @@
-import {Optional, Model, Sequelize, DataTypes, Association} from 'sequelize';
+import {Optional, Model, Sequelize, DataTypes} from 'sequelize';
 import { Post } from './post.model';
 import { User } from './user.model';
 
@@ -9,8 +9,6 @@ export interface UserPostVoteAttributes {
     flag: number;
 }
 
-
-// tells sequelize that postId is not a required field
 export interface UserPostVoteCreationAttributes extends Optional<UserPostVote, 'postId'> { }
 
 
@@ -22,7 +20,7 @@ export class UserPostVote extends Model<UserPostVoteAttributes, UserPostVoteCrea
     flag!: number;
 
 
-    public static initialize(sequelize: Sequelize) { // definition for database
+    public static initialize(sequelize: Sequelize) {
         UserPostVote.init({
             postId: {
                 type: DataTypes.INTEGER,

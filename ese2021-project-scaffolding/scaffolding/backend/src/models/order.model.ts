@@ -39,7 +39,7 @@ export class Order extends Model<OrderAttributes, OrderCreationAttributes> imple
     sessionId!: string;
 
 
-    public static initialize(sequelize: Sequelize) { // definition for database
+    public static initialize(sequelize: Sequelize) {
         Order.init({
                 status: {
                     type: DataTypes.STRING,

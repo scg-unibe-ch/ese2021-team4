@@ -1,5 +1,4 @@
 import express, { Router, Request, Response } from 'express';
-import { upload } from '../middlewares/fileFilter';
 import { MulterRequest } from '../models/multerRequest.model';
 import { Product } from '../models/product.model';
 import { Image } from '../models/image.model';
@@ -25,12 +24,16 @@ productController.get('/:id', (req, res) => {
 
 // get imageIds to specific post
 productController.get('/:id/getImageIds', (req: Request, res: Response) => {
-    imageService.getImageIds('product', +req.params.id).then(ids => res.send(ids)).catch(err => res.status(500).send(err));
+    imageService.getImageIds('product', +req.params.id)
+        .then(ids => res.send(ids))
+        .catch(err => res.status(500).send(err));
 });
 
 // get specific image
 productController.get('/getSingleImage/:id', (req: Request, res: Response) => {
-    imageService.getSpecificImage(+req.params.id).then(image => res.send(image)).catch(err => res.status(500).send(err));
+    imageService.getSpecificImage(+req.params.id)
+        .then(image => res.send(image))
+        .catch(err => res.status(500).send(err));
 });
 
 // create
@@ -43,7 +46,9 @@ productController.post('/', (req: Request, res: Response) => {
 
 // upload image and add to a product
 productController.post('/:id/image', (req: MulterRequest, res: Response) => {
-    imageService.postImage(req, 'product').then(created => res.send(created)).catch(err => res.status(500).send(err));
+    imageService.postImage(req, 'product')
+        .then(created => res.send(created))
+        .catch(err => res.status(500).send(err));
 });
 
 // delete

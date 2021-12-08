@@ -76,7 +76,7 @@
         <!-- CATEGORY -->
         <mat-form-field appearance="fill">
           <mat-label>Category:</mat-label>
-          <mat-select [(ngModel)]="selectCategory"(ngModelChange)="findCategory()"[ngModelOptions]="{standalone: true}" >
+          <mat-select [(ngModel)]="selectCategory" (ngModelChange)="findCategory()" [ngModelOptions]="{standalone: true}" >
             <mat-option value="Restaurant">Restaurant</mat-option>
             <mat-option value="University">University</mat-option>
             <mat-option value="Coffeeshop">Coffeeshop</mat-option>
@@ -107,9 +107,7 @@
       <br><br>
       <angular-editor id="editor1"
                       [(ngModel)]="post.description"
-                      [config]="config1"
-                      (ngModelChange)="onChange($event)"
-                      (blur)="onBlur($event)">
+                      [config]="config1">
       </angular-editor>
 
       <span id="image"></span>

@@ -1,4 +1,3 @@
-import { TodoItem, TodoItemAttributes, TodoItemCreationAttributes } from './todoitem.model';
 import { Optional, Model, Sequelize, DataTypes } from 'sequelize';
 import { UserPostVote } from './user-post-vote.model';
 

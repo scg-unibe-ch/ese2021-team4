@@ -1,23 +1,17 @@
-import {Optional, Model, Sequelize, DataTypes, Association, HasManyGetAssociationsMixin, HasManyAddAssociationMixin} from 'sequelize';
+import {Optional, Model, Sequelize, DataTypes} from 'sequelize';
 
 export interface ProductAttributes {
     productId: number;
     title: string;
     description: Text;
-    tags: string; // contains the categories as comma-seperated-values. E.g. "Restaurant,Activities"
+    tags: string;
     price: number;
 }
 
-
-// tells sequelize that productId is not a required field
 export interface ProductCreationAttributes extends Optional<Product, 'productId'> { }
 
 
 export class Product extends Model<ProductAttributes, ProductCreationAttributes> implements ProductAttributes {
-
-    // public static associations: {
-    //     images: Association<TodoItem, ItemImage>
-    // };
 
     productId!: number;
     title!: string;
@@ -27,7 +21,7 @@ export class Product extends Model<ProductAttributes, ProductCreationAttributes>
     price!: number;
 
 
-    public static initialize(sequelize: Sequelize) { // definition for database
+    public static initialize(sequelize: Sequelize) {
         Product.init({
                 productId: {
                     type: DataTypes.INTEGER,

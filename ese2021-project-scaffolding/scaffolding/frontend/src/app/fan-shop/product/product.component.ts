@@ -122,7 +122,7 @@ export class ProductComponent implements OnInit {
 
       img.onload = function() {
         URL.revokeObjectURL(img.src);
-      }
+      };
       this.product.images.push(files[i]);
       imageSpan?.appendChild(img);
     }
@@ -143,17 +143,6 @@ export class ProductComponent implements OnInit {
         this.editMode = false;
         this.loadProduct();
       }
-  }
-
-
-  //do we need this?
-  onChange(event : any) {
-    console.log('changed');
-  }
-
-  //do we need this?
-  onBlur(event : any) {
-    console.log('blur ' + event);
   }
 
   loadProduct(): void {

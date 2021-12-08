@@ -75,19 +75,14 @@ userPostVoteController.delete('/single/:userId/:postId', (req, res) => {
 });
 
 userPostVoteController.delete('/unflag/:postId', (req, res) => {
-    console.log('here we are');
-    console.log(req.params.postId);
     const paramPostId = +req.params.postId;
-    console.log('postid: ', paramPostId);
     const promises = [];
-    const { Op } = require('sequelize');
     UserPostVote.findAll({
         where: {
             postId: paramPostId
         }
     })
         .then(found => {
-            console.log(found);
             found.forEach(entry => {
                 if (entry.vote != null) {
                     entry.flag = null;
@@ -99,7 +94,6 @@ userPostVoteController.delete('/unflag/:postId', (req, res) => {
                     promises.push(entry.destroy()
                         .then(deleted => deleted)
                         .catch(err => {
-                            console.log('delete error');
                             res.status(500).send(err);
                         }));
                 }

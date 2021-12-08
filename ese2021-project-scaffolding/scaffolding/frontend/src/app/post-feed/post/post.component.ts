@@ -240,14 +240,6 @@ export class PostComponent implements OnInit {
     });
   }
 
-  onChange(event : any) {
-    console.log('changed');
-  }
-
-  onBlur(event : any) {
-    console.log('blur ' + event);
-  }
-
   save(){
     if (this.post.title==''){
       document.getElementById('setTitle')!.style.visibility='visible';

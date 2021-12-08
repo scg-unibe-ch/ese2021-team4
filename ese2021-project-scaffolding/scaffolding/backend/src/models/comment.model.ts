@@ -1,5 +1,5 @@
-import {Optional, Model, Sequelize, DataTypes, Association, HasManyGetAssociationsMixin, HasManyAddAssociationMixin} from 'sequelize';
-import { Post, PostCreationAttributes } from './post.model';
+import {Optional, Model, Sequelize, DataTypes } from 'sequelize';
+import { Post } from './post.model';
 
 export interface CommentAttributes {
     commentId: number;
@@ -10,8 +10,6 @@ export interface CommentAttributes {
     downvotes: number;
 }
 
-
-// tells sequelize that postId is not a required field
 export interface CommentCreationAttributes extends Optional<Comment, 'commentId'> { }
 
 
@@ -24,7 +22,7 @@ export class Comment extends Model<CommentAttributes, CommentCreationAttributes>
     upvotes!: number;
     downvotes!: number;
 
-    public static initialize(sequelize: Sequelize) { // definition for database
+    public static initialize(sequelize: Sequelize) {
         Comment.init({
                 commentId: {
                     type: DataTypes.INTEGER,

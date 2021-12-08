@@ -1,7 +1,6 @@
 import express from 'express';
 import {Router, Request, Response} from 'express';
 import {Comment} from '../models/comment.model';
-// import {MulterRequest} from '../models/multerRequest.model';
 
 const commentController: Router = express.Router();
 
@@ -12,7 +11,6 @@ commentController.post('/', (req: Request, res: Response) => {
 });
 
 
-// get the filename of an image
 commentController.get('/:id', (req: Request, res: Response) => {
   Comment.findByPk(Number(req.params.id)).then(products => res.send(products))
         .catch(err => res.status(500).send(err));

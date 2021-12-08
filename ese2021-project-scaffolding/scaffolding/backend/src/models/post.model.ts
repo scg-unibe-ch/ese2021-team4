@@ -1,4 +1,4 @@
-import {Optional, Model, Sequelize, DataTypes, Association, HasManyGetAssociationsMixin, HasManyAddAssociationMixin} from 'sequelize';
+import {Optional, Model, Sequelize, DataTypes} from 'sequelize';
 import { Comment } from './comment.model';
 import { UserPostVote } from './user-post-vote.model';
 
@@ -8,22 +8,16 @@ export interface PostAttributes {
     userId: number;
     description: Text;
     imageId: number;
-    tags: string; // contains the categories as comma-seperated-values. E.g. "Restaurant,Activities"
+    tags: string;
     upvotes: number;
     downvotes: number;
     flags: number;
 }
 
-
-// tells sequelize that postId is not a required field
 export interface PostCreationAttributes extends Optional<Post, 'postId'> { }
 
 
 export class Post extends Model<PostAttributes, PostCreationAttributes> implements PostAttributes {
-
-    // public static associations: {
-    //     images: Association<TodoItem, ItemImage>
-    // };
 
     postId!: number;
     title!: string;
@@ -35,14 +29,10 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
     downvotes!: number;
     flags!: number;
 
-
-    public getComments!: HasManyGetAssociationsMixin<Comment>;
-    public addComment!: HasManyAddAssociationMixin<Comment, number>;
-
     public readonly Comments?: Comment[];
 
 
-    public static initialize(sequelize: Sequelize) { // definition for database
+    public static initialize(sequelize: Sequelize) {
         Post.init({
             postId: {
                 type: DataTypes.INTEGER,

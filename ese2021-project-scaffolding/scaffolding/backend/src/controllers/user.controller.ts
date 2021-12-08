@@ -1,8 +1,6 @@
-
 import express, { Router, Request, Response } from 'express';
 import { UserService } from '../services/user.service';
 import { verifyToken } from '../middlewares/checkAuth';
-import {Post} from '../models/post.model';
 import {User} from '../models/user.model';
 
 const userController: Router = express.Router();
@@ -30,9 +28,13 @@ userController.get('/:param',
 
     (req, res) => {
         if (isNaN(+req.params.param)) {
-            userService.get(req.params.param, null).then(user => res.send(user)).catch(err => res.status(500).send(err));
+            userService.get(req.params.param, null)
+                .then(user => res.send(user))
+                .catch(err => res.status(500).send(err));
         } else if (typeof +req.params.param === 'number') {
-            userService.get(null, +req.params.param).then(user => res.send(user)).catch(err => res.status(500).send(err));
+            userService.get(null, +req.params.param)
+                .then(user => res.send(user))
+                .catch(err => res.status(500).send(err));
         } else {
             res.status(500).send('faulty request');
         }

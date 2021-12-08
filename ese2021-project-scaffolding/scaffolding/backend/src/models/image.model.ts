@@ -1,4 +1,4 @@
-import { Optional, Model, DataTypes, Sequelize, Association } from 'sequelize';
+import { Optional, Model, DataTypes, Sequelize } from 'sequelize';
 
 export interface ImageAttributes {
     imageId: number;
@@ -10,9 +10,6 @@ export interface ImageAttributes {
 export interface ImageCreationAttributes extends Optional<ImageAttributes, 'imageId'> { }
 
 export class Image extends Model<ImageAttributes, ImageCreationAttributes> implements ImageAttributes {
-    // public static associations: {
-    //     product: Association<TodoItem, Image>;
-    // };
 
     imageId!: number;
     file!: Blob;

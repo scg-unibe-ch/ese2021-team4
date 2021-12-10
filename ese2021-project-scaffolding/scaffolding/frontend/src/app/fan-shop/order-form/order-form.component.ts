@@ -50,7 +50,7 @@ export class OrderFormComponent implements OnInit {
     });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
-    userService.user$.subscribe(res => {this.user = res; this.getUserDetails();});
+    userService.user$.subscribe(res => {this.user = res; if(this.user != undefined)this.getUserDetails();});
 
     // Current value
     this.loggedIn = userService.getLoggedIn();

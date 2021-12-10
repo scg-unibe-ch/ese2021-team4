@@ -34,7 +34,7 @@ export class PostFeedComponent implements OnInit {
   ) {
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
-    userService.user$.subscribe(res => {this.user = res; this.readPosts()});
+    userService.user$.subscribe(res => {this.user = res; if(this.user != undefined)this.readPosts()});
 
     // Current value
     this.loggedIn = userService.getLoggedIn();
@@ -82,55 +82,63 @@ export class PostFeedComponent implements OnInit {
   }
 
   readCreatedPosts(): void {
-    this.httpClient.get(environment.endpointURL + "post/" + "createdBy/" + this.user?.userId).subscribe((posts: any) => {
-      posts.forEach((post: any) => {
-        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags));
+    if(this.user != undefined) {
+      this.httpClient.get(environment.endpointURL + "post/" + "createdBy/" + this.user?.userId).subscribe((posts: any) => {
+        posts.forEach((post: any) => {
+          this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags));
+        });
+        this.postsLoaded = true;
+        this.selectedPosts = this.postList
       });
-      this.postsLoaded = true;
-      this.selectedPosts = this.postList
-    });
+    }
   }
 
   readVotedPosts(dir: number) {
-    this.httpClient.get(environment.endpointURL + "userpostvote/" + "votedBy/" + this.user?.userId).subscribe((votes: any) => {
-      votes.forEach((vote: any) => {
-        if(vote.vote == dir) {
-          this.httpClient.get(environment.endpointURL + "post/" + vote.postId).subscribe((post:any) => {
-            this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags));
-          })
-        }
+    if(this.user != undefined) {
+      this.httpClient.get(environment.endpointURL + "userpostvote/" + "votedBy/" + this.user?.userId).subscribe((votes: any) => {
+        votes.forEach((vote: any) => {
+          if (vote.vote == dir) {
+            this.httpClient.get(environment.endpointURL + "post/" + vote.postId).subscribe((post: any) => {
+              this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags));
+            })
+          }
+        });
+        this.postsLoaded = true;
+        this.selectedPosts = this.postList
+      }, error => {
+        console.log(error);
       });
-      this.postsLoaded = true;
-      this.selectedPosts = this.postList
-    }, error => {
-      console.log(error);
-    });
+    }
   }
 
   readCommentedPosts() {
-    this.httpClient.get(environment.endpointURL + "comment/" + "createdBy/" + this.user?.userId).subscribe((comments: any) => {
-      comments.forEach((comment: any) => {
-        this.httpClient.get(environment.endpointURL + "post/" + comment.postId).subscribe((post:any) => {
-          if(!this.postList.find(existingPost => existingPost.postId == post.postId)) {
-            this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags))
-          }
-        })
+    if(this.user != undefined) {
+      this.httpClient.get(environment.endpointURL + "comment/" + "createdBy/" + this.user?.userId).subscribe((comments: any) => {
+        comments.forEach((comment: any) => {
+          this.httpClient.get(environment.endpointURL + "post/" + comment.postId).subscribe((post: any) => {
+            if (!this.postList.find(existingPost => existingPost.postId == post.postId)) {
+              this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags))
+            }
+          })
+        });
+        this.postsLoaded = true;
+        this.selectedPosts = this.postList
+      }, error => {
+        console.log(error);
       });
-      this.postsLoaded = true;
-      this.selectedPosts = this.postList
-    }, error => {
-      console.log(error);
-    });
+    }
   }
 
   readFlaggedPosts(): void {
-    this.httpClient.get(environment.endpointURL + "post/flagged").subscribe((posts: any) => {
-      posts.forEach((post: any) => {
-        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags));
+    if(this.user != undefined) {
+      this.httpClient.get(environment.endpointURL + "post/flagged").subscribe((posts: any) => {
+        posts.forEach((post: any) => {
+          this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags));
+        });
+        this.postsLoaded = true;
+        this.selectedPosts = this.postList
       });
-      this.postsLoaded = true;
-      this.selectedPosts = this.postList
-    });
+    }
   }
 
   sortPosts(): void {

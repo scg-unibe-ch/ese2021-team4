@@ -36,7 +36,7 @@ export class RegisterComponent {
   houseNr: string = '';
   city: string = '';
   zipCode: string = '';
-  birthday: Date = new Date();
+  birthday: string = new Date().toISOString().substr(0, 10);
   phoneNr: string = '';
 
 
@@ -53,6 +53,8 @@ export class RegisterComponent {
     // Current value
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
+
+    console.log(this.birthday);
   }
 
   registerUser(): void {
@@ -69,7 +71,7 @@ export class RegisterComponent {
         houseNr: this.houseNr,
         city: this.city,
         zipCode: this.zipCode,
-        birthday: this.birthday,
+        birthday: new Date(this.birthday),
         phoneNr: this.phoneNr
       }).subscribe(() => {
         this.router.navigate(['/login']);

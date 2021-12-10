@@ -30,7 +30,7 @@ export class OrderFeedComponent implements OnInit {
   ) {
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
-    userService.user$.subscribe(res => {this.user = res; this.getOrders()});
+    userService.user$.subscribe(res => {this.user = res; if(this.user != undefined)this.getOrders()});
 
     // Current value
     this.loggedIn = userService.getLoggedIn();

@@ -33,8 +33,11 @@ export class FanShopComponent implements OnInit {
     public httpClient: HttpClient,
     public userService: UserService,
     private activatedRoute: ActivatedRoute) {
-    this.activatedRoute.params.subscribe(params => {
-      if(params.status == 1){
+    this.activatedRoute.url.subscribe(url => {
+
+      //successful payment via stripe redirects to url 'success'
+      //display feedback and reroute to usual fan-shop url
+      if(url[0].path == 'success') {
         this.router.navigate(['/fan-shop']);
         this.toastr.success("Thank you for your order!")
       }

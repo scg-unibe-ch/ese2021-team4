@@ -18,39 +18,14 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.index = 0;
-    this.changeSlogan();
-
-
-    //solution if you only want the change on init
-    /*
-    this.words.forEach(word => {
-      setTimeout( () => {
-        this.current = word;
-      }, 5000);
-    })*/
-
-
-  }
-
-  changeSlogan(): void {
-    let i= this.timeout;
-    let repetitions=0;
-    while (repetitions < 100){
-      this.setPause(i);
-      repetitions++;
-      i = i + this.timeout;
-    }
+    setInterval(() => {
+      this.setSlogan();
+    }, this.timeout);
   }
 
   setSlogan(): void {
     this.index = ((this.index + 1) % this.words.length);
     this.current = this.words[this.index];
-  }
-
-  setPause(ms: number){
-    setTimeout(() => {
-      this.setSlogan();
-    }, ms);
   }
 
 }

@@ -1,6 +1,6 @@
 h1 {
     position: relative;
-    color: #ffffff;  
+    color: #ffffff;
     font-size: xx-large ;
     line-height: 0.9;
     text-align: center;
@@ -11,10 +11,10 @@ h1 {
     height: 100vh;
     width: 100%;
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
 }
 
-.background::before {    
+.background::before {
     content: "";
     background-image: url("../../assets/images/bern_welcome.jpg");
     background-size: cover;
@@ -26,7 +26,7 @@ h1 {
     filter: brightness(50%);
 }
 
-.container { 
+.container {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -35,8 +35,8 @@ h1 {
 }
 
 .mat-raised-button {
-    height: 90px;
-    width: 160px;
+    height: 95px;
+    width: 220px;
     font-size:x-large;
     opacity: 0.9;
 }

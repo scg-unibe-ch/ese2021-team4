@@ -10,7 +10,7 @@ export class HomeComponent implements OnInit {
 
   timeout: number = 4000;
   index : number = 0;
-  words : String[] = [ "favourite spots", "baldlabals", "special moments", "ssss", "asldkfjalk", "dslakfjlsdk"];
+  words : String[] = [ "favourite spots", "secret tips", "magic moments", "traditional restaurants", "lovely views", "tasty brunch", "fancy bars", "cozy coffeeshops"];
   current = this.words[this.index];
   constructor() {}
 

@@ -74,10 +74,12 @@ export class Server {
             methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
             origin: `http://localhost:${this.port}`,
             preflightContinue: false,
+
         };
 
         return express()
             .use(cors())
+            .options('*', cors(options))
             .use(express.json())                    // parses an incoming json to an object
             .use(morgan('tiny'))                    // logs incoming requests
             .use('/todoitem', TodoItemController)   // any request on this path is forwarded to the TodoItemController
@@ -90,7 +92,6 @@ export class Server {
             .use('/product', ProductController)
             .use('/order', OrderController)
             .use('/userpostvote', UserPostVoteController)
-            .options('*', cors(options))
             .use(express.static('./src/public'))
             // this is the message you get if you open http://localhost:3000/ when the server is running
             .get('/', (req, res) => res.send('<h1>Welcome to the ESE-2021 Backend Scaffolding <span style="font-size:50px">&#127881;</span></h1>'));

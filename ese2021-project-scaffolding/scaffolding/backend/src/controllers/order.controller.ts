@@ -126,7 +126,7 @@ orderController.post('/stripe', async (req: Request, res: Response) => {
             },
         ],
         mode: 'payment',
-        success_url: process.env.SITE + '/success',
+        success_url: process.env.SITE + '/success/1',
         cancel_url: process.env.SITE + '/payment_cancelled/' + prod.productId,
     });
 

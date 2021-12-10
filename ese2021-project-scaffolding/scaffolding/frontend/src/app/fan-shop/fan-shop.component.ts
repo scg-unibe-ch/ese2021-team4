@@ -5,6 +5,8 @@ import { Product } from '../models/product.model';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
 import {Category, CategoryFinder} from "../models/category.model";
+import {ActivatedRoute, Router} from "@angular/router";
+import {ToastrService} from "ngx-toastr";
 
 
 @Component({
@@ -26,9 +28,17 @@ export class FanShopComponent implements OnInit {
 
 
   constructor(
+    public toastr: ToastrService,
+    private router: Router,
     public httpClient: HttpClient,
-    public userService: UserService
-  ) {
+    public userService: UserService,
+    private activatedRoute: ActivatedRoute) {
+    this.activatedRoute.params.subscribe(params => {
+      if(params.status == 1){
+        this.router.navigate(['/fan-shop']);
+        this.toastr.success("Thank you for your order!")
+      }
+    });
     // Listen for changes
     userService.loggedIn$.subscribe(res => this.loggedIn = res);
     userService.user$.subscribe(res => this.user = res);

@@ -57,7 +57,7 @@ const routes: Routes = [
   {path: 'fan-shop/product/:id/order', component: OrderFormComponent},
   {path: 'dashboard', component: AdminDashboardComponent},
   {path: 'payment_cancelled/:id', redirectTo: 'fan-shop/product/:id'},
-  {path: 'success', redirectTo: 'fan-shop'}
+  {path: 'success/:status', component: FanShopComponent}
 ];
 @NgModule({
   declarations: [

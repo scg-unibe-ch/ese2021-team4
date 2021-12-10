@@ -90,7 +90,8 @@ export class ProductComponent implements OnInit {
     private formBuilder: FormBuilder,
     public httpClient: HttpClient,
     public userService: UserService,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute
+  ) {
 
     this.activatedRoute.params.subscribe(params => {
       if(!isNaN(+params.id)) {

@@ -12,7 +12,7 @@
 
 <mat-form-field appearance="fill">
   <mat-label>Sort by:</mat-label>
-  <mat-select [(ngModel)]="sortBy"(ngModelChange)="sortPosts()">
+  <mat-select [(ngModel)]="sortBy" (ngModelChange) ="sortPosts()">
     <mat-option value="flags" *ngIf="feedType == 'flagged'">Flags</mat-option>
     <mat-option value="recent">Newest</mat-option>
     <mat-option value="oldest">Oldest</mat-option>
@@ -39,7 +39,8 @@
   <mat-grid-tile *ngFor="let post of selectedPosts">
     <app-post [post]="post"
               [preview]="true"
-              [postId]="post.postId">
+              [postId]="post.postId"
+              (update)="updateFeed($event)">
     </app-post>
   </mat-grid-tile>
 </mat-grid-list>

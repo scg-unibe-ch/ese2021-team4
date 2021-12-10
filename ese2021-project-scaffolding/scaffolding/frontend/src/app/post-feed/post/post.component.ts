@@ -320,6 +320,7 @@ export class PostComponent implements OnInit {
       }
       this.httpClient.post(environment.endpointURL + "post/" + post.postId + "/image", formData).subscribe((post: any) => {
       });
+      this.update.emit(this.post);
     }, error => {console.log(error)});
   }
 

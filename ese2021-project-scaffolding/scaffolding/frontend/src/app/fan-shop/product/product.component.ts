@@ -150,7 +150,9 @@ export class ProductComponent implements OnInit {
       if(product != undefined) {
         this.product = new Product(product.productId, product.title, product.description, product.price, product.tags, new Array<File>());
         this.selectCategory = this.product.tags.toString();
-        this.loadPicturesToProduct();
+        if(!this.preview){
+          this.loadPicturesToProduct();
+        }
       }
       else{
         this.product = new Product(0, 'Nonexistent Product', 'This product does not exist anymore.', 0, Category.Bern, []);

@@ -141,6 +141,15 @@ export class PostFeedComponent implements OnInit {
     }
   }
 
+  updateFeed(post: Post): void {
+    if(this.feedType == 'upvoted' || this.feedType == 'downvoted'){
+      // this.postList.splice(this.postList.indexOf(post), 1);
+      // this.selectedPosts.splice(this.postList.indexOf(post), 1);
+      this.postList = this.postList.filter(listPost => listPost.postId !== post.postId);
+      this.selectedPosts = this.selectedPosts.filter(listPost => listPost.postId !== post.postId);
+    }
+  }
+
   sortPosts(): void {
     switch (this.sortBy) {
       case "id": this.sortById();

@@ -318,8 +318,7 @@ export class PostComponent implements OnInit {
       for (let i=0; i < this.post.images.length; i++){
         formData.append("file"+i, this.post.images[i]);
       }
-      this.httpClient.post(environment.endpointURL + "post/" + post.postId + "/image", formData).subscribe((post: any) => {
-      });
+      this.httpClient.post(environment.endpointURL + "post/" + post.postId + "/image", formData).subscribe((post: any) => {});
       this.update.emit(this.post);
     }, error => {console.log(error)});
   }

@@ -34,6 +34,7 @@ export class ImageService {
                     }
                 }
             });
+            resolve(null);
 
         });
     }

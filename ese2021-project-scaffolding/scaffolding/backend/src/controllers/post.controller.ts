@@ -75,7 +75,9 @@ postController.post('/', (req: Request, res: Response) => {
 // upload image and add to a post
 postController.post('/:id/image', (req: MulterRequest, res: Response) => {
     imageService.postImage(req, 'post')
-        .then(created => res.send(created))
+        .then(created => {
+            res.status(200).send(created);
+        })
         .catch(err => res.status(500).send(err));
 });
 

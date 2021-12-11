@@ -1,14 +1,55 @@
-<mat-card *ngIf="loggedIn && shouldShowPostButton()">
-  <p>
-      <a routerLink="/postfeed/post/-1"><button mat-flat-button color="primary">Create Post</button></a>
-  </p>
-</mat-card>
 
-<mat-card *ngIf="!loggedIn">
+<div class="background">
+  <div class="feed">
+    
+    <mat-grid-list cols="1" rowHeight="50px">
+      <mat-grid-tile>
+        <mat-form-field appearance="fill" floatLabel="never">
+          <a routerLink="/postfeed/post/-1" *ngIf="loggedIn && shouldShowPostButton()"> <input matInput placeholder="Create Post..." > </a>
+          <a routerLink="/login" *ngIf="!loggedIn"> <input matInput placeholder="Create Post..." > </a>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-button-toggle-group [(ngModel)]="sortBy" (ngModelChange)="sortPosts()">
+          <mat-button-toggle value="flags" *ngIf="feedType == 'flagged'">Flags</mat-button-toggle>
+          <mat-button-toggle value="recent" >Newest</mat-button-toggle>
+          <mat-button-toggle value="oldest" >Oldest</mat-button-toggle>
+          <mat-button-toggle value="upvotes" >Upvotes</mat-button-toggle>
+          <mat-button-toggle value="downvotes" >Downvotes</mat-button-toggle>
+          <mat-button-toggle value="total" >Score</mat-button-toggle>
+        </mat-button-toggle-group>
+      </mat-grid-tile>
+      
+
+    </mat-grid-list>
+
+
+
+
+    <mat-grid-list cols="1" rowHeight="100px">
+      <mat-grid-tile>
+      
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+
+    
+
+
+
+  </div>
+</div>
+
+
+
+
+<!-- <mat-card *ngIf="!loggedIn">
   <p>
     Please<a routerLink="/login"> log in </a>to create a Post
   </p>
-</mat-card>
+</mat-card> -->
 
 <mat-form-field appearance="fill">
   <mat-label>Sort by:</mat-label>
@@ -35,7 +76,7 @@
   </mat-select>
 </mat-form-field>
 
-<mat-grid-list cols="2" rowHeight="2:1">
+<mat-grid-list cols="1" rowHeight="50px">
   <mat-grid-tile *ngFor="let post of selectedPosts">
     <app-post [post]="post"
               [preview]="true"
@@ -44,3 +85,5 @@
     </app-post>
   </mat-grid-tile>
 </mat-grid-list>
+
+<!-- </div> -->

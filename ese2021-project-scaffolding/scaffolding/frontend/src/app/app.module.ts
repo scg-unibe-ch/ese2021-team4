@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {ToastrModule} from "ngx-toastr";
 import {MatRadioModule} from '@angular/material/radio';
@@ -104,6 +105,7 @@ const routes: Routes = [
     MatChipsModule,
     NgxStripeModule.forRoot('pk_test_51K0pOrIFU9ZBSiczIlnqN7V1M1A7mf0vb6KDUJR01ajD8j3Lfht3SPgImeSnweRtNr29wjknKCEn2gGd4Zwha6Bx00VKqhuUP6'),
     MatRadioModule,
+    MatButtonToggleModule,
   ],
   providers: [
     {

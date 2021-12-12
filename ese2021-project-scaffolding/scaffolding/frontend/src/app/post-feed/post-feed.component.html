@@ -12,7 +12,7 @@
 
       <mat-grid-tile>
         <!-- Sort by -->
-        <mat-button-toggle-group [(ngModel)]="sortBy" (ngModelChange)="sortPosts()" value="total" appearance="legacy">
+        <mat-button-toggle-group [(ngModel)]="sortBy" (ngModelChange)="sortPosts()" value="recent" appearance="legacy">
           <mat-button-toggle value="flags" *ngIf="feedType == 'flagged'" disableRipple="true">Flags</mat-button-toggle>
           <mat-button-toggle value="recent" disableRipple="true"><mat-icon>new_releases</mat-icon> New</mat-button-toggle>
           <mat-button-toggle value="oldest" disableRipple="true"><mat-icon>calendar_today</mat-icon> Oldest</mat-button-toggle>
@@ -36,6 +36,7 @@
       </mat-grid-tile>
 
       <!-- Posts -->
+      
       <mat-grid-tile *ngFor="let post of selectedPosts" [rowspan]=post.neededRowspan>
         <div id="post">
           <app-post [post]="post"
@@ -44,9 +45,7 @@
                   (update)="updateFeed($event)">
           </app-post>
         </div>
-        
       </mat-grid-tile>
-
     </mat-grid-list>
 
 

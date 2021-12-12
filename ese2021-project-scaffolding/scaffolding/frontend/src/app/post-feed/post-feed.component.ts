@@ -19,7 +19,7 @@ export class PostFeedComponent implements OnInit {
 
   postList: Post[] = [];
 
-  sortBy = '';
+  sortBy = 'recent';
   selectedCategory = '';
   selectedPosts: Post[] = [];
   postsLoaded: boolean = false;
@@ -44,7 +44,7 @@ export class PostFeedComponent implements OnInit {
   ngOnInit(): void {
     if(this.user != undefined || !this.loggedIn) {
       this.readPosts();
-    }
+    }   
   }
 
   readPosts(): void {

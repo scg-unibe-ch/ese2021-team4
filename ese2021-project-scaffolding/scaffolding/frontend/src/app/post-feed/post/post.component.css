@@ -4,27 +4,59 @@
 
 
 .background {
-    background-color: rgb(165, 165, 165);
+    background-color: rgb(126, 126, 126);
     height: 100vh;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.background::before {
+    content: "";
+    background-image: url("../../../assets/images/bibliothek.jpeg");
+    background-size: cover;
+    position: absolute;
+    background-attachment: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    filter: brightness(50%);
 }
 
 #container {
-    border: solid 2px turquoise;
-    width: 60vw;
-    height: 200px;
+    /* border: solid 2px turquoise; */
+    width: 90vw;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    background-color: rgb(160, 159, 159);
+    position: relative;
+    text-align: center;
+    border-radius: 10px;
+}
+
+h1 {
+    margin-top: 10px;
+    text-decoration: underline;
 }
 
 mat-form-field#title{
-    width: 100%;
-    
+    width: 60%;   
 }
 
+mat-form-field#category {
+    width: 40%;
+}
+
+mat-form-field textarea {
+    resize: none;
+    font-size: 16px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 
 /* ----------------------------- */

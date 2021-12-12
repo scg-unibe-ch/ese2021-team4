@@ -65,15 +65,42 @@
 
     <div id="container">
       <!-- TITLE -->
+      <h1>
+        {{existsInBackend ? 'Edit your' : 'Submit a'}} post
+      </h1>
       <form>
         <mat-form-field appearance="fill" id="title">
-          <mat-label>Title</mat-label>
-          <textarea cols="90" rows="3" matInput #message maxlength="256" [(ngModel)]="post.title" [ngModelOptions]="{standalone: true}"></textarea>
-          <mat-hint matSuffix>{{message.value.length}} / 256</mat-hint>
+          <textarea placeholder="Title" rows="{{rows}}" matInput #message maxlength="300" (ngModelChange)="countRows()" [(ngModel)]="post.title" [ngModelOptions]="{standalone: true}"></textarea>
+          <mat-hint matSuffix>{{message.value.length}} / 300</mat-hint>
         </mat-form-field>
-
+        <!-- Categories -->
+        <mat-form-field appearance="fill" id="category">
+          <mat-label>Category:</mat-label>
+          <mat-select [(ngModel)]="selectCategory" (ngModelChange)="findCategory()" [ngModelOptions]="{standalone: true}" >
+            <mat-option value="Restaurant">Restaurant</mat-option>
+            <mat-option value="University">University</mat-option>
+            <mat-option value="Coffeeshop">Coffeeshop</mat-option>
+            <mat-option value="Sightseeing">Sightseeing</mat-option>
+            <mat-option value="Shopping">Shopping</mat-option>
+            <mat-option value="Museum">Museum</mat-option>
+          </mat-select>
+        </mat-form-field>
       </form>
 
+      <quill-editor [(ngModel)]="post.description" placeholder="Text (optional)" [style]="editorStyle" [modules]="config" (onEditorCreated)="getEditorInstance($event)"></quill-editor>
+      <span id="image"></span>
+
+      
+      <button (click)="deleteImages()">delete all images attached to this post</button>
+
+      <button mat-flat-button (click)="existsInBackend ? save() : createPost()">{{existsInBackend ? 'Save Post':'CreatePost'}}</button>
+      <!-- <button mat-flat-button *ngIf="existsInBackend" (click)="save()">Save Post</button> -->
+      <!-- <button mat-flat-button *ngIf="!existsInBackend" (click)="createPost()">Create Post</button> -->
+      <mat-hint style="color:red">{{errorMessage}}</mat-hint>
+      <!-- {{post.description}} -->
+      
+      
+      
       
 
 
@@ -113,14 +140,7 @@
       </div>
       </form>
 
-
-      DESCRIPTION
-      <br><br>
-      <angular-editor id="editor1"
-                      [(ngModel)]="post.description"
-                      [config]="config1">
-      </angular-editor>
-      <span id="image"></span>
+      
       <button (click)="deleteImages()">delete all images attached to this post</button><br>
 
       <button *ngIf="existsInBackend" (click)="save()">Save Post</button>

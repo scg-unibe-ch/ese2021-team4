@@ -5,12 +5,12 @@ import {UserService} from 'src/app/services/user.service';
 import {environment} from 'src/environments/environment';
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {AngularEditorConfig} from '@kolkov/angular-editor';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Comment} from 'src/app/models/comment.model';
 import {Category, CategoryFinder} from "../../models/category.model";
 import {ToastrService} from "ngx-toastr";
 import {ConfirmationAsker} from "../../models/confirmation-asker";
+import { QuillModules } from 'ngx-quill';
 
 
 @Component({
@@ -34,56 +34,26 @@ export class PostComponent implements OnInit {
   hasFlagged: boolean = false;
 
   existsInBackend : boolean = true;
-  form: FormGroup = new FormGroup({});
   editMode: boolean = false;
+  rows: number = 1;
+  
 
-  config1: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    minHeight: '5rem',
-    maxHeight: '15rem',
-    placeholder: 'Enter text here...',
-    translate: 'no',
-    sanitize: false,
-    outline: true,
-    defaultFontName: 'Arial',
-    defaultFontSize: '5',
-    defaultParagraphSeparator: 'p',
-    customClasses: [
-      {
-        name: 'quote',
-        class: 'quote',
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
-      },
-    ],
-    toolbarHiddenButtons: [
-      [
-      'undo',
-      'redo',
-      'justifyLeft',
-      'justifyCenter',
-      'justifyRight',
-      'justifyFull',
+  // editor : Quill
+  editorStyle = {
+    height: '300px',
+    // backgroundColor: "#  ffffff"
+  }
+
+  config :QuillModules= {
+    toolbar: [
+        ['bold', 'italic', 'underline', 'strike',{ 'header': 1 }, 'blockquote'],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],
+        ['link', 'image', 'video'], //media
+        ['clean'] //clear formattig
       ],
-      [
-        'insertVideo',
-        'insertImage',
-        'backgroundColor',
-        'textColor',
-        'removeFormat',
-        'customClasses',
-        'insertHorizontalRule'
-      ]
-    ]
-  };
+    
+  }
 
   @Input()
   post: Post = new Post(0, '', 0, '', Category.Bern, 0, 0, new Date(), [], [], 0);
@@ -96,11 +66,11 @@ export class PostComponent implements OnInit {
   delete = new EventEmitter<Post>();
 
   selectCategory=this.post.tags.toString();
+  errorMessage = "";
 
 
   constructor(
     private router: Router,
-    private formBuilder: FormBuilder,
     public httpClient: HttpClient,
     public userService: UserService,
     private activatedRoute: ActivatedRoute,
@@ -121,8 +91,7 @@ export class PostComponent implements OnInit {
     this.user = userService.getUser();
   }
 
-  onFileSelected(event : any) {
-
+  onFileSelected(event : any) {    
     const files : File[] = event.target.files;
 
     for (let i=0; i < files.length; i++){
@@ -136,14 +105,10 @@ export class PostComponent implements OnInit {
       };
       this.post.images.push(files[i]);
       imageSpan?.appendChild(img);
-
     }
   }
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      signature: [ '', Validators.required]
-    });
 
     // if this.postId === -1, this means we are in editor mode and are looking to create a new post
     if (this.postId === -1){
@@ -242,23 +207,18 @@ export class PostComponent implements OnInit {
 
   save(){
     if (this.post.title==''){
-      document.getElementById('setTitle')!.style.visibility='visible';
+      this.errorMessage= "Set a title";
     }
     else if (this.findCategory()==Category.Bern){
-      document.getElementById('setTitle')!.style.visibility='hidden';
-      document.getElementById('setCategory')!.style.visibility='visible';
+      this.errorMessage = "Set a category"
     }
     else if(this.post.images.length == 0 && this.post.description == '') {
-      document.getElementById('setTitle')!.style.visibility = 'hidden';
-      document.getElementById('setCategory')!.style.visibility = 'hidden';
-      document.getElementById('setDescriptionOrImage')!.style.visibility = 'visible';
+      this.errorMessage = "Make a description or upload an image"
     }
     else {
-      document.getElementById('setTitle')!.style.visibility = 'hidden';
-      document.getElementById('setCategory')!.style.visibility = 'hidden';
-      document.getElementById('setDescriptionOrImage')!.style.visibility = 'hidden';
-    this.router.navigate(['/postfeed']);
-    this.updatePost(this.post);
+      this.errorMessage = "";
+      this.router.navigate(['/postfeed']);
+      this.updatePost(this.post);
     }
   }
 
@@ -268,23 +228,19 @@ export class PostComponent implements OnInit {
 
   createPost(): void {
     if (this.post.title==''){
-      document.getElementById('setTitle')!.style.visibility='visible';
+      this.errorMessage= "Set a title";
     }
     else if (this.findCategory()==Category.Bern){
-      document.getElementById('setTitle')!.style.visibility='hidden';
-      document.getElementById('setCategory')!.style.visibility='visible';
+      this.errorMessage = "Set a category"
     }
     else if(this.post.images.length == 0 && this.post.description == '') {
-      document.getElementById('setTitle')!.style.visibility = 'hidden';
-      document.getElementById('setCategory')!.style.visibility = 'hidden';
-      document.getElementById('setDescriptionOrImage')!.style.visibility = 'visible';
+      this.errorMessage = "Make a description or upload an image"
     }
     else {
+      this.errorMessage = "";
       this.router.navigate(['/postfeed']);
-      document.getElementById('setTitle')!.style.visibility='hidden';
-      document.getElementById('setCategory')!.style.visibility='hidden';
-      document.getElementById('setDescriptionOrImage')!.style.visibility = 'hidden';
     if(this.user != null){ //user might not be instantiated, this is taken care of by the html
+      console.log("post create");
       this.httpClient.post(environment.endpointURL + "post", {
       title: this.post.title,
       description: this.post.description,
@@ -500,14 +456,33 @@ export class PostComponent implements OnInit {
     });
   }
 
-  auto_grow(element : any) {
-    element.style.height = "5px";
-    element.style.height = (element.scrollHeight)+"px";
-}
+  countRows(): void {
+    // console.log(this.post.title);
+    const width = window.innerWidth * 0.9 * 0.45
+    // console.log(width);
+    this.rows= Math.floor(this.getTextWidth(this.post.title) / width) + 1 ;
+    // console.log(this.rows);
+    // console.log(this.getTextWidth(this.post.title));
+  }
 
-  textAreaAdjust(element : any) {
-  element.style.height = "1px";
-  element.style.height = (25+element.scrollHeight)+"px";
-}
+  getTextWidth(text : string): number {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    context!.font = "16px roboto";
+    const width = context!.measureText(text).width;
+    return Math.ceil(width);
+  }
+
+  getEditorInstance(editorInstance : any) : void {
+    let toolbar = editorInstance.getModule('toolbar');
+    toolbar.addHandler('image', () => {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('multiple', '');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+      input.onchange = (e) => this.onFileSelected(e);
+    })
+  }
 
 }

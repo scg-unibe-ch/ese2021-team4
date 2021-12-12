@@ -94,10 +94,8 @@
       <button (click)="deleteImages()">delete all images attached to this post</button>
 
       <button mat-flat-button (click)="existsInBackend ? save() : createPost()">{{existsInBackend ? 'Save Post':'CreatePost'}}</button>
-      <!-- <button mat-flat-button *ngIf="existsInBackend" (click)="save()">Save Post</button> -->
-      <!-- <button mat-flat-button *ngIf="!existsInBackend" (click)="createPost()">Create Post</button> -->
       <mat-hint style="color:red">{{errorMessage}}</mat-hint>
-      <!-- {{post.description}} -->
+      {{post.description}}
       
       
       

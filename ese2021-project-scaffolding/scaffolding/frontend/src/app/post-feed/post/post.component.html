@@ -109,7 +109,6 @@
                       [(ngModel)]="post.description"
                       [config]="config1">
       </angular-editor>
-
       <span id="image"></span>
       <button (click)="deleteImages()">delete all images attached to this post</button><br>
 
@@ -119,7 +118,42 @@
   </div>
 </div>
 
-<div *ngIf="preview">
+
+<!-- PREVIEW -->
+<div *ngIf="preview" id="preview">
+  <a [routerLink]="['post', post.postId]"> <span class="link-spanner"></span> </a>
+  <div id="score">
+    <button  mat-icon-button [color]="!hasUpvoted ? 'black' : 'upvoted'" (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn">
+      <span class="iconify" data-icon="mdi:arrow-up-bold" data-width="30" data-height="30"></span>
+    </button>
+    {{post.upvotes - post.downvotes}}
+    <button  mat-icon-button [color]="!hasDownvoted ? 'black' : 'downvoted'" (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn">
+      <span class="iconify" data-icon="mdi:arrow-down-bold" data-width="30" data-height="30"></span>
+    </button>
+  </div>
+  <div id="content">
+    <span id="postInfo">
+        <p> Posted in &#183; <span style="border: 1px solid black; border-radius: 4px; font-weight: 500;">{{post.tags}}</span>
+          &#183; by {{authorName}} {{post.timeSince}} ago
+        </p>      
+    </span>
+    <span id="title">
+      <h3>
+        {{post.title}}
+      </h3>
+    </span>
+    <span id="description">
+      {{post.noHtmlDescription}}
+    </span>
+    <span id="suffix">
+      <button mat-icon-button disableRipple="true"> <mat-icon>comment</mat-icon> {{post.comments.length}}</button>
+      <button mat-icon-button disableRipple="true"> <mat-icon>image</mat-icon> {{post.images.length}}</button>
+    </span>
+  </div>
+</div>
+
+
+<!-- <div *ngIf="preview">
   <div> <mat-chip-list><mat-chip>{{post.tags}}</mat-chip></mat-chip-list><br><br><br><br><br><br><br>
     {{post.title}} <span style="display: inline-block;">&nbsp;</span>
 
@@ -137,5 +171,5 @@
       <mat-icon>flag</mat-icon> ({{post.flags}})
     </button>
   </div>
-</div>
+</div> -->
 

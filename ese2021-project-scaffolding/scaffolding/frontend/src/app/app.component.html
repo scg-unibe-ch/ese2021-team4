@@ -11,7 +11,7 @@
     <span *ngIf="!loggedIn"><a routerLink="/login"><button mat-raised-button color="accent">Login</button></a></span>
     <span *ngIf="loggedIn" >
       <div class="dropdown">
-        <mat-icon class="dropbtn">face</mat-icon>
+        <mat-icon class="dropbtn">account_circle</mat-icon>
         <div class="dropdown-content">
           <a routerLink="/profile">Profile</a>
           <a routerLink="/dashboard" *ngIf="loggedIn && user?.isAdmin">Dashboard</a>

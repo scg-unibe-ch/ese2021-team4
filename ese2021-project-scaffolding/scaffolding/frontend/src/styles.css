@@ -1,5 +1,13 @@
 body {
   margin: 30px;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+}
+
+body::-webkit-scrollbar {
+    display: none;
 }
 
 .mat-card {

@@ -1,89 +1,54 @@
 
-<div class="background">
+<div class="background">  
   <div class="feed">
-    
-    <mat-grid-list cols="1" rowHeight="50px">
+    <!-- Create Post -->
+    <mat-grid-list cols="1" rowHeight="50px" [gutterSize]="'20px'">
       <mat-grid-tile>
-        <mat-form-field appearance="fill" floatLabel="never">
+        <mat-form-field appearance="fill" id="createPost">
           <a routerLink="/postfeed/post/-1" *ngIf="loggedIn && shouldShowPostButton()"> <input matInput placeholder="Create Post..." > </a>
           <a routerLink="/login" *ngIf="!loggedIn"> <input matInput placeholder="Create Post..." > </a>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
-        <mat-button-toggle-group [(ngModel)]="sortBy" (ngModelChange)="sortPosts()">
-          <mat-button-toggle value="flags" *ngIf="feedType == 'flagged'">Flags</mat-button-toggle>
-          <mat-button-toggle value="recent" >Newest</mat-button-toggle>
-          <mat-button-toggle value="oldest" >Oldest</mat-button-toggle>
-          <mat-button-toggle value="upvotes" >Upvotes</mat-button-toggle>
-          <mat-button-toggle value="downvotes" >Downvotes</mat-button-toggle>
-          <mat-button-toggle value="total" >Score</mat-button-toggle>
+        <!-- Sort by -->
+        <mat-button-toggle-group [(ngModel)]="sortBy" (ngModelChange)="sortPosts()" value="total" appearance="legacy">
+          <mat-button-toggle value="flags" *ngIf="feedType == 'flagged'" disableRipple="true">Flags</mat-button-toggle>
+          <mat-button-toggle value="recent" disableRipple="true"><mat-icon>new_releases</mat-icon> New</mat-button-toggle>
+          <mat-button-toggle value="oldest" disableRipple="true"><mat-icon>calendar_today</mat-icon> Oldest</mat-button-toggle>
+          <mat-button-toggle value="upvotes" disableRipple="true"><mat-icon>keyboard_arrow_up</mat-icon>Upvotes</mat-button-toggle>
+          <mat-button-toggle value="downvotes" disableRipple="true"><mat-icon>keyboard_arrow_down</mat-icon>Downvotes</mat-button-toggle>
+          <mat-button-toggle value="total" disableRipple="true"><mat-icon>rocket</mat-icon>Score</mat-button-toggle>
         </mat-button-toggle-group>
+        <!-- categories -->
+        <mat-form-field floatLabel="never" id="selectCategory">
+          <mat-label>Show all</mat-label>
+          <mat-select [(ngModel)]="selectedCategory" (ngModelChange)="selectPosts()">
+            <mat-option value="Restaurant">Restaurant</mat-option>
+            <mat-option value="Coffeeshop">Coffeeshop</mat-option>
+            <mat-option value="Shopping">Shopping</mat-option>
+            <mat-option value="Sightseeing">Sightseeing</mat-option>
+            <mat-option value="Museum">Museum</mat-option>
+            <mat-option value="University">University</mat-option>
+            <mat-option value="all">Show All</mat-option>
+          </mat-select>
+        </mat-form-field>
       </mat-grid-tile>
-      
+
+      <!-- Posts -->
+      <mat-grid-tile *ngFor="let post of selectedPosts" [rowspan]=post.neededRowspan>
+        <div id="post">
+          <app-post [post]="post"
+                  [preview]="true"
+                  [postId]="post.postId"
+                  (update)="updateFeed($event)">
+          </app-post>
+        </div>
+        
+      </mat-grid-tile>
 
     </mat-grid-list>
-
-
-
-
-    <mat-grid-list cols="1" rowHeight="100px">
-      <mat-grid-tile>
-      
-      </mat-grid-tile>
-
-    </mat-grid-list>
-
-
-    
-
 
 
   </div>
 </div>
-
-
-
-
-<!-- <mat-card *ngIf="!loggedIn">
-  <p>
-    Please<a routerLink="/login"> log in </a>to create a Post
-  </p>
-</mat-card> -->
-
-<mat-form-field appearance="fill">
-  <mat-label>Sort by:</mat-label>
-  <mat-select [(ngModel)]="sortBy" (ngModelChange) ="sortPosts()">
-    <mat-option value="flags" *ngIf="feedType == 'flagged'">Flags</mat-option>
-    <mat-option value="recent">Newest</mat-option>
-    <mat-option value="oldest">Oldest</mat-option>
-    <mat-option value="upvotes">Upvotes</mat-option>
-    <mat-option value="downvotes">Downvotes</mat-option>
-    <mat-option value="total">Score</mat-option>
-  </mat-select>
-</mat-form-field>
-
-<mat-form-field appearance="fill">
-  <mat-label>Category:</mat-label>
-  <mat-select [(ngModel)]="selectedCategory" (ngModelChange)="selectPosts()">
-    <mat-option value="Restaurant">Restaurant</mat-option>
-    <mat-option value="Coffeeshop">Coffeeshop</mat-option>
-    <mat-option value="Shopping">Shopping</mat-option>
-    <mat-option value="Sightseeing">Sightseeing</mat-option>
-    <mat-option value="Museum">Museum</mat-option>
-    <mat-option value="University">University</mat-option>
-    <mat-option value="all">Show All</mat-option>
-  </mat-select>
-</mat-form-field>
-
-<mat-grid-list cols="1" rowHeight="50px">
-  <mat-grid-tile *ngFor="let post of selectedPosts">
-    <app-post [post]="post"
-              [preview]="true"
-              [postId]="post.postId"
-              (update)="updateFeed($event)">
-    </app-post>
-  </mat-grid-tile>
-</mat-grid-list>
-
-<!-- </div> -->

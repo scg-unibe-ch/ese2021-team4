@@ -1,4 +1,4 @@
-<div *ngIf="!preview">
+<div *ngIf="!preview" class="background">
   <div *ngIf="!editMode">
     <mat-card>
       <mat-card-header>
@@ -60,20 +60,31 @@
     </mat-card>
   </div>
 
-
+  <!-- POST EDITOR -->
   <div *ngIf="editMode">
 
-    <div class="container">
-
+    <div id="container">
       <!-- TITLE -->
-      <form class="title-form">
+      <form>
+        <mat-form-field appearance="fill" id="title">
+          <mat-label>Title</mat-label>
+          <textarea cols="90" rows="3" matInput #message maxlength="256" [(ngModel)]="post.title" [ngModelOptions]="{standalone: true}"></textarea>
+          <mat-hint matSuffix>{{message.value.length}} / 256</mat-hint>
+        </mat-form-field>
+
+      </form>
+
+      
+
+
+      <!-- <form class="title-form">
         <mat-form-field appearance="fill">
           <mat-label>Title</mat-label>
           <input matInput #message maxlength="256" [(ngModel)]="post.title" [ngModelOptions]="{standalone: true}">
           <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
         </mat-form-field>
 
-        <!-- CATEGORY -->
+        CATEGORY
         <mat-form-field appearance="fill">
           <mat-label>Category:</mat-label>
           <mat-select [(ngModel)]="selectCategory" (ngModelChange)="findCategory()" [ngModelOptions]="{standalone: true}" >
@@ -90,7 +101,7 @@
         <span id="setCategory" style="visibility: hidden"> Please set a category.</span>
         <span id="setDescriptionOrImage" style="visibility: hidden"> Please set a Description or Image.</span>
 
-      <!-- UPLOAD IMAGE -->
+      UPLOAD IMAGE
       <input type="file" class="file-input" multiple accept="image/*"
          (change)="onFileSelected($event)" #fileUpload>
 
@@ -103,7 +114,7 @@
       </form>
 
 
-      <!-- DESCRIPTION -->
+      DESCRIPTION
       <br><br>
       <angular-editor id="editor1"
                       [(ngModel)]="post.description"
@@ -113,7 +124,7 @@
       <button (click)="deleteImages()">delete all images attached to this post</button><br>
 
       <button *ngIf="existsInBackend" (click)="save()">Save Post</button>
-      <button *ngIf="!existsInBackend" (click)="createPost()">Create Post</button>
+      <button *ngIf="!existsInBackend" (click)="createPost()">Create Post</button>-->
     </div>
   </div>
 </div>

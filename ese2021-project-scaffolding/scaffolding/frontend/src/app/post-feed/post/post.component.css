@@ -3,7 +3,32 @@
 }
 
 
+.background {
+    background-color: rgb(165, 165, 165);
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
+#container {
+    border: solid 2px turquoise;
+    width: 60vw;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+mat-form-field#title{
+    width: 100%;
+    
+}
+
+
+
+/* ----------------------------- */
+/* ------View in post-feed------ */
 
 #preview {
     display: flex;

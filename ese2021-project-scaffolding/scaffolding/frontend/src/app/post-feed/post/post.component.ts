@@ -499,4 +499,15 @@ export class PostComponent implements OnInit {
       this.post.comments.splice(this.post.comments.indexOf(comment), 1);
     });
   }
+
+  auto_grow(element : any) {
+    element.style.height = "5px";
+    element.style.height = (element.scrollHeight)+"px";
+}
+
+  textAreaAdjust(element : any) {
+  element.style.height = "1px";
+  element.style.height = (25+element.scrollHeight)+"px";
+}
+
 }

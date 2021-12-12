@@ -33,13 +33,11 @@ export class Post {
     }
 
     removeTags(description : String) : String {
-        // var test = "etas <as> asj <149> jadglh <234h>"
         var result = description;
         while (result.includes("<") && result.includes(">")){
             result = result.replace(/<.*?>/, "");
 
         }
-        // console.log(result);
         return result;
     }
 

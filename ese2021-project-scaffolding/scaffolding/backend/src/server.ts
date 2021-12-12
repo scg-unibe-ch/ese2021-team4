@@ -1,19 +1,14 @@
 import express, { Application , Request, Response } from 'express';
 import morgan from 'morgan';
-import { TodoItemController } from './controllers/todoitem.controller';
-import { TodoListController } from './controllers/todolist.controller';
 import { UserController } from './controllers/user.controller';
 import { SecuredController } from './controllers/secured.controller';
 import { CommentController } from './controllers/comment.controller';
 import { Sequelize } from 'sequelize';
-import { TodoList } from './models/todolist.model';
-import { TodoItem } from './models/todoitem.model';
 import { User } from './models/user.model';
 import { Image } from './models/image.model';
 
 import cors from 'cors';
 import {AdminController} from './controllers/admin.controller';
-import {ItemImage} from './models/itemImage.model';
 import { Post } from './models/post.model';
 import { Comment } from './models/comment.model';
 import { PostController } from './controllers/post.controller';
@@ -33,10 +28,7 @@ export class Server {
         this.server = this.configureServer();
         this.sequelize = this.configureSequelize();
 
-        TodoItem.initialize(this.sequelize); // creates the tables if they dont exist
-        TodoList.initialize(this.sequelize);
-        User.initialize(this.sequelize);
-        ItemImage.initialize(this.sequelize);
+        User.initialize(this.sequelize); // creates the tables if they dont exist
         Post.initialize(this.sequelize);
         Product.initialize(this.sequelize);
         Order.initialize(this.sequelize);
@@ -44,11 +36,8 @@ export class Server {
         UserPostVote.initialize(this.sequelize);
         Image.initialize(this.sequelize);
         UserPostVote.createAssociations();
-        TodoItem.createAssociations();
-        TodoList.createAssociations();
         Post.createAssociations();
         Comment.createAssociations();
-        ItemImage.createAssociations();
 
 
 
@@ -82,8 +71,6 @@ export class Server {
             .options('*', cors(options))
             .use(express.json())                    // parses an incoming json to an object
             .use(morgan('tiny'))                    // logs incoming requests
-            .use('/todoitem', TodoItemController)   // any request on this path is forwarded to the TodoItemController
-            .use('/todolist', TodoListController)
             .use('/user', UserController)
             .use('/secured', SecuredController)
             .use('/admin', AdminController)

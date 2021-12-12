@@ -53,8 +53,6 @@ export class RegisterComponent {
     // Current value
     this.loggedIn = userService.getLoggedIn();
     this.user = userService.getUser();
-
-    console.log(this.birthday);
   }
 
   registerUser(): void {

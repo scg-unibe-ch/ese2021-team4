@@ -5,6 +5,7 @@ import { Post } from '../models/post.model';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
 import {Category, CategoryFinder} from "../models/category.model";
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,6 +14,8 @@ import {Category, CategoryFinder} from "../models/category.model";
   styleUrls: ['./post-feed.component.css']
 })
 export class PostFeedComponent implements OnInit {
+
+  navigate : String = ''; //so ngModel and ngModelChange can be used
 
   @Input()
   feedType: string = '';
@@ -29,6 +32,7 @@ export class PostFeedComponent implements OnInit {
   user: User | undefined;
 
   constructor(
+    public router: Router,
     public httpClient: HttpClient,
     public userService: UserService
   ) {
@@ -67,6 +71,10 @@ export class PostFeedComponent implements OnInit {
       default:
         this.readAllPosts();
     }
+  }
+
+  navigatePostEditor():void{
+    this.router.navigate(['/postfeed/post/-1']);
   }
 
   // READ - Post

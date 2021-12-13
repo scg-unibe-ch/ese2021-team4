@@ -1,6 +1,36 @@
 <div *ngIf="!preview" class="background">
+  <!-- POST  -->
   <div *ngIf="!editMode">
-    <mat-card>
+    <a [routerLink]="['/postfeed']"> <span class="link-spanner"></span> </a>
+    <div  id="viewPost">
+      <div id="postHeader">
+        <span id="postScore">
+          <button  mat-icon-button [color]="!hasUpvoted ? 'black' : 'upvoted'" (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn">
+            <span class="iconify" data-icon="mdi:arrow-up-bold" data-width="30" data-height="30"></span>
+          </button>
+          {{post.upvotes - post.downvotes}}
+          <button  mat-icon-button [color]="!hasDownvoted ? 'black' : 'downvoted'" (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn">
+            <span class="iconify" data-icon="mdi:arrow-down-bold" data-width="30" data-height="30"></span>
+          </button>
+        </span>
+        <span id="postTitle">
+          <span class="postInfo">
+            <p> Posted in &#183; <span style="border: 1px solid black; border-radius: 4px; font-weight: 500;">{{post.tags}}</span>
+              &#183; by {{authorName}} {{post.timeSince}} ago
+            </p>      
+          </span>
+          <span class="title">
+            <h3>
+              {{post.title}}
+            </h3>
+          </span>
+        </span>
+      </div>
+      <div id="postDescription" [innerHTML]="post.description"></div>
+      <div id="image"></div>
+    </div>
+    
+    <!-- <mat-card> 
       <mat-card-header>
         <div mat-card-avatar></div>
         <mat-card-title>{{post.title}}</mat-card-title>
@@ -12,6 +42,7 @@
           <div [innerHTML]="post.description"></div>
           <div id="image"></div>
       </mat-card-content>
+      -->
 
       <mat-card-actions>
         <button mat-flat-button color="primary" (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn">
@@ -49,7 +80,7 @@
           <a routerLink="/login">Please log in to comment</a>
         </p>
       </mat-card-actions>
-    </mat-card>
+    <!-- </mat-card> -->
 
     <mat-card *ngIf = "post.comments.length != 0">
       <div *ngFor="let comment of post.comments">
@@ -59,6 +90,9 @@
       </div>
     </mat-card>
   </div>
+
+
+
 
   <!-- POST EDITOR -->
   <div *ngIf="editMode">
@@ -166,7 +200,7 @@
           &#183; by {{authorName}} {{post.timeSince}} ago
         </p>      
     </span>
-    <span id="title">
+    <span class="title">
       <h3>
         {{post.title}}
       </h3>

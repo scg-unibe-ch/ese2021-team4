@@ -3,9 +3,9 @@
   <div class="feed">
     <!-- Create Post -->
     <mat-grid-list cols="1" rowHeight="50px" [gutterSize]="'20px'">
-      <mat-grid-tile>
+      <mat-grid-tile *ngIf="shouldShowPostButton()">
         <mat-form-field appearance="fill" id="createPost">
-          <a routerLink="/postfeed/post/-1" *ngIf="loggedIn && shouldShowPostButton()"> <input matInput placeholder="Create Post..." [(ngModel)]="navigate" (ngModelChange)="navigatePostEditor()">  </a>
+          <a routerLink="/postfeed/post/-1" *ngIf="loggedIn"> <input matInput placeholder="Create Post..." [(ngModel)]="navigate" (ngModelChange)="navigatePostEditor()">  </a>
           <a routerLink="/login" *ngIf="!loggedIn"> <input matInput placeholder="Create Post..." [(ngModel)]="navigate" (ngModelChange)="navigatePostEditor()"> </a>
         </mat-form-field>
       </mat-grid-tile>

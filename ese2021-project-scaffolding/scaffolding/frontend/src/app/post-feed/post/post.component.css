@@ -27,6 +27,54 @@
     filter: brightness(50%);
 }
 
+
+#viewPost {
+    width: 80vw;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+    border: solid 2px blue;
+    /* justify-self: flex-start; */
+    /* align-self: flex-start; */
+    background-color: aliceblue;
+    border-radius: 10px;
+}
+
+#postHeader {
+    border: solid 2px pink;
+    /* position: relative; */
+    min-height: 20vh;
+    display: flex;
+    flex-direction: row;
+}
+
+#postScore {
+    border: solid 2px palevioletred;
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#postTitle {
+    border: solid 2px black;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-left: 20px;
+}
+
+#postDescription {
+    border: solid 2px yellow;
+    height: auto;
+    /* width: 100%; */
+    padding: 20px;
+}
+
 #container {
     /* border: solid 2px turquoise; */
     width: 90vw;
@@ -93,7 +141,7 @@ mat-form-field textarea {
     flex-direction: column;
 }
 
-#postInfo {
+.postInfo {
     width: 100%;
     /* border: solid 1px pink; */
     font-size: small;
@@ -109,7 +157,7 @@ mat-form-field textarea {
     z-index: 1;
 }
 
-#title h3{
+.title h3{
     font-weight: bold;
     word-wrap: break-word;
     font-size: 20px;

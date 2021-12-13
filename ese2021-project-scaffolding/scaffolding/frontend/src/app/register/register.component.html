@@ -24,10 +24,10 @@
       </span>
     </div>
   </div>
-  
+
   <div class="flexbox">
     <div class="form" >
-      <h1>  
+      <h1>
         Register
       </h1>
       <form class="form" (ngSubmit)="registerUser()">
@@ -54,7 +54,7 @@
           <mat-icon style="margin-right: 0.9rem;" [ngStyle]="{'color': passwordRepeatCheck()?'red':'green'}" matSuffix>{{passwordRepeatCheck() ? 'highlight_off' : 'check_circle_outline'}}</mat-icon>
         </mat-form-field>
 
-        <button mat-flat-button color="primary" type="submit" [disabled]="!checkPassword() || !isValidEmail() || !isValidUsername() || passwordRepeatCheck()">Register</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="invalidFormFill()">Register</button>
 
       </form>
     </div>
@@ -74,10 +74,12 @@
         <input matInput type="text" placeholder="street" name="street" [(ngModel)]="street">
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="text" placeholder="house number" name="house number" [(ngModel)]="houseNr">
+        <input matInput type="text" placeholder="house number" name="house number" [(ngModel)]="houseNr" (ngModelChange)="updateHouseNrMessage()">
+        <mat-hint style="color: red" *ngIf="houseNrMessage!=''">{{houseNrMessage}}</mat-hint>
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="text" placeholder="zip code" name="zip code" [(ngModel)]="zipCode">
+        <input matInput type="text" placeholder="zip code" name="zip code" [(ngModel)]="zipCode" (ngModelChange)="updateZipCodeMessage()">
+        <mat-hint style="color: red" *ngIf="zipCodeMessage!=''">{{zipCodeMessage}}</mat-hint>
       </mat-form-field>
       <mat-form-field>
         <input matInput type="text" placeholder="city" name="city" [(ngModel)]="city">
@@ -86,7 +88,8 @@
         <input matInput type="date" placeholder="birthday" name="date of birth" [(ngModel)]="birthday">
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="text" placeholder="phone number" name="phone number" [(ngModel)]="phoneNr">
+        <input matInput type="text" placeholder="phone number" name="phone number" [(ngModel)]="phoneNr" (ngModelChange)="updatePhoneNrMessage()">
+        <mat-hint style="color: red" *ngIf="phoneNrMessage!=''">{{phoneNrMessage}}</mat-hint>
       </mat-form-field>
     </div>
   </div>

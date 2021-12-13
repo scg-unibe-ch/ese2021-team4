@@ -30,6 +30,9 @@ export class ProfileComponent implements OnInit {
   updateMessage: string = '';
   emailMessage: string = '';
   usernameMessage: string = '';
+  phoneNrMessage: string = '';
+  houseNrMessage: string = '';
+  zipCodeMessage: string = '';
 
   constructor(
     public httpClient: HttpClient,
@@ -66,8 +69,12 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  isValidFormFill(): boolean {
+    return !(isNaN(+this.houseNr) || isNaN(+this.zipCode) || isNaN(+this.phoneNr))
+  }
+
   updateUser(user: User): void {
-    if(this.isValidUsername()&&this.isValidEmail()) {
+    if(this.isValidUsername()&&this.isValidEmail()&&this.isValidFormFill()) {
       this.httpClient.put(environment.endpointURL + "user/" + user.userId, {
         userId: this.changedUser.userId,
         userName: this.changedUser.username,
@@ -97,7 +104,7 @@ export class ProfileComponent implements OnInit {
 
   updateUsernameMessage(): void {
     if(!this.isValidUsername()){
-      this.usernameMessage='You username must not contain an @-Symbol.'
+      this.usernameMessage='Your username must not contain an @-Symbol.'
     }
     else{
       this.usernameMessage=''
@@ -117,5 +124,29 @@ export class ProfileComponent implements OnInit {
   }
   isValidEmail(): boolean {
     return !!this.userEmail.match('@')
+  }
+
+  updatePhoneNrMessage() {
+    if(isNaN(+this.phoneNr)){
+      this.phoneNrMessage = 'Please enter a Number'
+    } else {
+      this.phoneNrMessage = ''
+    }
+  }
+
+  updateHouseNrMessage() {
+    if(isNaN(+this.houseNr)){
+      this.houseNrMessage = 'Please enter a Number'
+    } else {
+      this.houseNrMessage = ''
+    }
+  }
+
+  updateZipCodeMessage() {
+    if(isNaN(+this.zipCode)){
+      this.zipCodeMessage = 'Please enter a Number'
+    } else {
+      this.zipCodeMessage = ''
+    }
   }
 }

@@ -23,6 +23,9 @@ export class RegisterComponent {
 
   usernameMessage: string = '';
   emailMessage: string = '';
+  phoneNrMessage: string = '';
+  houseNrMessage: string = '';
+  zipCodeMessage: string = '';
 
   repeatPassword: string = '';
   hide: boolean = true;
@@ -118,6 +121,30 @@ export class RegisterComponent {
     }
   }
 
+  updatePhoneNrMessage() {
+    if(isNaN(+this.phoneNr)){
+      this.phoneNrMessage = 'Please enter a Number'
+    } else {
+      this.phoneNrMessage = ''
+    }
+  }
+
+  updateHouseNrMessage() {
+    if(isNaN(+this.houseNr)){
+      this.houseNrMessage = 'Please enter a Number'
+    } else {
+      this.houseNrMessage = ''
+    }
+  }
+
+  updateZipCodeMessage() {
+    if(isNaN(+this.zipCode)){
+      this.zipCodeMessage = 'Please enter a Number'
+    } else {
+      this.zipCodeMessage = ''
+    }
+  }
+
   checkPassword(): boolean {
 
     this.passwordLength = this.userToRegister.password.length >= 8;
@@ -131,6 +158,14 @@ export class RegisterComponent {
 
   passwordRepeatCheck(): boolean {
     return !(this.userToRegister.password === this.repeatPassword && this.repeatPassword !== '');
+  }
+
+  isValidAdditionalInfo(): boolean {
+    return !(isNaN(+this.houseNr) || isNaN(+this.zipCode) || isNaN(+this.phoneNr))
+  }
+
+  invalidFormFill(): boolean {
+    return !this.checkPassword() || !this.isValidEmail() || !this.isValidUsername() || this.passwordRepeatCheck() || !this.isValidAdditionalInfo()
   }
 
 }

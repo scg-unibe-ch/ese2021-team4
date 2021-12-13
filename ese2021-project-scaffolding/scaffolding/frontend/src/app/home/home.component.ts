@@ -15,7 +15,8 @@ export class HomeComponent implements OnInit {
   loggedIn: boolean | undefined;
   user: User | undefined;
 
-  timeout: number = 4000;
+  timeout: number = 2500;
+
   index : number = 0;
   words : String[] = [ "favourite spots", "secret tips", "magic moments", "traditional restaurants", "lovely views", "tasty brunch", "fancy bars", "cozy coffeeshops"];
   current = this.words[this.index];
@@ -33,7 +34,6 @@ export class HomeComponent implements OnInit {
   }
 
   //on change animate vo unger
-
   ngOnInit(): void {
     this.checkUserStatus();
     this.index = 0;

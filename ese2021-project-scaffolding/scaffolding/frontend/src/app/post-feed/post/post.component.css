@@ -40,6 +40,10 @@
     filter: brightness(50%);
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
 
 
 #viewPost {
@@ -92,7 +96,8 @@
 #container {
     /* border: solid 2px turquoise; */
     width: 90vw;
-    height: 100%;
+    min-height: 80vh;
+    /* height: 100%; */
     display: flex;
     flex-direction: column;
     background-color: rgb(160, 159, 159);
@@ -120,6 +125,17 @@ mat-form-field textarea {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+
+#editor {
+    height: 300px;
+}
+
+#uploadImage {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 /* ----------------------------- */
 /* ------View in post-feed------ */

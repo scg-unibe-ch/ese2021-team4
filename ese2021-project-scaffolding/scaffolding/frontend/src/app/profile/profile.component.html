@@ -1,68 +1,74 @@
 <mat-card>
-  <h1>{{changedUser.username}}</h1>
-  <mat-form-field>
-    <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="changedUser.username" (ngModelChange)="updateUsernameMessage()">
-    <mat-hint style="color: red" *ngIf="usernameMessage!=''">{{usernameMessage}}</mat-hint>
-  </mat-form-field>
-
-  <mat-form-field>
-    <input matInput type="email" placeholder="E-Mail" name="email" [(ngModel)]="userEmail" (ngModelChange)="updateEmailMessage()">
-    <mat-hint style="color: red" *ngIf="emailMessage!=''">{{emailMessage}}</mat-hint>
-  </mat-form-field>
-
-  <br>
-
-  <mat-form-field>
-    <input matInput type="text" placeholder="first name" name="first name" [(ngModel)]="firstName">
-  </mat-form-field>
-
-  <mat-form-field>
-    <input matInput type="text" placeholder="last name" name="last name" [(ngModel)]="lastName">
-  </mat-form-field>
-
-  <br>
-
-  <mat-form-field>
-    <input matInput type="text" placeholder="street" name="street" [(ngModel)]="street">
-  </mat-form-field>
-
-  <mat-form-field>
-    <input matInput type="text" placeholder="house number" name="house number" [(ngModel)]="houseNr" (ngModelChange)="updateHouseNrMessage()">
-    <mat-hint style="color: red" *ngIf="houseNrMessage!=''">{{houseNrMessage}}</mat-hint>
-  </mat-form-field>
-
-  <br>
-
-  <mat-form-field>
-    <input matInput type="text" placeholder="zip code" name="zip code" [(ngModel)]="zipCode" (ngModelChange)="updateZipCodeMessage()">
-    <mat-hint style="color: red" *ngIf="zipCodeMessage!=''">{{zipCodeMessage}}</mat-hint>
-  </mat-form-field>
-
-  <mat-form-field>
-    <input matInput type="text" placeholder="city" name="city" [(ngModel)]="city">
-  </mat-form-field>
-
-  <br>
-
-  <mat-form-field>
-    <input matInput type="date" placeholder="birthday" name="date of birth" [(ngModel)]="birthday">
-  </mat-form-field>
-
-  <mat-form-field>
-    <input matInput type="text" placeholder="phone number" name="phone number" [(ngModel)]="phoneNr" (ngModelChange)="updatePhoneNrMessage()">
-    <mat-hint style="color: red" *ngIf="phoneNrMessage!=''">{{phoneNrMessage}}</mat-hint>
-  </mat-form-field>
-
-  <br>
-
-  <button mat-flat-button color="primary" (click)="updateUser(changedUser)">Update User Data</button>
-  <p>{{updateMessage}}</p>
-
-</mat-card>
-
-
-<mat-card>
   <mat-tab-group>
+    <mat-tab label="Profile Information">
+
+      <div class="background">
+      <div class="container" color="accent">
+        <mat-card>
+
+          <h1>{{changedUser.username}}</h1>
+          <mat-form-field>
+            <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="changedUser.username" (ngModelChange)="updateUsernameMessage()">
+            <mat-hint style="color: red" *ngIf="usernameMessage!=''">{{usernameMessage}}</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput type="email" placeholder="E-Mail" name="email" [(ngModel)]="userEmail" (ngModelChange)="updateEmailMessage()">
+            <mat-hint style="color: red" *ngIf="emailMessage!=''">{{emailMessage}}</mat-hint>
+          </mat-form-field>
+
+          <br>
+
+          <mat-form-field>
+            <input matInput type="text" placeholder="first name" name="first name" [(ngModel)]="firstName">
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput type="text" placeholder="last name" name="last name" [(ngModel)]="lastName">
+          </mat-form-field>
+
+          <br>
+
+          <mat-form-field>
+            <input matInput type="text" placeholder="street" name="street" [(ngModel)]="street">
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput type="text" placeholder="house number" name="house number" [(ngModel)]="houseNr" (ngModelChange)="updateHouseNrMessage()">
+            <mat-hint style="color: red" *ngIf="houseNrMessage!=''">{{houseNrMessage}}</mat-hint>
+          </mat-form-field>
+
+          <br>
+
+          <mat-form-field>
+            <input matInput type="text" placeholder="zip code" name="zip code" [(ngModel)]="zipCode" (ngModelChange)="updateZipCodeMessage()">
+            <mat-hint style="color: red" *ngIf="zipCodeMessage!=''">{{zipCodeMessage}}</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput type="text" placeholder="city" name="city" [(ngModel)]="city">
+          </mat-form-field>
+
+          <br>
+
+          <mat-form-field>
+            <input matInput type="date" placeholder="birthday" name="date of birth" [(ngModel)]="birthday">
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput type="text" placeholder="phone number" name="phone number" [(ngModel)]="phoneNr" (ngModelChange)="updatePhoneNrMessage()">
+            <mat-hint style="color: red" *ngIf="phoneNrMessage!=''">{{phoneNrMessage}}</mat-hint>
+          </mat-form-field>
+
+          <br>
+
+          <button mat-flat-button color="primary" (click)="updateUser(changedUser)">Update User Data</button>
+          <p>{{updateMessage}}</p>
+        </mat-card>
+        </div>
+      </div>
+    </mat-tab>
+
     <mat-tab label="My Posts"><app-post-feed [feedType]="'created'"></app-post-feed></mat-tab>
     <mat-tab label="Upvoted"><app-post-feed [feedType]="'upvoted'"></app-post-feed></mat-tab>
     <mat-tab label="Downvoted"><app-post-feed [feedType]="'downvoted'"></app-post-feed></mat-tab>
@@ -70,3 +76,4 @@
     <mat-tab label="Orders" *ngIf="!user?.isAdmin"><app-order-feed [feedType]="'user'"></app-order-feed></mat-tab>
   </mat-tab-group>
 </mat-card>
+

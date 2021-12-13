@@ -30,6 +30,10 @@ export class OrderFormComponent implements OnInit {
   orderPhoneNr: string = '';
   productId: number = 0;
 
+  phoneNrMessage: string = '';
+  houseNrMessage: string = '';
+  zipCodeMessage: string = '';
+
   product: Product | undefined;
   redirecting: boolean = false;
 
@@ -155,11 +159,39 @@ export class OrderFormComponent implements OnInit {
 
 
   formIsFilled(): boolean {
-    if (this.orderFirstName==='' || this.orderLastName === '' || this.orderStreet === '' ||
+    if(this.orderFirstName==='' || this.orderLastName === '' || this.orderStreet === '' ||
       this.orderHouseNr == 0 || this.orderZipCode == 0 ||this.orderCity === '' ||this.orderPhoneNr === ''){
     return false;
   }
-    return true;
+    return this.isValidFormFill();
+  }
+
+  updatePhoneNrMessage() {
+    if(isNaN(+this.orderPhoneNr)){
+      this.phoneNrMessage = 'Please enter a Number'
+    } else {
+      this.phoneNrMessage = ''
+    }
+  }
+
+  updateHouseNrMessage() {
+    if(isNaN(+this.orderHouseNr)){
+      this.houseNrMessage = 'Please enter a Number'
+    } else {
+      this.houseNrMessage = ''
+    }
+  }
+
+  updateZipCodeMessage() {
+    if(isNaN(+this.orderZipCode)){
+      this.zipCodeMessage = 'Please enter a Number'
+    } else {
+      this.zipCodeMessage = ''
+    }
+  }
+
+  isValidFormFill(): boolean {
+    return !(isNaN(+this.orderHouseNr) || isNaN(+this.orderZipCode) || isNaN(+this.orderPhoneNr))
   }
 
   postAPI(): void {

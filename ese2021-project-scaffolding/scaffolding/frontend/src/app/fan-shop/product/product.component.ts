@@ -209,19 +209,14 @@ export class ProductComponent implements OnInit {
   }
 
   save(){
-    if (this.product.title==''){
-      document.getElementById('setTitle')!.style.visibility='visible';
-    }
-    else if (this.findCategory()==Category.Bern){
-      document.getElementById('setTitle')!.style.visibility='hidden';
-      document.getElementById('setCategory')!.style.visibility='visible';
-    }
-    else{
-      document.getElementById('setTitle')!.style.visibility='hidden';
-      document.getElementById('setCategory')!.style.visibility='hidden';
+    if(this.isValidFormFill()){
       this.router.navigate(['/fan-shop']);
       this.updateProduct(this.product);
     }
+  }
+
+  isValidFormFill() {
+    return this.product.title != '' && this.findCategory()!= Category.Bern && this.product.price != 0 && !isNaN(+this.product.price);
   }
 
   findCategory(): Category{
@@ -229,26 +224,8 @@ export class ProductComponent implements OnInit {
   }
 
   createProduct(): void {
-    if (this.product.title==''){
-      document.getElementById('setTitle')!.style.visibility='visible';
-    }
-    else if(this.product.price==0){
-      document.getElementById('setTitle')!.style.visibility='hidden';
-      document.getElementById('setCategory')!.style.visibility='hidden';
-      document.getElementById('setPrice')!.style.visibility='visible';
-    }
-    else if (this.findCategory()==Category.Bern){
-      document.getElementById('setTitle')!.style.visibility='hidden';
-      document.getElementById('setCategory')!.style.visibility='visible';
-      document.getElementById('setPrice')!.style.visibility='hidden';
-    } else {
+    if(this.isValidFormFill()){
       this.router.navigate(['/fan-shop']);
-      document.getElementById('setTitle')!.style.visibility='hidden';
-      document.getElementById('setPrice')!.style.visibility='hidden';
-      document.getElementById('setCategory')!.style.visibility='hidden';
-
-      //what is this check for?
-      if(this.user != null){
         this.httpClient.post(environment.endpointURL + "product", {
           title: this.product.title,
           description: this.product.description,
@@ -262,7 +239,6 @@ export class ProductComponent implements OnInit {
         this.httpClient.post(environment.endpointURL + "product/" + product.productId + "/image", formData).subscribe((image: any) => {
         });
       }, error => {console.log(error)});
-      }
     }
   }
 

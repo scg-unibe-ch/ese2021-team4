@@ -1,26 +1,32 @@
 <div class="background">
     <div class="container" color="accent">
-        <h1>
-            Welcome to the Bern Fanpage
-          <h3>Share your <span>{{current}}</span></h3>
-        </h1>
-        <span>
-            <a routerLink="/postfeed"><button mat-raised-button color="primary">Browse Posts</button></a>
-            <a routerLink="/fan-shop"><button mat-raised-button color="primary">Shop Fan Articles</button></a>
-        </span>
-        <span *ngIf ="!loggedIn">
-             <br><br><br><br><br><br>
-              <a routerLink="/login"><button mat-raised-button color="primary" style="
-              height: 45px;
-              width: 110px;
-              font-size:medium;
-              opacity: 0.9;">Login</button></a>
-          <br><br>
-           <a routerLink="/register"><button mat-raised-button color="primary" style="
-              height: 45px;
-              width: 110px;
-              font-size:medium;
-              opacity: 0.9;">Register</button></a>
-        </span>
+        <div class="left"></div>
+        <div class="center">
+            <h1>
+                Welcome to the Bern Fanpage
+            <h3>Share your <span>{{current}}</span></h3>
+            </h1>
+            <span>
+                <a routerLink="/postfeed"><button mat-raised-button color="primary">Browse Posts</button></a>
+                <a routerLink="/fan-shop"><button mat-raised-button color="primary">Shop Fan Articles</button></a>
+            </span>
+            <span *ngIf ="!loggedIn">
+                <br><br><br><br><br><br>
+                <a routerLink="/login"><button mat-raised-button color="primary" style="
+                height: 45px;
+                width: 110px;
+                font-size:medium;
+                opacity: 0.9;">Login</button></a>
+            <br><br>
+            <a routerLink="/register"><button mat-raised-button color="primary" style="
+                height: 45px;
+                width: 110px;
+                font-size:medium;
+                opacity: 0.9;">Register</button></a>
+            </span>
+        </div>
+        <div class="right">
+            Merlin Weather app
+        </div>
     </div>
 </div>

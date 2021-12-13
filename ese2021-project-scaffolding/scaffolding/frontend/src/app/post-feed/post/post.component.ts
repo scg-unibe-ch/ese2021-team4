@@ -51,7 +51,7 @@ export class PostComponent implements OnInit {
         [{ 'list': 'ordered'}, { 'list': 'bullet' }],
         [{ 'script': 'sub'}, { 'script': 'super' }],
         ['link', 'image', 'video'], //media
-        ['clean'] //clear formattig
+        ['clean'] //clear formatting
       ], 
   }
 
@@ -117,7 +117,7 @@ export class PostComponent implements OnInit {
       };
       this.post.images.push(files[i]);
 
-      //displays image in editor
+      // displays image in editor
       // var reader = new FileReader();
       // reader.readAsDataURL(files[i]); 
       // reader.onloadend = () => {

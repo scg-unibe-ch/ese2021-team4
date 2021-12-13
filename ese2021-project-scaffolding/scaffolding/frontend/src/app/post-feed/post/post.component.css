@@ -28,9 +28,12 @@
 }
 
 
+
 #viewPost {
     width: 80vw;
-    height: 80vh;
+    /* height: 100%; */
+    /* padding-top: 10vh; */
+    height: auto;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -40,6 +43,7 @@
     /* align-self: flex-start; */
     background-color: aliceblue;
     border-radius: 10px;
+    /* overflow-y: scroll; */
 }
 
 #postHeader {
@@ -143,9 +147,13 @@ mat-form-field textarea {
 
 .postInfo {
     width: 100%;
-    /* border: solid 1px pink; */
+    border: solid 1px pink;
     font-size: small;
-    
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .link-spanner{
@@ -204,6 +212,17 @@ button {
 button:hover {
     background-color: grey;
 }
+
+.mat-flat-button {
+    height: 30px;
+    /* width: 50px; */
+    /* text-align: center; */
+    /* margin-bottom: 10px; */
+    /* margin-bottom: 5px; */
+
+    font-size: 12px;
+}
+
 
 .mat-upvoted {
     color: red

@@ -40,6 +40,7 @@ import { OrderFeedComponent } from './fan-shop/order-feed/order-feed.component';
 import { UserListComponent } from './admin-dashboard/user-list/user-list.component';
 import {ConfirmBoxConfigModule, NgxAwesomePopupModule} from "@costlydeveloper/ngx-awesome-popup";
 import { QuillModule } from 'ngx-quill';
+import {timeout} from "rxjs/operators";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -83,7 +84,9 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 1300
+    }),
     NgxAwesomePopupModule.forRoot(),
     ConfirmBoxConfigModule.forRoot(),
     HttpClientModule,

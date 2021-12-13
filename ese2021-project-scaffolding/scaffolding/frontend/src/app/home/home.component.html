@@ -8,7 +8,19 @@
             <a routerLink="/postfeed"><button mat-raised-button color="primary">Browse Posts</button></a>
             <a routerLink="/fan-shop"><button mat-raised-button color="primary">Shop Fan Articles</button></a>
         </span>
+        <span *ngIf ="!loggedIn">
+             <br><br><br><br><br><br>
+              <a routerLink="/login"><button mat-raised-button color="primary" style="
+              height: 45px;
+              width: 110px;
+              font-size:medium;
+              opacity: 0.9;">Login</button></a>
+          <br><br>
+           <a routerLink="/register"><button mat-raised-button color="primary" style="
+              height: 45px;
+              width: 110px;
+              font-size:medium;
+              opacity: 0.9;">Register</button></a>
+        </span>
     </div>
-
-  // Link zu Register: "Join the Bärn-Fan-Community"
 </div>

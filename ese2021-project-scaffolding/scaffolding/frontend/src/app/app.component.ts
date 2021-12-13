@@ -4,7 +4,6 @@ import { environment } from '../environments/environment';
 import { UserService } from './services/user.service';
 import { User } from './models/user.model';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,7 +14,6 @@ export class AppComponent implements OnInit {
   title = 'frontend';
 
   loggedIn: boolean | undefined;
-
   user: User | undefined;
 
   constructor(
@@ -47,7 +45,6 @@ export class AppComponent implements OnInit {
     }
     // Set boolean whether a user is logged in or not
     this.userService.setLoggedIn(!!userToken);
-
   }
 
   logoutUser(): void {
@@ -57,5 +54,4 @@ export class AppComponent implements OnInit {
     this.userService.setLoggedIn(false);
     this.userService.setUser(undefined);
   }
-
 }

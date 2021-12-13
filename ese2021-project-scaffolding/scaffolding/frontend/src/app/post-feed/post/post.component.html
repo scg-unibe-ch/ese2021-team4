@@ -93,8 +93,30 @@
           </mat-form-field>
         </form>
 
-        
-        <quill-editor [(ngModel)]="post.description" placeholder="Text (optional)" [style]="editorStyle" [modules]="config" (onEditorCreated)="getEditorInstance($event)"></quill-editor>
+        <mat-tab-group dynamicHeight>
+          <mat-tab label="Post">
+            <div id="editor">
+            <quill-editor [(ngModel)]="post.description" placeholder="Text (optional)" [style]="editorStyle" [modules]="config" (onEditorCreated)="getEditorInstance($event)"></quill-editor>
+            </div>
+          </mat-tab>
+          <mat-tab label="One Image only" *ngIf="!existsInBackend">
+            <div id="uploadImage">
+
+              <span *ngIf="post.images.length == 0">
+                <input type="file" class="file-input"
+                (change)="onFileSelected($event, true)" #fileUpload
+                accept="image/*">
+
+                <div>
+                    <button mat-raised-button color="primary" (click)="fileUpload.click()">
+                        <mat-icon>image</mat-icon> Upload
+                    </button>
+                </div>
+              </span>
+              <span id="oneImage" > <!--Show Image--></span>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
         <span id="image"></span>
 
         
@@ -138,6 +160,10 @@
     <span id="description">
       {{post.noHtmlDescription}}
     </span>
+    <span *ngIf="this.loadPicture" id="imagePreview{{post.postId}}"></span>
+
+
+
     <span id="suffix">
       <button mat-icon-button disableRipple="true"> <mat-icon>comment</mat-icon> {{post.nrOfComments}}</button>
       <button mat-icon-button disableRipple="true"> <mat-icon>image</mat-icon> {{post.nrOfImages}}</button>

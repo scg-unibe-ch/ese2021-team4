@@ -41,6 +41,7 @@
           <app-post [post]="post"
                   [preview]="true"
                   [postId]="post.postId"
+                  [loadPicture]="post.imageOnly"
                   (update)="updateFeed($event)">
           </app-post>
         </div>

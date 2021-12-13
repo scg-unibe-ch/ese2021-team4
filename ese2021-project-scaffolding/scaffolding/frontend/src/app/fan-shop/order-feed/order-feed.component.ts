@@ -60,6 +60,7 @@ export class OrderFeedComponent implements OnInit {
     orders.forEach((order: any) => this.orders.push(new Order(order.billingStatus, StatusFinder.status(order.status), order.orderId, order.userId, order.productId, order.adminId, new Date(order.createdAt), new Date(order.shippedDate), order.orderFirstName, order.orderLastName, order.orderStreet, order.orderHouseNr, order.orderZipCode, order.orderCity, order.orderPhoneNr)));
     this.selectedOrders = this.orders;
     this.filterBy(this.selectedStatus);
+    this.selectedOrders.sort((a, b) => b.createdDate.getTime()-a.createdDate.getTime())
   }
 
   filterBy(status: string): void {

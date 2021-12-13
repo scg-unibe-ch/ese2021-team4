@@ -69,7 +69,7 @@ postController.post('/', (req: Request, res: Response) => {
     Post.create(req.body).then(created => {
         res.status(201).send(created);
     })
-        .catch(err => res.status(500).send(err));
+        .catch(err => res.status(509).send(err));
 });
 
 // upload image and add to a post

@@ -35,8 +35,8 @@ export class HomeComponent implements OnInit {
 
   //on change animate vo unger
   ngOnInit(): void {
+    this.index = Math.floor(Math.random()*this.words.length);
     this.checkUserStatus();
-    this.index = 0;
     setInterval(() => {
       this.setSlogan();
     }, this.timeout);

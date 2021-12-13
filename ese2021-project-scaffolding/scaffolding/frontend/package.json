@@ -25,6 +25,7 @@
     "@kolkov/angular-editor": "^1.2.0",
     "@stripe/stripe-js": "^1.21.1",
     "@types/quill": "^1.3.10",
+    "ngx": "^2.4.0",
     "ngx-quill": "^14.3.0",
     "ngx-stripe": "^13.0.0",
     "ngx-toastr": "^14.2.1",

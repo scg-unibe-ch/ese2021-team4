@@ -42,7 +42,7 @@ export class PostComponent implements OnInit {
   // editor : Quill
   editorStyle = {
     height: '300px',
-    // backgroundColor: "#  ffffff"
+    backgroundColor: "#9c9c9c"
   }
 
   config :QuillModules= {
@@ -52,8 +52,16 @@ export class PostComponent implements OnInit {
         [{ 'script': 'sub'}, { 'script': 'super' }],
         ['link', 'image', 'video'], //media
         ['clean'] //clear formattig
-      ],
-    
+      ], 
+  }
+
+  configComment :QuillModules= {
+    toolbar: [
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ 'script': 'sub'}, { 'script': 'super' }],
+        ['link'],
+        ['clean'] //clear formattig
+      ], 
   }
 
   @Input()

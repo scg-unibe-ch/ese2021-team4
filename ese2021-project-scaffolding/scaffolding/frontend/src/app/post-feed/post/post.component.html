@@ -1,5 +1,6 @@
 <div *ngIf="!preview" class="background">
   <!-- POST  -->
+  <div id="scrollPost">
   <div *ngIf="!editMode" id="wholePost">
     <a [routerLink]="['/postfeed']"> <span class="link-spanner"></span> </a>
     <div  id="viewPost">
@@ -19,27 +20,23 @@
             Posted in &#183; <span style="border: 1px solid black; border-radius: 4px; font-weight: 500;">{{post.tags}}</span>
               &#183; by {{authorName}} {{post.timeSince}} ago
             </span>
-            <span>
+            <span class="toolButtons">
               <span *ngIf="user?.userId === post.userId || user?.isAdmin">
-                <button  mat-flat-button color="primary" (click)="editMode = true; loadPicturesToPost()" class="toolButtons">
+                <button  mat-flat-button color="primary" (click)="editMode = true; loadPicturesToPost()">
                   <span class="iconify" data-icon="ant-design:edit-filled" data-width="16" data-height="16"></span>Edit Post
                 </button>
-                <button mat-flat-button color="warn" (click)="confirmDeleting(post)" class="toolButtons">
+                <button mat-flat-button color="warn" (click)="confirmDeleting(post)">
                   <span class="iconify"  data-icon="bi:trash-fill" data-width="16" data-height="16"></span>Delete Post
                 </button>
-                <button mat-flat-button color="warn" (click)="confirmFlagging()" [disabled]="hasFlagged||!loggedIn" class="toolButtons">
+                <button mat-flat-button color="warn" (click)="confirmFlagging()" [disabled]="hasFlagged||!loggedIn">
                   <mat-icon>flag</mat-icon>Report
                   <span *ngIf="user?.isAdmin">({{post.flags}})</span>
                 </button>
-                <button mat-flat-button color="primary" (click)="confirmUnflagging()" *ngIf="user?.isAdmin" class="toolButtons">
+                <button mat-flat-button color="primary" (click)="confirmUnflagging()" *ngIf="user?.isAdmin">
                   unflag post
                 </button>
-
               </span>
-
-
             </span>
-
           </span>
           <span class="title">
             <h3>
@@ -50,11 +47,23 @@
       </div>
       <div id="postDescription" [innerHTML]="post.description"></div>
       <div id="image"></div>
+      
+      <div id="comments">
+        <hr>
+        <p style="margin-left: 20px; margin-bottom: 0; margin-top: 20px;">Commenting as {{authorName}}</p>
+        <p *ngIf="!loggedIn"><a routerLink="/login">Please log in to comment</a></p>
+        <quill-editor *ngIf="loggedIn" [(ngModel)]="newCommentDescription" placeholder="Tell us what you think!" [style]="editorStyle" [modules]="configComment"></quill-editor>
+        <br><button mat-flat-button color="primary" (click)="createComment()" *ngIf="loggedIn">Comment</button><br>
+      </div>
+      <br>
+      <div *ngFor="let comment of post.comments">
+        <app-comment [comment]="comment"
+                     (delete)="deleteComment($event)">
+        </app-comment>
+        <hr>
+      </div>
     </div>
-    <div id="comments">
-
-
-    </div>
+    
     <!-- <mat-card> 
       <mat-card-header>
         <div mat-card-avatar></div>
@@ -69,7 +78,7 @@
       </mat-card-content>
       -->
 
-      <mat-card-actions>
+      <!-- <mat-card-actions>
         <button mat-flat-button color="primary" (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn">
           Upvotes: {{post.upvotes}}
         </button>
@@ -94,28 +103,21 @@
         </span>
 
         <br><br>
-
-        <input matInput type="text" placeholder="Write comment..." name="Comment" [(ngModel)]="newCommentDescription" *ngIf="loggedIn">
-
-        <br><br>
-
-        <button mat-flat-button color="primary" (click)="createComment()" *ngIf="loggedIn">Comment</button>
-
-        <p *ngIf="!loggedIn">
-          <a routerLink="/login">Please log in to comment</a>
         </p>
-      </mat-card-actions>
+        -->
+         
+     <!-- </mat-card-actions> -->
     <!-- </mat-card> -->
 
-    <mat-card *ngIf = "post.comments.length != 0">
+    <!-- <mat-card *ngIf = "post.comments.length != 0">
       <div *ngFor="let comment of post.comments">
         <app-comment [comment]="comment"
                      (delete)="deleteComment($event)">
         </app-comment>
       </div>
-    </mat-card>
+    </mat-card> -->
   </div>
-
+  </div>
 
 
 
@@ -223,7 +225,7 @@
     <span id="postInfo">
         <p> Posted in &#183; <span style="border: 1px solid black; border-radius: 4px; font-weight: 500;">{{post.tags}}</span>
           &#183; by {{authorName}} {{post.timeSince}} ago
-        </p>      
+        </p>
     </span>
     <span class="title">
       <h3>

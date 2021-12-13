@@ -40,17 +40,3 @@ h1 {
     font-size:x-large;
     opacity: 0.9;
 }
-
-.mat-raised-button #login{
-  height: 60px;
-  width: 150px;
-  font-size:x-large;
-  opacity: 0.9;
-}
-
-.mat-raised-button #register{
-  height: 60px;
-  width: 150px;
-  font-size:x-large;
-  opacity: 0.9;
-}

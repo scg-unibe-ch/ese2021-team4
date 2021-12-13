@@ -36,7 +36,9 @@ export class UserListComponent implements OnInit {
   ngOnInit(): void {
     this.httpClient.get(environment.endpointURL + 'user/').subscribe((users:any) => {
       users.forEach((user:any) => {
-        this.userList.push(new User(user.userId, user.userName, user.password, user.admin));
+        if(user.userId != this.user?.userId) {
+          this.userList.push(new User(user.userId, user.userName, user.password, user.admin));
+        }
       });
     })
   }

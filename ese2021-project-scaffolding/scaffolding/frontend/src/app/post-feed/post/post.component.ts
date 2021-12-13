@@ -57,7 +57,7 @@ export class PostComponent implements OnInit {
   }
 
   @Input()
-  post: Post = new Post(0, '', 0, '', Category.Bern, 0, 0, new Date(), [], [], 0);
+  post: Post = new Post(0, '', 0, '', Category.Bern, 0, 0, new Date(), [], [], 0, 0, 0);
   @Input()
   preview: boolean = false;
 
@@ -142,7 +142,7 @@ export class PostComponent implements OnInit {
 
   loadPost(): void {
     this.httpClient.get(environment.endpointURL + "post/" + this.postId).subscribe((post: any) => {
-      this.post=new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], new Array<File>(), post.flags);
+      this.post=new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], new Array<File>(), post.nrOfImages, post.nrOfComments, post.flags);
       if(!this.preview){
         this.loadPicturesToPost();
         this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
@@ -235,6 +235,7 @@ export class PostComponent implements OnInit {
     else {
       this.errorMessage = "";
       this.router.navigate(['/postfeed']);
+      this.post.nrOfImages = this.post.images.length;
       this.updatePost(this.post);
     }
   }
@@ -265,10 +266,12 @@ export class PostComponent implements OnInit {
       userId: this.user.userId,
       upvotes: 0,
       downvotes: 0,
+      nrOfImages: this.post.images.length,
+      nrOfComments: 0,
       flags: 0
     }).subscribe((post: any) => {
       const formData = new FormData();
-      for (let i=0; i < this.post.images.length; i++){
+      for (let i=0; i < post.nrOfImages; i++){
         formData.append("file"+i, this.post.images[i]);
       }
       this.httpClient.post(environment.endpointURL + "post/" + post.postId + "/image", formData).subscribe((post: any) => {
@@ -285,10 +288,12 @@ export class PostComponent implements OnInit {
       tags: this.findCategory(),
       upvotes: post.upvotes,
       downvotes: post.downvotes,
+      nrOfImages: post.nrOfImages,
+      nrOfComments: post.nrOfComments,
       flags: post.flags
     }).subscribe((post: any) => {
       const formData = new FormData();
-      for (let i=0; i < this.post.images.length; i++){
+      for (let i=0; i < post.nrOfImages; i++){
         formData.append("file"+i, this.post.images[i]);
       }
       this.httpClient.post(environment.endpointURL + "post/" + post.postId + "/image", formData).subscribe((post: any) => {});
@@ -416,6 +421,7 @@ export class PostComponent implements OnInit {
       }).subscribe((comment: any) => {
         this.post.comments.push(new Comment(comment.commentId, this.post.postId, comment.userId, comment.description, 0, 0, new Date(comment.createdAt)));
         this.newCommentDescription = '';
+        this.post.nrOfComments++;
       });
     }
   }
@@ -470,6 +476,7 @@ export class PostComponent implements OnInit {
   deleteComment(comment: Comment): void {
     this.httpClient.delete(environment.endpointURL + "comment/" + comment.commentId).subscribe(() => {
       this.post.comments.splice(this.post.comments.indexOf(comment), 1);
+      this.post.nrOfComments--;
     });
   }
 

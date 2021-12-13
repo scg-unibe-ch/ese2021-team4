@@ -1,35 +1,50 @@
-<mat-card *ngIf="user?.isAdmin">
-  <p>
-    <a routerLink="/fan-shop/product/-1"><button mat-flat-button color="primary">Create Product</button></a>
-  </p>
-</mat-card>
+
+<div class="background">
+  <div class="feed">
+    <!-- Create Product -->
+    <mat-grid-list cols="1" rowHeight="50px" [gutterSize]="'20px'">
+      <mat-grid-tile *ngIf="user?.isAdmin">
+        <mat-form-field appearance="fill" id="createProduct">
+          <a routerLink="/fan-shop/product/-1" > <input matInput placeholder="Create Product...">  </a>
+
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <!-- Sort by -->
+        <mat-button-toggle-group [(ngModel)]="sortBy" (ngModelChange)="sortProducts()" value="recent" appearance="legacy">
+          <mat-button-toggle value="title" disableRipple="true"><mat-icon>new_releases</mat-icon>Name</mat-button-toggle>
+          <mat-button-toggle value="tags" disableRipple="true"><mat-icon>calendar_today</mat-icon>Tags</mat-button-toggle>
+          <mat-button-toggle value="price" disableRipple="true"><mat-icon>keyboard_arrow_up</mat-icon>Price</mat-button-toggle>
+        </mat-button-toggle-group>
+        <!-- categories -->
+        <mat-form-field floatLabel="never" id="selectCategory">
+          <mat-label>Show all</mat-label>
+          <mat-select [(ngModel)]="selectedCategory" (ngModelChange)="selectProducts()">
+            <mat-option value="Restaurant">Restaurant</mat-option>
+            <mat-option value="Coffeeshop">Coffeeshop</mat-option>
+            <mat-option value="Shopping">Shopping</mat-option>
+            <mat-option value="Sightseeing">Sightseeing</mat-option>
+            <mat-option value="Museum">Museum</mat-option>
+            <mat-option value="University">University</mat-option>
+            <mat-option value="all">Show All</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
 
 
-<mat-form-field appearance="fill">
-  <mat-label>Sort by:</mat-label>
-  <mat-select [(ngModel)]="sortBy" (ngModelChange)="sortProducts()">
-    <mat-option value="title">Name</mat-option>
-    <mat-option value="tags">Tags</mat-option>
-    <mat-option value="price">Price</mat-option>
-  </mat-select>
-</mat-form-field>
+      <mat-grid-tile *ngFor="let product of selectedProducts" [rowspan]=product.neededRowspan>
+        <div id="product">
+          <app-product
+                    [preview]="true"
+                    [productId]="product.productId">
+                   <!-- (update)="updateFeed($event)"-->
+          </app-product>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
 
-<mat-form-field appearance="fill">
-  <mat-label>Category:</mat-label>
-  <mat-select [(ngModel)]="selectedCategory" (ngModelChange)="selectProducts()">
-    <mat-option value="Restaurant">Restaurant</mat-option>
-    <mat-option value="Coffeeshop">Coffeeshop</mat-option>
-    <mat-option value="Shopping">Shopping</mat-option>
-    <mat-option value="Sightseeing">Sightseeing</mat-option>
-    <mat-option value="Museum">Museum</mat-option>
-    <mat-option value="University">University</mat-option>
-    <mat-option value="all">Show All</mat-option>
-  </mat-select>
-</mat-form-field>
 
-<mat-grid-list cols="2" rowHeight="2:1">
-  <mat-grid-tile *ngFor="let product of selectedProducts">
-    <app-product [preview]="true"
-                 [productId]="product.productId"></app-product>
-  </mat-grid-tile>
-</mat-grid-list>
+  </div>
+</div>
+

@@ -13,11 +13,11 @@
         <!-- Sort by -->
         <mat-button-toggle-group [(ngModel)]="sortBy" (ngModelChange)="sortPosts()" value="recent" appearance="legacy">
           <mat-button-toggle value="flags" *ngIf="feedType == 'flagged'" disableRipple="true">Flags</mat-button-toggle>
-          <mat-button-toggle value="recent" disableRipple="true"><mat-icon>new_releases</mat-icon> New</mat-button-toggle>
-          <mat-button-toggle value="oldest" disableRipple="true"><mat-icon>calendar_today</mat-icon> Oldest</mat-button-toggle>
-          <mat-button-toggle value="upvotes" disableRipple="true"><mat-icon>keyboard_arrow_up</mat-icon>Upvotes</mat-button-toggle>
-          <mat-button-toggle value="downvotes" disableRipple="true"><mat-icon>keyboard_arrow_down</mat-icon>Downvotes</mat-button-toggle>
-          <mat-button-toggle value="total" disableRipple="true"><mat-icon>rocket</mat-icon>Score</mat-button-toggle>
+          <mat-button-toggle value="recent" *ngIf="feedType!='flagged'" disableRipple="true"><mat-icon>new_releases</mat-icon> New</mat-button-toggle>
+          <mat-button-toggle value="oldest" *ngIf="feedType!='flagged'" disableRipple="true"><mat-icon>calendar_today</mat-icon> Oldest</mat-button-toggle>
+          <mat-button-toggle value="upvotes" *ngIf="feedType!='flagged'" disableRipple="true"><mat-icon>keyboard_arrow_up</mat-icon>Upvotes</mat-button-toggle>
+          <mat-button-toggle value="downvotes" *ngIf="feedType!='flagged'" disableRipple="true"><mat-icon>keyboard_arrow_down</mat-icon>Downvotes</mat-button-toggle>
+          <mat-button-toggle value="total" *ngIf="feedType!='flagged'" disableRipple="true"><mat-icon>rocket</mat-icon>Score</mat-button-toggle>
         </mat-button-toggle-group>
         <!-- categories -->
         <mat-form-field floatLabel="never" id="selectCategory">
@@ -41,6 +41,7 @@
           <app-post [post]="post"
                   [preview]="true"
                   [postId]="post.postId"
+                  [loadPicture]="post.imageOnly"
                   (update)="updateFeed($event)">
           </app-post>
         </div>

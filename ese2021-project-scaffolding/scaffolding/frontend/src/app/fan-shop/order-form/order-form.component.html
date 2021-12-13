@@ -27,13 +27,15 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput type="text" placeholder="house number" name="house number" [(ngModel)]="orderHouseNr">
+      <input matInput type="text" placeholder="house number" name="house number" [(ngModel)]="orderHouseNr" (ngModelChange)="updateHouseNrMessage()">
+      <mat-hint style="color: red" *ngIf="houseNrMessage!=''">{{houseNrMessage}}</mat-hint>
     </mat-form-field>
 
     <br>
 
     <mat-form-field>
-      <input matInput type="text" placeholder="zip code" name="zip code" [(ngModel)]="orderZipCode">
+      <input matInput type="text" placeholder="zip code" name="zip code" [(ngModel)]="orderZipCode" (ngModelChange)="updateZipCodeMessage()">
+      <mat-hint style="color: red" *ngIf="zipCodeMessage!=''">{{zipCodeMessage}}</mat-hint>
     </mat-form-field>
 
     <mat-form-field>
@@ -43,7 +45,8 @@
     <br>
 
     <mat-form-field>
-      <input matInput type="text" placeholder="phone number" name="phone number" [(ngModel)]="orderPhoneNr">
+      <input matInput type="text" placeholder="phone number" name="phone number" [(ngModel)]="orderPhoneNr" (ngModelChange)="updatePhoneNrMessage()">
+      <mat-hint style="color: red" *ngIf="phoneNrMessage!=''">{{phoneNrMessage}}</mat-hint>
     </mat-form-field>
     <br>
 
@@ -52,8 +55,6 @@
   <p>
     <button (click)="confirmOrder()" > Confirm Order </button>
   </p>
-
-  <button (click)="postAPI()">Make api call to post</button>
 </div>
 
 <div *ngIf="redirecting">

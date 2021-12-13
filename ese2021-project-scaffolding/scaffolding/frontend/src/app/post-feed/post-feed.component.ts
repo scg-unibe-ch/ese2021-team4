@@ -23,7 +23,7 @@ export class PostFeedComponent implements OnInit {
   postList: Post[] = [];
 
   sortBy = 'recent';
-  selectedCategory = '';
+  selectedCategory = 'all';
   selectedPosts: Post[] = [];
   postsLoaded: boolean = false;
 
@@ -48,7 +48,7 @@ export class PostFeedComponent implements OnInit {
   ngOnInit(): void {
     if(this.user != undefined || !this.loggedIn) {
       this.readPosts();
-    }   
+    }
   }
 
   readPosts(): void {
@@ -80,23 +80,14 @@ export class PostFeedComponent implements OnInit {
   // READ - Post
   readAllPosts(): void {
     this.httpClient.get(environment.endpointURL + "post").subscribe((posts: any) => {
-
-      posts.forEach((post: any) => {
-        this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.nrOfImages, post.nrOfComments, post.flags));
-      });
-      this.selectedPosts = this.postList;
-
+      this.pushPostsToPostlist(posts);
     });
   }
 
   readCreatedPosts(): void {
     if(this.user != undefined) {
       this.httpClient.get(environment.endpointURL + "post/" + "createdBy/" + this.user?.userId).subscribe((posts: any) => {
-        posts.forEach((post: any) => {
-          this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.nrOfImages, post.nrOfComments, post.flags));
-        });
-        this.postsLoaded = true;
-        this.selectedPosts = this.postList
+        this.pushPostsToPostlist(posts);
       });
     }
   }
@@ -112,7 +103,9 @@ export class PostFeedComponent implements OnInit {
           }
         });
         this.postsLoaded = true;
-        this.selectedPosts = this.postList
+        this.selectedPosts = this.postList;
+        this.selectPosts();
+        this.sortPosts();
       }, error => {
         console.log(error);
       });
@@ -129,8 +122,9 @@ export class PostFeedComponent implements OnInit {
             }
           })
         });
-        this.postsLoaded = true;
-        this.selectedPosts = this.postList
+        this.selectedPosts = this.postList;
+        this.selectPosts();
+        this.sortPosts();
       }, error => {
         console.log(error);
       });
@@ -140,19 +134,23 @@ export class PostFeedComponent implements OnInit {
   readFlaggedPosts(): void {
     if(this.user != undefined) {
       this.httpClient.get(environment.endpointURL + "post/flagged").subscribe((posts: any) => {
-        posts.forEach((post: any) => {
-          this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.nrOfImages, post.nrOfComments, post.flags));
-        });
-        this.postsLoaded = true;
-        this.selectedPosts = this.postList
+        this.pushPostsToPostlist(posts);
       });
     }
   }
 
+  pushPostsToPostlist(posts:any): void {
+    posts.forEach((post: any) => {
+      this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.nrOfImages, post.nrOfComments, post.flags));
+    });
+    this.postsLoaded = true;
+    this.selectedPosts = this.postList;
+    this.selectPosts();
+    this.sortPosts();
+  }
+
   updateFeed(post: Post): void {
     if(this.feedType == 'upvoted' || this.feedType == 'downvoted'){
-      // this.postList.splice(this.postList.indexOf(post), 1);
-      // this.selectedPosts.splice(this.postList.indexOf(post), 1);
       this.postList = this.postList.filter(listPost => listPost.postId !== post.postId);
       this.selectedPosts = this.selectedPosts.filter(listPost => listPost.postId !== post.postId);
     }

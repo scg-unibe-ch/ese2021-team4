@@ -193,34 +193,4 @@ export class OrderFormComponent implements OnInit {
   isValidFormFill(): boolean {
     return !(isNaN(+this.orderHouseNr) || isNaN(+this.orderZipCode) || isNaN(+this.orderPhoneNr))
   }
-
-  postAPI(): void {
-    const request = "https://wedec.post.ch/api/address/v1/addresses/validation";
-    const payload = {
-      "addressee":{
-         "firstName":"Hans",
-         "lastName":"Muster",
-         "title":"MISTER"
-      },
-      "geographicLocation":{
-         "house":{
-            "street":"viale Stazione",
-            "houseNumber":"15",
-            "additionalAddress":""
-         },
-         "zip":{
-            "zip":"6500",
-            "city":"Bellinzona"
-         }
-      },
-      "logisticLocation":{
-         "postBoxNumber":""
-      },
-      "fullValidation":true
-   };
-    this.httpClient.post(request, payload).subscribe( res => {
-      console.log(res);
-    })
-  }
-
 }

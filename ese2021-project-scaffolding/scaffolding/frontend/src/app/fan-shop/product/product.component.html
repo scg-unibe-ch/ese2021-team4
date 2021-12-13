@@ -61,7 +61,16 @@
         </div>
         <div id="productDescription" [innerHTML]="product.description"></div>
         <div id="image"></div>
+        <span id="productPrice">{{product.price}} CHF</span>
+        <mat-card-actions>
+        <button mat-flat-button color="primary" (click) = "checkLoggedIn()" *ngIf="!user?.isAdmin">Buy now</button >
+        <span *ngIf="user?.isAdmin">
+            <button  mat-flat-button color="primary" (click)="editMode = true; loadPicturesToProduct()">Edit Product</button>
+            <button mat-flat-button color="warn" (click)="confirmDeleting(product)">Delete Product</button>
+          </span>
+        </mat-card-actions>
       </div>
+
     </div>
 
 
@@ -189,7 +198,7 @@
       {{product.noHtmlDescription}}
     </span>
     <span id="suffix">
-      <button mat-icon-button disableRipple="true"> {{product.price}} </button>
+      <button mat-icon-button disableRipple="true"> {{product.price}} CHF </button>
     </span>
   </div>
 </div>

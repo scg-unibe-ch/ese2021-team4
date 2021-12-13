@@ -12,20 +12,24 @@
     </mat-radio-group>
 
     <h3>Shipping Details</h3>
+    <span style="color: red">{{missingFirstName}}</span>
     <mat-form-field>
       <input matInput type="text" placeholder="first name" name="first name" [(ngModel)]="orderFirstName">
     </mat-form-field>
 
+    <span style="color: red">{{missingLastName}}</span>
     <mat-form-field>
       <input matInput type="text" placeholder="last name" name="last name" [(ngModel)]="orderLastName">
     </mat-form-field>
 
     <br>
 
+    <span style="color: red">{{missingStreet}}</span>
     <mat-form-field>
       <input matInput type="text" placeholder="street" name="street" [(ngModel)]="orderStreet">
     </mat-form-field>
 
+    <span style="color: red">{{missingHouseNr}}</span>
     <mat-form-field>
       <input matInput type="text" placeholder="house number" name="house number" [(ngModel)]="orderHouseNr" (ngModelChange)="updateHouseNrMessage()">
       <mat-hint style="color: red" *ngIf="houseNrMessage!=''">{{houseNrMessage}}</mat-hint>
@@ -33,17 +37,19 @@
 
     <br>
 
+    <span style="color: red">{{missingZipCode}}</span>
     <mat-form-field>
       <input matInput type="text" placeholder="zip code" name="zip code" [(ngModel)]="orderZipCode" (ngModelChange)="updateZipCodeMessage()">
       <mat-hint style="color: red" *ngIf="zipCodeMessage!=''">{{zipCodeMessage}}</mat-hint>
     </mat-form-field>
 
+    <span style="color: red">{{missingCity}}</span>
     <mat-form-field>
       <input matInput type="text" placeholder="city" name="city" [(ngModel)]="orderCity">
-    </mat-form-field>
-
+    </mat-form-field><br>
     <br>
 
+    <span style="color: red">{{missingPhoneNumber}}</span>
     <mat-form-field>
       <input matInput type="text" placeholder="phone number" name="phone number" [(ngModel)]="orderPhoneNr" (ngModelChange)="updatePhoneNrMessage()">
       <mat-hint style="color: red" *ngIf="phoneNrMessage!=''">{{phoneNrMessage}}</mat-hint>
@@ -51,9 +57,11 @@
     <br>
 
   </mat-card>
-  <span id="emptyFields" style="visibility: hidden"> Please fill out all the address details. </span>
+  <mat-hint style="color: red"> {{errorMessage}} </mat-hint>
+  <br>
+  <br>
   <p>
-    <button (click)="confirmOrder()" > Confirm Order </button>
+    <button mat-flat-button color="primary" (click)="confirmOrder()" > Confirm Order </button>
   </p>
 </div>
 

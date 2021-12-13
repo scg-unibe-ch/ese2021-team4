@@ -17,6 +17,8 @@ export class Post {
         public createdAt: Date,
         public comments: Comment[],
         public images: File[],
+        public nrOfImages: number,
+        public nrOfComments: number,
         public flags: number,
     ) {
         //calculate needed rows for displaying in post-feed

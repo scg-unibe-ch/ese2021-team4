@@ -93,6 +93,7 @@
           </mat-form-field>
         </form>
 
+        
         <quill-editor [(ngModel)]="post.description" placeholder="Text (optional)" [style]="editorStyle" [modules]="config" (onEditorCreated)="getEditorInstance($event)"></quill-editor>
         <span id="image"></span>
 

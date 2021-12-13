@@ -179,12 +179,14 @@ export class PostComponent implements OnInit {
       this.post=new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], new Array<File>(), post.nrOfImages, post.nrOfComments, post.flags);
       if(!this.preview){
         this.loadPicturesToPost();
-        this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
-          comments.forEach((comment: any) => {
-            this.post.comments.push(new Comment(comment.commentId, comment.postId, comment.userId, comment.description, comment.upvotes, comment.downvotes, new Date(comment.createdAt)));
-          });
-        });
+        
       }
+      this.httpClient.get(environment.endpointURL + "comment/" + "forPost/" + this.postId).subscribe((comments: any) => {
+        comments.forEach((comment: any) => {
+          this.post.comments.push(new Comment(comment.commentId, comment.postId, comment.userId, comment.description, comment.upvotes, comment.downvotes, new Date(comment.createdAt)));
+        });
+        this.post.nrOfComments = comments.length;
+      });
       this.httpClient.get(environment.endpointURL + "user/" + post.userId).subscribe((user: any) => {
         this.authorName = user.userName;
       });
@@ -491,7 +493,7 @@ export class PostComponent implements OnInit {
       }).subscribe((comment: any) => {
         this.post.comments.push(new Comment(comment.commentId, this.post.postId, comment.userId, comment.description, 0, 0, new Date(comment.createdAt)));
         this.newCommentDescription = '';
-        this.post.nrOfComments++;
+        this.post.nrOfComments = this.post.comments.length;
       });
     }
   }
@@ -546,7 +548,7 @@ export class PostComponent implements OnInit {
   deleteComment(comment: Comment): void {
     this.httpClient.delete(environment.endpointURL + "comment/" + comment.commentId).subscribe(() => {
       this.post.comments.splice(this.post.comments.indexOf(comment), 1);
-      this.post.nrOfComments--;
+      this.post.nrOfComments = this.post.comments.length;
     });
   }
 

@@ -76,13 +76,18 @@
         </h1>
         <form>
           <mat-form-field appearance="fill" id="title">
-            <textarea placeholder="Title" rows="{{rows}}" matInput #message maxlength="300" (ngModelChange)="countRows()" [(ngModel)]="post.title" [ngModelOptions]="{standalone: true}" required></textarea>
+            <textarea placeholder="Title" rows="{{rows}}" matInput #message maxlength="300"
+                      (ngModelChange)="countRows()"
+                      [(ngModel)]="post.title"
+                      [ngModelOptions]="{standalone: true}" required></textarea>
             <mat-error style="color: red" *ngIf="post.title==''">Please set a title.</mat-error>
           </mat-form-field>
           <!-- Categories -->
           <mat-form-field appearance="fill" id="category">
             <mat-label>Category:</mat-label>
-            <mat-select [(ngModel)]="selectCategory" (ngModelChange)="findCategory()" [ngModelOptions]="{standalone: true}" >
+            <mat-select [(ngModel)]="selectCategory"
+                        (ngModelChange)="validCategory()"
+                        [ngModelOptions]="{standalone: true}">
               <mat-option value="Restaurant">Restaurant</mat-option>
               <mat-option value="University">University</mat-option>
               <mat-option value="Coffeeshop">Coffeeshop</mat-option>
@@ -90,13 +95,23 @@
               <mat-option value="Shopping">Shopping</mat-option>
               <mat-option value="Museum">Museum</mat-option>
             </mat-select>
+            <mat-hint style="color: red" *ngIf="showCategoryError">Please choose a category.</mat-hint>
           </mat-form-field>
-        </form>
+
 
         <mat-tab-group dynamicHeight>
           <mat-tab label="Post">
+            <mat-hint *ngIf="showDescriptionError" style="color: red">Please write something or upload a picture.</mat-hint>
             <div id="editor">
-            <quill-editor [(ngModel)]="post.description" placeholder="Text (optional)" [style]="editorStyle" [modules]="config" (onEditorCreated)="getEditorInstance($event)"></quill-editor>
+            <quill-editor
+              [(ngModel)]="post.description"
+              [ngModelOptions]="{standalone: true}"
+              (ngModelChange)="validDescription()"
+              placeholder="Text (optional)"
+              [style]="editorStyle"
+              [modules]="config"
+              (onEditorCreated)="getEditorInstance($event)"
+            ></quill-editor>
             </div>
           </mat-tab>
           <mat-tab label="One Image only" *ngIf="!existsInBackend">
@@ -120,11 +135,12 @@
         <span id="image"></span>
 
 
-        <button (click)="deleteImages()">delete all images attached to this post</button>
+        <button mat-flat-button (click)="deleteImages()">delete all images attached to this post</button>
 
         <button mat-flat-button (click)="existsInBackend ? save() : createPost()">{{existsInBackend ? 'Save Post':'CreatePost'}}</button>
         <mat-hint style="color:red">{{errorMessage}}</mat-hint>
         <!-- {{post.description}} -->
+        </form>
 
       </div>
     </div>

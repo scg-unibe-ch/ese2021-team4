@@ -149,6 +149,7 @@ export class PostFeedComponent implements OnInit {
     this.sortPosts();
   }
 
+  //removes the given post from the post list
   updateFeed(post: Post): void {
     if(this.feedType == 'upvoted' || this.feedType == 'downvoted'){
       this.postList = this.postList.filter(listPost => listPost.postId !== post.postId);

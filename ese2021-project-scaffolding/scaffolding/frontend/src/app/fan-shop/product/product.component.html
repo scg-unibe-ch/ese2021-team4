@@ -65,10 +65,10 @@
 
       <mat-form-field appearance="fill" id="price">
         <mat-label>Price CHF</mat-label>
-        <textarea title= "Price" placeholder="Price" rows="{{rows}}" matInput
-                  (ngModelChange)="countRows(); invalidPrice()"
+        <input title= "Price" placeholder="Price" matInput
+                  (ngModelChange)="invalidPrice()"
                   [(ngModel)]="product.price"
-                  [ngModelOptions]="{standalone: true}"></textarea>
+                  [ngModelOptions]="{standalone: true}">
         <mat-hint style="color: red" *ngIf="showPriceError">Please set a price.</mat-hint>
       </mat-form-field>
       <!-- Categories -->
@@ -89,11 +89,10 @@
     <quill-editor [(ngModel)]="product.description" placeholder="Text (optional)" [style]="editorStyle" [modules]="config" (onEditorCreated)="getEditorInstance($event)"></quill-editor>
     <span id="image"></span>
 
-
-    <button (click)="deleteImages()">delete all images attached to this product</button>
-
-    <button mat-flat-button (click)="existsInBackend ? save() : createProduct()">{{existsInBackend ? 'Save Product':'CreateProduct'}}</button>
-    <!-- {{post.description}} -->
+    <div class=buttons>
+      <button mat-flat-button (click)="deleteImages()">delete all images attached to this product</button>
+      <button mat-flat-button (click)="existsInBackend ? save() : createProduct()">{{existsInBackend ? 'Save Product':'CreateProduct'}}</button>
+    </div>
 
   </div>
 </div>

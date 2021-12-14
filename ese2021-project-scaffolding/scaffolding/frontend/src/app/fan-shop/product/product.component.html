@@ -145,15 +145,16 @@
                   (ngModelChange)="countRows()"
                   [(ngModel)]="product.title"
                   [ngModelOptions]="{standalone: true}"></textarea>
-        <mat-hint matSuffix>{{message.value.length}} / 300</mat-hint>
+        <mat-hint style="color: red" *ngIf="showTitleError">Please set a title.</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="fill" id="price">
         <mat-label>Price CHF</mat-label>
         <textarea title= "Price" placeholder="Price" rows="{{rows}}" matInput
-                  (ngModelChange)="countRows()"
+                  (ngModelChange)="countRows(); invalidPrice()"
                   [(ngModel)]="product.price"
                   [ngModelOptions]="{standalone: true}"></textarea>
+        <mat-hint style="color: red" *ngIf="showPriceError">Please set a price.</mat-hint>
       </mat-form-field>
       <!-- Categories -->
       <mat-form-field appearance="fill" id="category">
@@ -166,6 +167,7 @@
           <mat-option value="Shopping">Shopping</mat-option>
           <mat-option value="Museum">Museum</mat-option>
         </mat-select>
+        <mat-hint style="color: red" *ngIf="showCategoryError">Please set a category.</mat-hint>
       </mat-form-field>
     </form>
 
@@ -176,7 +178,6 @@
     <button (click)="deleteImages()">delete all images attached to this product</button>
 
     <button mat-flat-button (click)="existsInBackend ? save() : createProduct()">{{existsInBackend ? 'Save Product':'CreateProduct'}}</button>
-    <mat-hint style="color:red">{{errorMessage}}</mat-hint>
     <!-- {{post.description}} -->
 
   </div>

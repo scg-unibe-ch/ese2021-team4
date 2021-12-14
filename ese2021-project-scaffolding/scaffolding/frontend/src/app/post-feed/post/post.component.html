@@ -80,6 +80,7 @@
                       (ngModelChange)="countRows()"
                       [(ngModel)]="post.title"
                       [ngModelOptions]="{standalone: true}" required></textarea>
+            <mat-hint matSuffix>{{message.value.length}} / 300</mat-hint>
             <mat-error style="color: red" *ngIf="post.title==''">Please set a title.</mat-error>
           </mat-form-field>
           <!-- Categories -->

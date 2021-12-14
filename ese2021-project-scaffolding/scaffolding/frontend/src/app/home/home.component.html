@@ -1,32 +1,75 @@
 <div class="background">
     <div class="container" color="accent">
-        <div class="left"></div>
         <div class="center">
             <h1>
                 Welcome to the Bern Fanpage
             <h3>Share your <span>{{current}}</span></h3>
             </h1>
             <span>
-                <a routerLink="/postfeed"><button mat-raised-button color="primary">Browse Posts</button></a>
-                <a routerLink="/fan-shop"><button mat-raised-button color="primary">Shop Fan Articles</button></a>
-            </span>
-            <span *ngIf ="!loggedIn">
-                <br><br><br><br><br><br>
-                <a routerLink="/login"><button mat-raised-button color="primary" style="
-                height: 45px;
-                width: 110px;
-                font-size:medium;
-                opacity: 0.9;">Login</button></a>
-            <br><br>
-            <a routerLink="/register"><button mat-raised-button color="primary" style="
-                height: 45px;
-                width: 110px;
-                font-size:medium;
-                opacity: 0.9;">Register</button></a>
+                <a routerLink="/postfeed"><button mat-raised-button color="primary" style="height:90px; width: 220px; font-size: large;">Browse Posts</button></a>
+                <a routerLink="/fan-shop"><button mat-raised-button color="primary" style="height:90px; width: 220px; font-size: large;">Shop Fan Articles</button></a>
+                <a routerLink="/register"><button *ngIf="!loggedIn" mat-raised-button color="primary" style="height:90px; width: 220px; font-size: large;">Register</button></a>
             </span>
         </div>
+
         <div class="right">
-            Merlin Weather app
+            <h2>Weather Forecast for Bern</h2>
+
+            <s id="s1"></s> 
+            <s id="s2"></s>
+            <s id="s3"></s>
+            <s id="s4"></s>
+            <s id="s5"></s>
+            <s id="s6"></s>
+          
+            <div class="slider">
+                <div class="weather">
+                    <h2>Current Weather</h2>
+                    <img src="{{forecastImgs[0]}}"/> 
+                    <p>{{forecastDescs[0]}}</p>
+                    <p>current temperature: {{forecastTempMax[0]}}°</p>
+                </div>
+                <div class="weather">
+                    <h2>{{forecastDay[1]}}</h2>
+                    <img src="{{forecastImgs[1]}}"/> 
+                    <p>{{forecastDescs[1]}}</p>
+                    <p>with temperatures between {{forecastTempMin[1]}}° and {{forecastTempMax[1]}}°</p>
+                </div>
+                <div class="weather">
+                    <h2>{{forecastDay[2]}}</h2>
+                    <img src="{{forecastImgs[2]}}"/> 
+                    <p>{{forecastDescs[2]}}</p>
+                    <p>with temperatures between {{forecastTempMin[2]}}° and {{forecastTempMax[2]}}°</p>
+                </div>
+                <div class="weather">
+                    <h2>{{forecastDay[3]}}</h2>
+                    <img src="{{forecastImgs[3]}}"/> 
+                    <p>{{forecastDescs[3]}}</p>
+                    <p>with temperatures between {{forecastTempMin[3]}}° and {{forecastTempMax[3]}}°</p>
+                </div>
+                <div class="weather">
+                    <h2>{{forecastDay[4]}}</h2>
+                    <img src="{{forecastImgs[4]}}"/> 
+                    <p>{{forecastDescs[4]}}</p>
+                    <p>with temperatures between {{forecastTempMin[4]}}° and {{forecastTempMax[4]}}°</p>
+                </div>
+                <div class="weather">
+                    <h2>{{forecastDay[5]}}</h2>
+                    <img src="{{forecastImgs[5]}}"/> 
+                    <p>{{forecastDescs[5]}}</p>
+                    <p>with temperatures between {{forecastTempMin[5]}}° and {{forecastTempMax[5]}}°</p>
+                </div>
+            </div>
+
+            <div class="bullets">
+              <a href="home#s1">{{forecastDay[0].substring(0,3)}}</a>
+              <a href="home#s2">{{forecastDay[1].substring(0,3)}}</a>
+              <a href="home#s3">{{forecastDay[2].substring(0,3)}}</a>
+              <a href="home#s4">{{forecastDay[3].substring(0,3)}}</a>
+              <a href="home#s5">{{forecastDay[4].substring(0,3)}}</a>
+              <a href="home#s6">{{forecastDay[5].substring(0,3)}}</a>
+            </div>
+          
         </div>
     </div>
 </div>

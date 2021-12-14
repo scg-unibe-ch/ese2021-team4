@@ -29,7 +29,6 @@ mat-button-toggle-group {
 
 .mat-button-toggle {
     border-radius: 20px;
-    /* margin: 5px; */
     display: flex;
     align-items: center;
     background-color: #fce2c0;

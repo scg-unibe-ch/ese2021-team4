@@ -7,10 +7,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-
     width: 100%;
     height: 100%;
-
     overflow-y: scroll;
 
 }
@@ -55,7 +53,6 @@ img {
     z-index: 2;
     background-color: #fff7ee;
     border-radius: 10px;
-    /* align-items: center; */
 }
 
 #postHeader {
@@ -191,7 +188,6 @@ mat-form-field textarea {
     text-overflow: ellipsis;
     content: "";
     position: relative;
-    /* border: solid 1px orange; */
 }
 
 #description::before {
@@ -201,7 +197,7 @@ mat-form-field textarea {
     position: absolute;
     left: 0;
     top: 0;
-    background: linear-gradient(transparent 100px, rgb(155, 155, 155));
+    background: linear-gradient(transparent 100px, #fff7ee);
 }
 
 #suffix {

@@ -15,6 +15,14 @@
 
 }
 
+#loginButton {
+  color : white
+}
+
+#loginButton:hover {
+  color : rgb(182, 182, 182)
+}
+
 a {
   color: white;
 }

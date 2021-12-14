@@ -93,8 +93,7 @@ export class HomeComponent implements OnInit {
         this.forecastTempMin.push(Math.round(res.daily[i].temp.min));
         this.forecastDay[i] = this.weekdays[new Date(res.daily[i].dt * 1000).getDay()];
         i++;
-      };  
-      console.log(this.forecastDay[0])
+      };
     });
   }
 }

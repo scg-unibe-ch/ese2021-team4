@@ -97,6 +97,7 @@ img {
     display: flex;
     align-items: center;
     height: 10vh;
+    justify-content: center;
 }
 
 h1 {

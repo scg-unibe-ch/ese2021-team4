@@ -34,7 +34,7 @@ export class ProductComponent implements OnInit {
   editorStyle = {
     height: '300px',
     backgroundColor: "#9c9c9c"
-  }
+  };
 
   config :QuillModules= {
     toolbar: [
@@ -44,7 +44,7 @@ export class ProductComponent implements OnInit {
       ['link', 'image', 'video'], //media
       ['clean'] //clear formatting
     ],
-  }
+  };
 
   configComment :QuillModules= {
     toolbar: [
@@ -53,7 +53,7 @@ export class ProductComponent implements OnInit {
       ['link'],
       ['clean'] //clear formattig
     ],
-  }
+  };
 
   @Input()
   preview: boolean = false;

@@ -33,12 +33,11 @@
       </mat-grid-tile>
 
 
-      <mat-grid-tile *ngFor="let product of selectedProducts" [rowspan]=product.neededRowspan>
+      <mat-grid-tile *ngFor="let product of selectedProducts" [rowspan]=2>
         <div id="product">
           <app-product
                     [preview]="true"
                     [productId]="product.productId">
-                   <!-- (update)="updateFeed($event)"-->
           </app-product>
         </div>
       </mat-grid-tile>

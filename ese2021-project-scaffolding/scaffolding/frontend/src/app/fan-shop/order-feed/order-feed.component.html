@@ -1,3 +1,5 @@
+<div class="background">
+  <div class="feed">
 <mat-form-field appearance="fill">
   <mat-label>Status:</mat-label>
   <mat-select [(ngModel)]="selectedStatus" (ngModelChange)="filterBy(selectedStatus)">
@@ -12,4 +14,5 @@
   <app-order [order]="order"
              (update)="updateOrder($event)">
   </app-order>
+</div></div>
 </div>

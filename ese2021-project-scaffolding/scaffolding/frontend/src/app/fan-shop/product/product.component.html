@@ -1,35 +1,5 @@
-<div *ngIf="missingProduct">This product does not exist anymore.</div>
 
-
-
-
-<!--
-  <div *ngIf="!preview">
-    <div *ngIf="!editMode">
-      <mat-card>
-        <mat-card-header>
-          <div mat-card-avatar></div>
-          <mat-card-title>{{product.title}}</mat-card-title>
-          <mat-card-subtitle>{{product.tags}}</mat-card-subtitle>
-          <mat-card-subtitle>Price: {{product.price}} CHF </mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <div [innerHTML]="product.description"></div>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-flat-button color="primary" (click) = "checkLoggedIn()" *ngIf="!user?.isAdmin">Buy now</button >
-          <span *ngIf="user?.isAdmin">
-            <button  mat-flat-button color="primary" (click)="editMode = true; loadPicturesToProduct()">Edit Product</button>
-            <button mat-flat-button color="warn" (click)="confirmDelet(product)">Delete Product</button>
-          </span>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-  </div>-->
-
-
-
-<div *ngIf="!preview" class="background">
+<div *ngIf="!preview && !orderFormView" class="background">
   <!-- POST  -->
   <div id="scrollProduct">
     <div *ngIf="!editMode" id="wholeProduct">
@@ -71,63 +41,6 @@
 
 
 
-<!--Editor
-
-  <div *ngIf="editMode">
-
-    <div class="container">
-      <form class="title-form">
-        <mat-form-field appearance="fill">
-          <mat-label>Title</mat-label>
-          <input matInput #message maxlength="256" [(ngModel)]="product.title" [ngModelOptions]="{standalone: true}">
-          <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-
-        <mat-label>Price</mat-label>
-        <input matInput #message maxlength="256" [(ngModel)]="product.price" [ngModelOptions]="{standalone: true}">
-        <mat-hint align="end"></mat-hint>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-
-        <mat-label>Category:</mat-label>
-        <mat-select [(ngModel)]="selectCategory" (ngModelChange)="findCategory()" [ngModelOptions]="{standalone: true}" >
-          <mat-option value="Restaurant">Restaurant</mat-option>
-          <mat-option value="University">University</mat-option>
-          <mat-option value="Coffeeshop">Coffeeshop</mat-option>
-          <mat-option value="Sightseeing">Sightseeing</mat-option>
-          <mat-option value="Shopping">Shopping</mat-option>
-          <mat-option value="Museum">Museum</mat-option>
-        </mat-select>
-
-        </mat-form-field><span id="setTitle" style="visibility: hidden">Please set a title. </span>
-          <span id="setCategory" style="visibility: hidden"> Please set a category.</span>
-          <span id="setPrice" style="visibility: hidden"> Please set a price.</span>
-        </form>
-
-       // UPLOAD IMAGE
-          <input type="file" class="file-input" multiple accept="image/*"
-          (change)="onFileSelected($event)" #fileUpload>
-
-          <div class="file-upload" action="image" enctype="multipart/form-data" method="post">
-          <button mat-mini-fab color="primary" class="upload-btn"
-            (click)="fileUpload.click()">
-              <mat-icon>attach_file</mat-icon>
-          </button>
-          </div>
-
-
-        //Description
-        <br><br>
-        <angular-editor id="editor1" [(ngModel)]="product.description" [config]="config1"></angular-editor>
-
-      <span id="image"></span>
-      <button (click)="deleteImages()">delete all images attached to this product</button><br>
-
-        <button *ngIf="existsInBackend" [disabled]="!isValidFormFill()" (click)="save()">Save</button>
-        <button *ngIf="!existsInBackend" [disabled]="!isValidFormFill()" (click)="createProduct()">Create</button>
-      </div>
-    </div>-->
 
 
 <div *ngIf="editMode">
@@ -187,13 +100,12 @@
 
 
 <div *ngIf="!missingProduct">
-<div *ngIf="preview" id="preview">
+<div *ngIf="preview && !orderFormView" id="preview">
   <a [routerLink]="['/fan-shop/product', product.productId]"> <span class="link-spanner"></span> </a>
   <div id="score" > {{product.price}} CHF
   </div>
-
   <div id="content">
-    <span id="postInfo">
+    <span id="productInfo">
         <p> Posted in &#183; <span style="border: 1px solid black; border-radius: 4px; font-weight: 500;">{{product.tags}}</span>
         </p>
     </span>
@@ -202,10 +114,14 @@
         {{product.title}}
       </h3>
     </span>
-    <span id="description">
-      {{product.noHtmlDescription}}
-    </span>
   </div>
 </div>
+
 </div>
+<div *ngIf="orderFormView" id="orderFormView">
+  <a [routerLink]="['/fan-shop/product', product.productId]"> <span class="link-spanner"></span> </a>
+  <span style="border-right: 1px solid black; padding-right: 10px">{{product.title}}</span>
+  <span style="padding-left: 5px"> {{product.price}} CHF</span>
+</div>
+
 

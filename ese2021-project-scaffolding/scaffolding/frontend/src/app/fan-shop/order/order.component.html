@@ -5,12 +5,12 @@
   </mat-card-header>
 
   <mat-card-content>
-      <mat-card>
+      <mat-card style="display: inline-block">
         <app-product [productId]="order.productId"
-                     [preview]="true">
+                     [orderFormView]="true">
         </app-product>
       </mat-card>
-      <mat-card>
+      <mat-card style="display: inline-block">
         {{order.orderFirstName}} {{order.orderLastName}} <br>
         {{order.orderStreet}} {{order.orderHouseNr}} <br>
         {{order.orderZipCode}} {{order.orderZipCode}} <br>
@@ -24,8 +24,9 @@
       <button *ngIf="user?.isAdmin" mat-flat-button color="warn" (click)="confirmPayment()"[disabled]="isPaid || isCancelled">SET PAID</button>
     </mat-card-actions>
 
-    <mat-card-footer *ngIf="user?.isAdmin">
-      Ordered by: {{orderUserName}} <span *ngIf="isShipped"> | Shipped by: {{orderAdminName}} </span><br><br>
+    <mat-card-footer *ngIf="user?.isAdmin" style="text-align: center">
+      <p>
+      Ordered by: {{orderUserName}} <span *ngIf="isShipped"> | Shipped by: {{orderAdminName}} </span><br><br></p>
     </mat-card-footer>
 
 </mat-card>

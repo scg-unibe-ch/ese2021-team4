@@ -24,7 +24,6 @@
     align-items: center;
     justify-content: flex-start;
     position: relative;
-    /* border: solid 5px red; */
 }
 
 .background::before {
@@ -54,22 +53,18 @@ img {
     flex-direction: column;
     position: relative;
     z-index: 2;
-    /* border: solid 2px blue; */
-    background-color: aliceblue;
+    background-color: #fff7ee;
     border-radius: 10px;
-    /* overflow-y: scroll; */
+    /* align-items: center; */
 }
 
 #postHeader {
-    /* border: solid 2px pink; */
-    /* position: relative; */
     min-height: 20vh;
     display: flex;
     flex-direction: row;
 }
 
 #postScore {
-    /* border: solid 2px palevioletred; */
     width: 10%;
     display: flex;
     flex-direction: column;
@@ -78,7 +73,6 @@ img {
 }
 
 #postTitle {
-    /* border: solid 2px black; */
     width: 90%;
     display: flex;
     justify-content: center;
@@ -87,20 +81,16 @@ img {
 }
 
 #postDescription {
-    /* border: solid 2px yellow; */
     height: auto;
-    /* width: 100%; */
     padding: 20px;
 }
 
 #container {
-    /* border: solid 2px turquoise; */
     width: 90vw;
     min-height: 80vh;
-    /* height: 100%; */
     display: flex;
     flex-direction: column;
-    background-color: rgb(160, 159, 159);
+    background-color: #fff7ee;
     position: relative;
     text-align: center;
     border-radius: 10px;
@@ -151,7 +141,6 @@ mat-form-field textarea {
 #score {
     height: 100%;
     width: 10%;
-    /* border: solid 2px blue; */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -166,7 +155,7 @@ mat-form-field textarea {
     height: 100%;
     width: 80%;
     /* border: solid 2px yellow; */
-    background-color: rgb(155, 155, 155);
+    background-color: #fff7ee;
     flex-direction: column;
 }
 
@@ -216,23 +205,18 @@ mat-form-field textarea {
 }
 
 #suffix {
-    /* border: solid 1px green; */
     margin-bottom: 10px;
-    /* align-self: flex-start; */
-    /* justify-self: flex-end; */
     margin-top: auto;
 }
 
 #suffix button:hover {
     background-color: transparent;
-    /* position: relative; */
     z-index: 0;
 }
 
 .toolButtons {
     display: flex;
     flex-direction: column;
-    /* border: solid 1px orange; */
     justify-content: flex-end;
     align-items: flex-end;
 }
@@ -243,14 +227,14 @@ button {
 }
 
 button:hover {
-    background-color: grey;
+    background-color: #EF6C00;
 }
 
 .mat-flat-button {
     height: 35px;
     font-size: 10px;
+    background-color: #FF8F00;
 }
-
 
 .mat-upvoted {
     color: red
@@ -258,4 +242,20 @@ button:hover {
 
 .mat-downvoted {
     color: blue
+}
+
+/* comments editor */
+#comments {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border: solid 1px black; */
+    background-color: #fcebd7;
+    padding-bottom: 15px;
+    margin-top: 15px;
+    border-top: dotted 1px grey;
+    border-bottom: dotted 1px grey;
+    /* border-left: ; */
+
 }

@@ -5,9 +5,9 @@
 
 @include mat-core();
 
-$bern-theme-primary: mat-palette($mat-yellow);
-$bern-theme-accent: mat-palette($mat-pink, A200, A100, A400);
-$bern-theme-warn: mat-palette($mat-red);
+$bern-theme-primary: mat-palette($mat-teal);
+$bern-theme-accent: mat-palette($mat-orange);
+$bern-theme-warn: mat-palette($mat-deep-orange);
 
 $bern-theme: mat-light-theme($bern-theme-primary, $bern-theme-accent, $bern-theme-warn);
 

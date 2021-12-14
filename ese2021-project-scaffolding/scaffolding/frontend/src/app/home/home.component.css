@@ -6,6 +6,10 @@ h1 {
     text-align: center;
 }
 
+.ourButtons:hover {
+    color: rgb(182, 182, 182);
+}
+
 .background::-webkit-scrollbar {
     display:none;
 }

@@ -1,5 +1,5 @@
 mat-grid-tile {
-    background: rgb(255, 255, 255);
+    background: #fff1de;
     border-radius: 10px;
 
 }
@@ -32,16 +32,16 @@ mat-button-toggle-group {
     /* margin: 5px; */
     display: flex;
     align-items: center;
-    background-color: rgb(255, 255, 255);
+    background-color: #fce2c0;
     color: black;
 }
 
 mat-button-toggle:hover {
-    background-color: rgb(168, 148, 148);
+    background-color: #FFAB40;
 }
 
 .mat-button-toggle-checked {
-    background-color: rgb(114, 79, 79);
+    background-color: #FFAB40;
 }
 
 .feed {
@@ -91,7 +91,7 @@ mat-button-toggle:hover {
 }
 
 #post:hover {
-    -webkit-box-shadow:inset 0px 0px 0px 3px rgb(233, 233, 233);
-    -moz-box-shadow:inset 0px 0px 0px 3px rgb(233, 233, 233);
-    box-shadow:inset 0px 0px 0px 3px rgb(233, 233, 233);
+    -webkit-box-shadow:inset 0px 0px 0px 3px #FFAB40;
+    -moz-box-shadow:inset 0px 0px 0px 3px #FFAB40;
+    box-shadow:inset 0px 0px 0px 3px #FFAB40;
 }

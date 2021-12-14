@@ -2,7 +2,7 @@
   <div id="commentHeader">
     <p> Posted &#183; by {{authorName}} &#183; {{comment.timeSince}} ago
       <span class="example-spacer"></span>
-      <button mat-flat-button color="warn" (click)="confirmDeleteComment()" *ngIf="user?.userId === comment.userId || user?.isAdmin">
+      <button mat-flat-button color="accent" (click)="confirmDeleteComment()" *ngIf="user?.userId === comment.userId || user?.isAdmin">
         Delete Comment
       </button>
     </p>

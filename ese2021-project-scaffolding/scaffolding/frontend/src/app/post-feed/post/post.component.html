@@ -21,19 +21,19 @@
                 &#183; by {{authorName}} {{post.timeSince}} ago
               </span>
               <span class="toolButtons">
-                <span *ngIf="user?.userId === post.userId || user?.isAdmin">
-                  <button  mat-flat-button color="primary" (click)="editMode = true; this.post.images = []; loadPicturesToPost();">
+                <span>
+                  <button  mat-flat-button color="primary" (click)="editMode = true; this.post.images = []; loadPicturesToPost();" *ngIf="user?.userId === post.userId">
                     <span class="iconify" data-icon="ant-design:edit-filled" data-width="16" data-height="16"></span>Edit Post
                   </button>
-                  <button mat-flat-button color="warn" (click)="confirmDeleting(post)">
+                  <button mat-flat-button color="warn" (click)="confirmDeleting(post)" *ngIf="user?.userId === post.userId || user?.isAdmin">
                     <span class="iconify"  data-icon="bi:trash-fill" data-width="16" data-height="16"></span>Delete Post
+                  </button>
+                  <button mat-flat-button color="primary" (click)="confirmUnflagging()" *ngIf="user?.isAdmin">
+                    unflag post
                   </button>
                   <button mat-flat-button color="warn" (click)="confirmFlagging()" [disabled]="hasFlagged||!loggedIn">
                     <mat-icon>flag</mat-icon>Report
                     <span *ngIf="user?.isAdmin">({{post.flags}})</span>
-                  </button>
-                  <button mat-flat-button color="primary" (click)="confirmUnflagging()" *ngIf="user?.isAdmin">
-                    unflag post
                   </button>
                 </span>
               </span>
@@ -50,13 +50,14 @@
         <div *ngIf="!post.imageOnly" id="image"></div>
 
         <div id="comments">
-          <hr>
-          <p style="margin-left: 20px; margin-bottom: 0; margin-top: 20px;">Commenting as {{authorName}}</p>
+          <div id="commentsContainer">
+          <p style="margin-left: 20px; margin-bottom: 0; margin-top: 10px;">Comment:</p>
           <p *ngIf="!loggedIn"><a routerLink="/login">Please log in to comment</a></p>
           <quill-editor *ngIf="loggedIn" [(ngModel)]="newCommentDescription" placeholder="Tell us what you think!" [style]="editorStyle" [modules]="configComment"></quill-editor>
-          <br><button mat-flat-button color="primary" (click)="createComment()" *ngIf="loggedIn">Comment</button><br>
+          <br><button mat-flat-button color="accent" (click)="createComment()" *ngIf="loggedIn">Comment</button><br>
+          </div>
         </div>
-        <br>
+        
         <div *ngFor="let comment of post.comments">
           <app-comment [comment]="comment"
                       (delete)="deleteComment($event)">

@@ -7,7 +7,8 @@ export interface PostAttributes {
     title: string;
     userId: number;
     description: Text;
-    imageId: number;
+    nrOfImages: number;
+    nrOfComments: number;
     tags: string;
     upvotes: number;
     downvotes: number;
@@ -23,7 +24,8 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
     title!: string;
     userId!: number;
     description!: Text;
-    imageId!: number;
+    nrOfImages!: number;
+    nrOfComments!: number;
     tags!: string;
     upvotes!: number;
     downvotes!: number;
@@ -51,9 +53,13 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
                 type: DataTypes.TEXT,
                 allowNull: true
             },
-            imageId: {
+            nrOfImages: {
                 type: DataTypes.INTEGER,
-                allowNull: true
+                allowNull: false
+            },
+            nrOfComments: {
+                type: DataTypes.INTEGER,
+                allowNull: false
             },
             tags: {
                 type: DataTypes.STRING,

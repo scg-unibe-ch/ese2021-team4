@@ -1,0 +1,26 @@
+#comment {
+    /* border: solid 1px green; */
+    padding: 10px;
+    padding-left: 20px;
+}
+
+#commentHeader {
+    /* border: solid 1px black; */
+    font-size: 12px;
+    display: flex;
+}
+
+#commentText {
+    /* border: solid 1px blue; */
+    font-size: 16px;
+    padding-left: 10px;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.mat-flat-button {
+    height: 35px;
+    font-size: 10px;
+}

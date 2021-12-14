@@ -1,185 +1,137 @@
 <div *ngIf="!preview" class="background">
   <!-- POST  -->
-  <div *ngIf="!editMode">
-    <a [routerLink]="['/postfeed']"> <span class="link-spanner"></span> </a>
-    <div  id="viewPost">
-      <div id="postHeader">
-        <span id="postScore">
-          <button  mat-icon-button [color]="!hasUpvoted ? 'black' : 'upvoted'" (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn">
-            <span class="iconify" data-icon="mdi:arrow-up-bold" data-width="30" data-height="30"></span>
-          </button>
-          {{post.upvotes - post.downvotes}}
-          <button  mat-icon-button [color]="!hasDownvoted ? 'black' : 'downvoted'" (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn">
-            <span class="iconify" data-icon="mdi:arrow-down-bold" data-width="30" data-height="30"></span>
-          </button>
-        </span>
-        <span id="postTitle">
-          <span class="postInfo">
-            <p> Posted in &#183; <span style="border: 1px solid black; border-radius: 4px; font-weight: 500;">{{post.tags}}</span>
-              &#183; by {{authorName}} {{post.timeSince}} ago
-            </p>      
+  <div id="scrollPost">
+    <div *ngIf="!editMode" id="wholePost">
+      <a [routerLink]="['/postfeed']"> <span class="link-spanner"></span> </a>
+      <div  id="viewPost">
+        <div id="postHeader">
+          <span id="postScore">
+            <button  mat-icon-button [color]="!hasUpvoted ? 'black' : 'upvoted'" (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn">
+              <span class="iconify" data-icon="mdi:arrow-up-bold" data-width="30" data-height="30"></span>
+            </button>
+            {{post.upvotes - post.downvotes}}
+            <button  mat-icon-button [color]="!hasDownvoted ? 'black' : 'downvoted'" (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn">
+              <span class="iconify" data-icon="mdi:arrow-down-bold" data-width="30" data-height="30"></span>
+            </button>
           </span>
-          <span class="title">
-            <h3>
-              {{post.title}}
-            </h3>
+          <span id="postTitle">
+            <span class="postInfo">
+              <span>
+              Posted in &#183; <span style="border: 1px solid black; border-radius: 4px; font-weight: 500;">{{post.tags}}</span>
+                &#183; by {{authorName}} {{post.timeSince}} ago
+              </span>
+              <span class="toolButtons">
+                <span *ngIf="user?.userId === post.userId || user?.isAdmin">
+                  <button  mat-flat-button color="primary" (click)="editMode = true; loadPicturesToPost()">
+                    <span class="iconify" data-icon="ant-design:edit-filled" data-width="16" data-height="16"></span>Edit Post
+                  </button>
+                  <button mat-flat-button color="warn" (click)="confirmDeleting(post)">
+                    <span class="iconify"  data-icon="bi:trash-fill" data-width="16" data-height="16"></span>Delete Post
+                  </button>
+                  <button mat-flat-button color="warn" (click)="confirmFlagging()" [disabled]="hasFlagged||!loggedIn">
+                    <mat-icon>flag</mat-icon>Report
+                    <span *ngIf="user?.isAdmin">({{post.flags}})</span>
+                  </button>
+                  <button mat-flat-button color="primary" (click)="confirmUnflagging()" *ngIf="user?.isAdmin">
+                    unflag post
+                  </button>
+                </span>
+              </span>
+            </span>
+            <span class="title">
+              <h3>
+                {{post.title}}
+              </h3>
+            </span>
           </span>
-        </span>
+        </div>
+        <div id="postDescription" [innerHTML]="post.description"></div>
+        <div id="image"></div>
+        
+        <div id="comments">
+          <hr>
+          <p style="margin-left: 20px; margin-bottom: 0; margin-top: 20px;">Commenting as {{authorName}}</p>
+          <p *ngIf="!loggedIn"><a routerLink="/login">Please log in to comment</a></p>
+          <quill-editor *ngIf="loggedIn" [(ngModel)]="newCommentDescription" placeholder="Tell us what you think!" [style]="editorStyle" [modules]="configComment"></quill-editor>
+          <br><button mat-flat-button color="primary" (click)="createComment()" *ngIf="loggedIn">Comment</button><br>
+        </div>
+        <br>
+        <div *ngFor="let comment of post.comments">
+          <app-comment [comment]="comment"
+                      (delete)="deleteComment($event)">
+          </app-comment>
+          <hr>
+        </div>
       </div>
-      <div id="postDescription" [innerHTML]="post.description"></div>
-      <div id="image"></div>
     </div>
     
-    <!-- <mat-card> 
-      <mat-card-header>
-        <div mat-card-avatar></div>
-        <mat-card-title>{{post.title}}</mat-card-title>
-        <mat-card-subtitle>{{post.tags}}</mat-card-subtitle>
-        <mat-card-subtitle>{{post.createdAt.toDateString()}} by {{authorName}}</mat-card-subtitle>
-      </mat-card-header>
+    
+    <!-- POST EDITOR -->
+    <div *ngIf="editMode">
 
-      <mat-card-content>
-          <div [innerHTML]="post.description"></div>
-          <div id="image"></div>
-      </mat-card-content>
-      -->
+      <div id="container">
+        <!-- TITLE -->
+        <h1>
+          {{existsInBackend ? 'Edit your' : 'Submit a'}} post
+        </h1>
+        <form>
+          <mat-form-field appearance="fill" id="title">
+            <textarea placeholder="Title" rows="{{rows}}" matInput #message maxlength="300" (ngModelChange)="countRows()" [(ngModel)]="post.title" [ngModelOptions]="{standalone: true}"></textarea>
+            <mat-hint matSuffix>{{message.value.length}} / 300</mat-hint>
+          </mat-form-field>
+          <!-- Categories -->
+          <mat-form-field appearance="fill" id="category">
+            <mat-label>Category:</mat-label>
+            <mat-select [(ngModel)]="selectCategory" (ngModelChange)="findCategory()" [ngModelOptions]="{standalone: true}" >
+              <mat-option value="Restaurant">Restaurant</mat-option>
+              <mat-option value="University">University</mat-option>
+              <mat-option value="Coffeeshop">Coffeeshop</mat-option>
+              <mat-option value="Sightseeing">Sightseeing</mat-option>
+              <mat-option value="Shopping">Shopping</mat-option>
+              <mat-option value="Museum">Museum</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </form>
 
-      <mat-card-actions>
-        <button mat-flat-button color="primary" (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn">
-          Upvotes: {{post.upvotes}}
-        </button>
-        <button mat-flat-button color="primary" (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn">
-          Downvotes: {{post.downvotes}}
-        </button>
-        <button mat-flat-button color="warn" (click)="confirmFlagging()" [disabled]="hasFlagged||!loggedIn">
-          <mat-icon>flag</mat-icon>
-          <span *ngIf="user?.isAdmin">({{post.flags}})</span>
-        </button>
-        <button mat-flat-button color="primary" (click)="confirmUnflagging()" *ngIf="user?.isAdmin">
-          unflag post
-        </button>
+        <mat-tab-group dynamicHeight>
+          <mat-tab label="Post">
+            <div id="editor">
+            <quill-editor [(ngModel)]="post.description" placeholder="Text (optional)" [style]="editorStyle" [modules]="config" (onEditorCreated)="getEditorInstance($event)"></quill-editor>
+            </div>
+          </mat-tab>
+          <mat-tab label="One Image only" *ngIf="!existsInBackend">
+            <div id="uploadImage">
 
-        <span *ngIf="user?.userId === post.userId || user?.isAdmin">
-          <button  mat-flat-button color="primary" (click)="editMode = true; loadPicturesToPost()">
-            Edit Post
-          </button>
-          <button mat-flat-button color="warn" (click)="confirmDeleting(post)">
-            Delete Post
-          </button>
-        </span>
+              <span *ngIf="post.images.length == 0">
+                <input type="file" class="file-input"
+                (change)="onFileSelected($event, true)" #fileUpload
+                accept="image/*">
 
-        <br><br>
+                <div>
+                    <button mat-raised-button color="primary" (click)="fileUpload.click()">
+                        <mat-icon>image</mat-icon> Upload
+                    </button>
+                </div>
+              </span>
+              <span id="oneImage" > <!--Show Image--></span>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+        <span id="image"></span>
 
-        <input matInput type="text" placeholder="Write comment..." name="Comment" [(ngModel)]="newCommentDescription" *ngIf="loggedIn">
+        
+        <button (click)="deleteImages()">delete all images attached to this post</button>
 
-        <br><br>
+        <button mat-flat-button (click)="existsInBackend ? save() : createPost()">{{existsInBackend ? 'Save Post':'CreatePost'}}</button>
+        <mat-hint style="color:red">{{errorMessage}}</mat-hint>
+        <!-- {{post.description}} -->
 
-        <button mat-flat-button color="primary" (click)="createComment()" *ngIf="loggedIn">Comment</button>
-
-        <p *ngIf="!loggedIn">
-          <a routerLink="/login">Please log in to comment</a>
-        </p>
-      </mat-card-actions>
-    <!-- </mat-card> -->
-
-    <mat-card *ngIf = "post.comments.length != 0">
-      <div *ngFor="let comment of post.comments">
-        <app-comment [comment]="comment"
-                     (delete)="deleteComment($event)">
-        </app-comment>
       </div>
-    </mat-card>
-  </div>
-
-
-
-
-  <!-- POST EDITOR -->
-  <div *ngIf="editMode">
-
-    <div id="container">
-      <!-- TITLE -->
-      <h1>
-        {{existsInBackend ? 'Edit your' : 'Submit a'}} post
-      </h1>
-      <form>
-        <mat-form-field appearance="fill" id="title">
-          <textarea placeholder="Title" rows="{{rows}}" matInput #message maxlength="300" (ngModelChange)="countRows()" [(ngModel)]="post.title" [ngModelOptions]="{standalone: true}"></textarea>
-          <mat-hint matSuffix>{{message.value.length}} / 300</mat-hint>
-        </mat-form-field>
-        <!-- Categories -->
-        <mat-form-field appearance="fill" id="category">
-          <mat-label>Category:</mat-label>
-          <mat-select [(ngModel)]="selectCategory" (ngModelChange)="findCategory()" [ngModelOptions]="{standalone: true}" >
-            <mat-option value="Restaurant">Restaurant</mat-option>
-            <mat-option value="University">University</mat-option>
-            <mat-option value="Coffeeshop">Coffeeshop</mat-option>
-            <mat-option value="Sightseeing">Sightseeing</mat-option>
-            <mat-option value="Shopping">Shopping</mat-option>
-            <mat-option value="Museum">Museum</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </form>
-
-      <quill-editor [(ngModel)]="post.description" placeholder="Text (optional)" [style]="editorStyle" [modules]="config" (onEditorCreated)="getEditorInstance($event)"></quill-editor>
-      <span id="image"></span>
-
-      
-      <button (click)="deleteImages()">delete all images attached to this post</button>
-
-      <button mat-flat-button (click)="existsInBackend ? save() : createPost()">{{existsInBackend ? 'Save Post':'CreatePost'}}</button>
-      <mat-hint style="color:red">{{errorMessage}}</mat-hint>
-      {{post.description}}
-      
-      
-      
-      
-
-
-      <!-- <form class="title-form">
-        <mat-form-field appearance="fill">
-          <mat-label>Title</mat-label>
-          <input matInput #message maxlength="256" [(ngModel)]="post.title" [ngModelOptions]="{standalone: true}">
-          <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
-        </mat-form-field>
-
-        CATEGORY
-        <mat-form-field appearance="fill">
-          <mat-label>Category:</mat-label>
-          <mat-select [(ngModel)]="selectCategory" (ngModelChange)="findCategory()" [ngModelOptions]="{standalone: true}" >
-            <mat-option value="Restaurant">Restaurant</mat-option>
-            <mat-option value="University">University</mat-option>
-            <mat-option value="Coffeeshop">Coffeeshop</mat-option>
-            <mat-option value="Sightseeing">Sightseeing</mat-option>
-            <mat-option value="Shopping">Shopping</mat-option>
-            <mat-option value="Museum">Museum</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <span id="setTitle" style="visibility: hidden">Please set a title. </span>
-        <span id="setCategory" style="visibility: hidden"> Please set a category.</span>
-        <span id="setDescriptionOrImage" style="visibility: hidden"> Please set a Description or Image.</span>
-
-      UPLOAD IMAGE
-      <input type="file" class="file-input" multiple accept="image/*"
-         (change)="onFileSelected($event)" #fileUpload>
-
-      <div class="file-upload" action="image" enctype="multipart/form-data" method="post">
-        <button mat-mini-fab color="primary" class="upload-btn"
-          (click)="fileUpload.click()">
-            <mat-icon>attach_file</mat-icon>
-        </button>
-      </div>
-      </form>
-
-      
-      <button (click)="deleteImages()">delete all images attached to this post</button><br>
-
-      <button *ngIf="existsInBackend" (click)="save()">Save Post</button>
-      <button *ngIf="!existsInBackend" (click)="createPost()">Create Post</button>-->
     </div>
   </div>
 </div>
+
+
 
 
 <!-- PREVIEW -->
@@ -198,7 +150,7 @@
     <span id="postInfo">
         <p> Posted in &#183; <span style="border: 1px solid black; border-radius: 4px; font-weight: 500;">{{post.tags}}</span>
           &#183; by {{authorName}} {{post.timeSince}} ago
-        </p>      
+        </p>
     </span>
     <span class="title">
       <h3>
@@ -208,31 +160,15 @@
     <span id="description">
       {{post.noHtmlDescription}}
     </span>
+    <span *ngIf="this.loadPicture" id="imagePreview{{post.postId}}"></span>
+
+
+
     <span id="suffix">
-      <button mat-icon-button disableRipple="true"> <mat-icon>comment</mat-icon> {{post.comments.length}}</button>
-      <button mat-icon-button disableRipple="true"> <mat-icon>image</mat-icon> {{post.images.length}}</button>
+      <button mat-icon-button disableRipple="true"> <mat-icon>comment</mat-icon> {{post.nrOfComments}}</button>
+      <button mat-icon-button disableRipple="true"> <mat-icon>image</mat-icon> {{post.nrOfImages}}</button>
     </span>
   </div>
 </div>
 
-
-<!-- <div *ngIf="preview">
-  <div> <mat-chip-list><mat-chip>{{post.tags}}</mat-chip></mat-chip-list><br><br><br><br><br><br><br>
-    {{post.title}} <span style="display: inline-block;">&nbsp;</span>
-
-    <a [routerLink]="['post', post.postId]"> View Post </a><br><br>
-    <button  mat-flat-button color="primary" (click)="votePost(1)" [disabled]="hasDownvoted||!loggedIn">
-      <mat-icon>thumb_up</mat-icon>
-    </button>
-    {{post.upvotes}}
-    <span style="margin-left: 20px"></span>
-    <button  mat-flat-button color="primary" (click)="votePost(-1)" [disabled]="hasUpvoted||!loggedIn">
-      <mat-icon>thumb_down</mat-icon>
-    </button>
-    {{post.downvotes}}
-    <button *ngIf="user?.isAdmin" mat-flat-button color="warn" (click)="flagPost()" [disabled]="hasFlagged||!loggedIn">
-      <mat-icon>flag</mat-icon> ({{post.flags}})
-    </button>
-  </div>
-</div> -->
 

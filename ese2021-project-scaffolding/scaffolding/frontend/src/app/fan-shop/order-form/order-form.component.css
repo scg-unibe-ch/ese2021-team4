@@ -1,0 +1,24 @@
+.background {
+  background-color: rgb(126, 126, 126);
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  /* border: solid 5px red; */
+}
+
+.background::before {
+  content: "";
+  background-image: url("../../../assets/images/kornhausbruecke.jpg");
+  background-size: cover;
+  position: absolute;
+  background-attachment: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  filter: brightness(50%);
+}

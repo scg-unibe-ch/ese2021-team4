@@ -98,7 +98,7 @@ export class PostFeedComponent implements OnInit {
         votes.forEach((vote: any) => {
           if (vote.vote == dir) {
             this.httpClient.get(environment.endpointURL + "post/" + vote.postId).subscribe((post: any) => {
-              this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags));
+              this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.nrOfImages, post.nrOfComments, post.flags));
             })
           }
         });
@@ -118,7 +118,7 @@ export class PostFeedComponent implements OnInit {
         comments.forEach((comment: any) => {
           this.httpClient.get(environment.endpointURL + "post/" + comment.postId).subscribe((post: any) => {
             if (!this.postList.find(existingPost => existingPost.postId == post.postId)) {
-              this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags))
+              this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.nrOfImages, post.nrOfComments, post.flags))
             }
           })
         });
@@ -141,7 +141,7 @@ export class PostFeedComponent implements OnInit {
 
   pushPostsToPostlist(posts:any): void {
     posts.forEach((post: any) => {
-      this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.flags));
+      this.postList.push(new Post(post.postId, post.title, post.userId, post.description, post.tags, post.upvotes, post.downvotes, new Date(post.createdAt), [], [], post.nrOfImages, post.nrOfComments, post.flags));
     });
     this.postsLoaded = true;
     this.selectedPosts = this.postList;
@@ -231,6 +231,7 @@ export class PostFeedComponent implements OnInit {
   }
 
   shouldShowPostButton(): boolean {
-    return this.feedType != 'flagged' && this.feedType != 'upvoted' && this.feedType != 'downvoted' && this.feedType != 'commented';
+    const result =this.feedType != 'flagged' && this.feedType != 'upvoted' && this.feedType != 'downvoted' && this.feedType != 'commented';
+    return result;
   }
 }

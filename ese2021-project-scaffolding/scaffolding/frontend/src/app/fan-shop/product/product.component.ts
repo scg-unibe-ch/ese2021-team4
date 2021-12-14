@@ -9,6 +9,8 @@ import {AngularEditorConfig} from '@kolkov/angular-editor';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Category, CategoryFinder} from "../../models/category.model";
 import {ConfirmationAsker} from "../../models/confirmation-asker";
+import Quill from "quill";
+import {QuillModules} from "ngx-quill";
 
 
 @Component({
@@ -18,55 +20,6 @@ import {ConfirmationAsker} from "../../models/confirmation-asker";
 })
 export class ProductComponent implements OnInit {
 
-  config1: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    minHeight: '5rem',
-    maxHeight: '15rem',
-    placeholder: 'Enter text here...',
-    translate: 'no',
-    sanitize: false,
-    // toolbarPosition: 'top',
-    outline: true,
-    defaultFontName: 'Arial',
-    defaultFontSize: '5',
-    // showToolbar: false,
-    defaultParagraphSeparator: 'p',
-    customClasses: [
-      {
-        name: 'quote',
-        class: 'quote',
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
-      },
-    ],
-    toolbarHiddenButtons: [
-      [
-        'undo',
-        'redo',
-        'justifyLeft',
-        'justifyCenter',
-        'justifyRight',
-        'justifyFull',
-      ],
-      [
-        'insertVideo',
-        'insertImage',
-        'backgroundColor',
-        'textColor',
-        'removeFormat',
-        'customClasses',
-        'insertHorizontalRule'
-      ]
-    ]
-  };
 
   user: User | undefined;
   loggedIn: boolean | undefined;
@@ -74,6 +27,33 @@ export class ProductComponent implements OnInit {
   existsInBackend : boolean = true;
   form: FormGroup = new FormGroup({});
   editMode: boolean = false;
+  rows: number = 1;
+
+  quill : Quill | undefined;
+  // editor : Quill
+  editorStyle = {
+    height: '300px',
+    backgroundColor: "#9c9c9c"
+  }
+
+  config :QuillModules= {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike',{ 'header': 1 }, 'blockquote'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'script': 'sub'}, { 'script': 'super' }],
+      ['link', 'image', 'video'], //media
+      ['clean'] //clear formatting
+    ],
+  }
+
+  configComment :QuillModules= {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{ 'script': 'sub'}, { 'script': 'super' }],
+      ['link'],
+      ['clean'] //clear formattig
+    ],
+  }
 
   @Input()
   preview: boolean = false;
@@ -84,6 +64,7 @@ export class ProductComponent implements OnInit {
   product: Product = new Product(0, '', '', 0, Category.Bern, []);
   selectCategory=this.product.tags.toString();
   missingProduct: boolean = false;
+  errorMessage = "";
 
   constructor(
     private router: Router,
@@ -209,19 +190,14 @@ export class ProductComponent implements OnInit {
   }
 
   save(){
-    if (this.product.title==''){
-      document.getElementById('setTitle')!.style.visibility='visible';
-    }
-    else if (this.findCategory()==Category.Bern){
-      document.getElementById('setTitle')!.style.visibility='hidden';
-      document.getElementById('setCategory')!.style.visibility='visible';
-    }
-    else{
-      document.getElementById('setTitle')!.style.visibility='hidden';
-      document.getElementById('setCategory')!.style.visibility='hidden';
+    if(this.isValidFormFill()){
       this.router.navigate(['/fan-shop']);
       this.updateProduct(this.product);
     }
+  }
+
+  isValidFormFill() {
+    return this.product.title != '' && this.findCategory()!= Category.Bern && this.product.price != 0 && !isNaN(+this.product.price);
   }
 
   findCategory(): Category{
@@ -229,26 +205,8 @@ export class ProductComponent implements OnInit {
   }
 
   createProduct(): void {
-    if (this.product.title==''){
-      document.getElementById('setTitle')!.style.visibility='visible';
-    }
-    else if(this.product.price==0){
-      document.getElementById('setTitle')!.style.visibility='hidden';
-      document.getElementById('setCategory')!.style.visibility='hidden';
-      document.getElementById('setPrice')!.style.visibility='visible';
-    }
-    else if (this.findCategory()==Category.Bern){
-      document.getElementById('setTitle')!.style.visibility='hidden';
-      document.getElementById('setCategory')!.style.visibility='visible';
-      document.getElementById('setPrice')!.style.visibility='hidden';
-    } else {
+    if(this.isValidFormFill()){
       this.router.navigate(['/fan-shop']);
-      document.getElementById('setTitle')!.style.visibility='hidden';
-      document.getElementById('setPrice')!.style.visibility='hidden';
-      document.getElementById('setCategory')!.style.visibility='hidden';
-
-      //what is this check for?
-      if(this.user != null){
         this.httpClient.post(environment.endpointURL + "product", {
           title: this.product.title,
           description: this.product.description,
@@ -262,7 +220,6 @@ export class ProductComponent implements OnInit {
         this.httpClient.post(environment.endpointURL + "product/" + product.productId + "/image", formData).subscribe((image: any) => {
         });
       }, error => {console.log(error)});
-      }
     }
   }
 
@@ -283,7 +240,7 @@ export class ProductComponent implements OnInit {
     }, error => {console.log(error)});
   }
 
-  confirmDeleteProduct (product: Product): void{
+  confirmDeleting (product: Product): void{
     ConfirmationAsker.confirmTitle('You are about to delete this product.', 'Do you want to proceed?')
       .then(confirmed => {
         if(confirmed){
@@ -308,5 +265,36 @@ export class ProductComponent implements OnInit {
       this.router.navigate(['login']);
     }
   }
+
+  countRows(): void {
+    // console.log(this.post.title);
+    const width = window.innerWidth * 0.9 * 0.45
+    // console.log(width);
+    this.rows= Math.floor(this.getTextWidth(this.product.title) / width) + 1 ;
+    // console.log(this.rows);
+    // console.log(this.getTextWidth(this.post.title));
+  }
+
+  getTextWidth(text : string): number {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    context!.font = "16px roboto";
+    const width = context!.measureText(text).width;
+    return Math.ceil(width);
+  }
+
+  getEditorInstance(editorInstance : any) : void {
+    this.quill = editorInstance;
+    let toolbar = this.quill?.getModule('toolbar');
+    toolbar.addHandler('image', () => {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('multiple', '');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+      input.onchange = (e) => this.onFileSelected(e);
+    })
+  }
+
 }
 

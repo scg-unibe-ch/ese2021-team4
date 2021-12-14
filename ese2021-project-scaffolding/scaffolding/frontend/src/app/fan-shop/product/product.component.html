@@ -1,25 +1,9 @@
 <div *ngIf="missingProduct">This product does not exist anymore.</div>
 
-<div *ngIf="!missingProduct">
-  <div *ngIf="preview">
-    <div>
-      <mat-chip-list>
-        <mat-chip>
-          {{product.tags}}
-        </mat-chip>
-      </mat-chip-list>
-      <br><br><br><br><br><br><br>
-    {{product.title}}
-      <br>
-      <mat-card-subtitle>Price: {{product.price}} CHF </mat-card-subtitle> <br><br>
-      <a [routerLink]="['product', product.productId]"> View Product Details </a><br><br>
-    </div>
-  </div>
 
 
 
-
-
+<!--
   <div *ngIf="!preview">
     <div *ngIf="!editMode">
       <mat-card>
@@ -31,21 +15,63 @@
         </mat-card-header>
         <mat-card-content>
           <div [innerHTML]="product.description"></div>
-          <span id="image"></span>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-flat-button color="primary" (click) = "checkLoggedIn()" *ngIf="!user?.isAdmin">Buy now</button > <!-- buy now redirects to login-->
+          <button mat-flat-button color="primary" (click) = "checkLoggedIn()" *ngIf="!user?.isAdmin">Buy now</button >
           <span *ngIf="user?.isAdmin">
             <button  mat-flat-button color="primary" (click)="editMode = true; loadPicturesToProduct()">Edit Product</button>
-            <button mat-flat-button color="warn" (click)="confirmDeleteProduct(product)">Delete Product</button>
+            <button mat-flat-button color="warn" (click)="confirmDelet(product)">Delete Product</button>
           </span>
         </mat-card-actions>
       </mat-card>
     </div>
+  </div>-->
 
 
 
+<div *ngIf="!preview" class="background">
+  <!-- POST  -->
+  <div id="scrollProduct">
+    <div *ngIf="!editMode" id="wholeProduct">
+      <a [routerLink]="['/fan-shop']"> <span class="link-spanner"></span> </a>
+      <div  id="viewProduct">
+        <div id="productHeader">
+          <span id="productTitle">
+            <span class="productInfo">
+              <span>
+              Posted in &#183; <span style="border: 1px solid black; border-radius: 4px; font-weight: 500;">{{product.tags}}</span>
+              </span>
+              <span class="toolButtons">
+                <span *ngIf="user?.isAdmin">
+                  <button  mat-flat-button color="primary" (click)="editMode = true; loadPicturesToProduct()">
+                    <span class="iconify" data-icon="ant-design:edit-filled" data-width="16" data-height="16"></span>Edit Product
+                  </button>
+                  <button mat-flat-button color="warn" (click)="confirmDeleting(product)">
+                    <span class="iconify"  data-icon="bi:trash-fill" data-width="16" data-height="16"></span>Delete Product
+                  </button>
+                </span>
+              </span>
+            </span>
+            <span class="title">
+              <h3>
+                {{product.title}}
+              </h3>
+            </span>
+          </span>
+        </div>
+        <div id="productDescription" [innerHTML]="product.description"></div>
+        <div id="image"></div>
+        <span id="productPrice">{{product.price}} CHF</span>
+        <mat-card-actions>
+        <button mat-flat-button color="primary" (click) = "checkLoggedIn()" *ngIf="!user?.isAdmin">Buy now</button >
+        </mat-card-actions>
+      </div>
 
+    </div>
+
+
+
+<!--Editor
 
   <div *ngIf="editMode">
 
@@ -79,7 +105,7 @@
           <span id="setPrice" style="visibility: hidden"> Please set a price.</span>
         </form>
 
-        <!-- UPLOAD IMAGE -->
+       // UPLOAD IMAGE
           <input type="file" class="file-input" multiple accept="image/*"
           (change)="onFileSelected($event)" #fileUpload>
 
@@ -90,16 +116,86 @@
           </button>
           </div>
 
-        <!-- DESCRIPTION -->
+
+        //Description
         <br><br>
         <angular-editor id="editor1" [(ngModel)]="product.description" [config]="config1"></angular-editor>
 
       <span id="image"></span>
       <button (click)="deleteImages()">delete all images attached to this product</button><br>
 
-        <button *ngIf="existsInBackend" (click)="save()">Save</button>
-        <button *ngIf="!existsInBackend" (click)="createProduct()">Create</button>
+        <button *ngIf="existsInBackend" [disabled]="!isValidFormFill()" (click)="save()">Save</button>
+        <button *ngIf="!existsInBackend" [disabled]="!isValidFormFill()" (click)="createProduct()">Create</button>
       </div>
-    </div>
+    </div>-->
+
+
+<div *ngIf="editMode">
+
+  <div id="container">
+    <!-- TITLE -->
+    <h1>
+      {{existsInBackend ? 'Edit this' : 'Submit a'}} Product
+    </h1>
+    <form>
+      <mat-form-field appearance="fill" id="title">
+        <textarea placeholder="Title" rows="{{rows}}" matInput #message maxlength="300" (ngModelChange)="countRows()" [(ngModel)]="product.title" [ngModelOptions]="{standalone: true}"></textarea>
+        <mat-hint matSuffix>{{message.value.length}} / 300</mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="fill" id="price">
+        <textarea placeholder="Price" rows="{{rows}}" matInput #message maxlength="300" (ngModelChange)="countRows()" [(ngModel)]="product.price" [ngModelOptions]="{standalone: true}"></textarea>
+        <mat-hint matSuffix>{{message.value.length}} / 300</mat-hint>
+      </mat-form-field>
+      <!-- Categories -->
+      <mat-form-field appearance="fill" id="category">
+        <mat-label>Category:</mat-label>
+        <mat-select [(ngModel)]="selectCategory" (ngModelChange)="findCategory()" [ngModelOptions]="{standalone: true}" >
+          <mat-option value="Restaurant">Restaurant</mat-option>
+          <mat-option value="University">University</mat-option>
+          <mat-option value="Coffeeshop">Coffeeshop</mat-option>
+          <mat-option value="Sightseeing">Sightseeing</mat-option>
+          <mat-option value="Shopping">Shopping</mat-option>
+          <mat-option value="Museum">Museum</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+
+    <quill-editor [(ngModel)]="product.description" placeholder="Text (optional)" [style]="editorStyle" [modules]="config" (onEditorCreated)="getEditorInstance($event)"></quill-editor>
+    <span id="image"></span>
+
+
+    <button (click)="deleteImages()">delete all images attached to this product</button>
+
+    <button mat-flat-button (click)="existsInBackend ? save() : createProduct()">{{existsInBackend ? 'Save Product':'CreateProduct'}}</button>
+    <mat-hint style="color:red">{{errorMessage}}</mat-hint>
+    <!-- {{post.description}} -->
+
   </div>
 </div>
+  </div>
+</div>
+
+
+<div *ngIf="!missingProduct">
+<div *ngIf="preview" id="preview">
+  <a [routerLink]="['/fan-shop/product', product.productId]"> <span class="link-spanner"></span> </a>
+  <div id="score" > {{product.price}} CHF
+  </div>
+
+  <div id="content">
+    <span id="postInfo">
+        <p> Posted in &#183; <span style="border: 1px solid black; border-radius: 4px; font-weight: 500;">{{product.tags}}</span>
+        </p>
+    </span>
+    <span class="title">
+      <h3>
+        {{product.title}}
+      </h3>
+    </span>
+    <span id="description">
+      {{product.noHtmlDescription}}
+    </span>
+  </div>
+</div>
+</div>
+

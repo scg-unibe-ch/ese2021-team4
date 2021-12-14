@@ -28,10 +28,24 @@ h1 {
 
 .container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
     height: 545px;
+    border: solid 2px red;
+    position: relative;
+}
+
+.center {
+    border: solid 2px blue;
+}
+
+.left {
+    border: solid 2px yellow;
+}
+
+.right {
+    border: solid 2px green;
 }
 
 .mat-raised-button {
@@ -39,18 +53,4 @@ h1 {
     width: 220px;
     font-size:x-large;
     opacity: 0.9;
-}
-
-.mat-raised-button #login{
-  height: 60px;
-  width: 150px;
-  font-size:x-large;
-  opacity: 0.9;
-}
-
-.mat-raised-button #register{
-  height: 60px;
-  width: 150px;
-  font-size:x-large;
-  opacity: 0.9;
 }

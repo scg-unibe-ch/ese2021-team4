@@ -2,6 +2,18 @@
     display: none;
 }
 
+#scrollPost {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    overflow-y: scroll;
+
+}
 
 .background {
     background-color: rgb(126, 126, 126);
@@ -10,8 +22,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     position: relative;
+    /* border: solid 5px red; */
 }
 
 .background::before {
@@ -27,23 +40,28 @@
     filter: brightness(50%);
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 
 #viewPost {
-    width: 80vw;
-    height: 80vh;
+    width: 70vw;
+    margin-top: 5vh;
+    padding-bottom: 10vh;
     display: flex;
     flex-direction: column;
     position: relative;
     z-index: 2;
-    border: solid 2px blue;
-    /* justify-self: flex-start; */
-    /* align-self: flex-start; */
+    /* border: solid 2px blue; */
     background-color: aliceblue;
     border-radius: 10px;
+    /* overflow-y: scroll; */
 }
 
 #postHeader {
-    border: solid 2px pink;
+    /* border: solid 2px pink; */
     /* position: relative; */
     min-height: 20vh;
     display: flex;
@@ -51,7 +69,7 @@
 }
 
 #postScore {
-    border: solid 2px palevioletred;
+    /* border: solid 2px palevioletred; */
     width: 10%;
     display: flex;
     flex-direction: column;
@@ -60,7 +78,7 @@
 }
 
 #postTitle {
-    border: solid 2px black;
+    /* border: solid 2px black; */
     width: 90%;
     display: flex;
     justify-content: center;
@@ -69,7 +87,7 @@
 }
 
 #postDescription {
-    border: solid 2px yellow;
+    /* border: solid 2px yellow; */
     height: auto;
     /* width: 100%; */
     padding: 20px;
@@ -78,7 +96,8 @@
 #container {
     /* border: solid 2px turquoise; */
     width: 90vw;
-    height: 100%;
+    min-height: 80vh;
+    /* height: 100%; */
     display: flex;
     flex-direction: column;
     background-color: rgb(160, 159, 159);
@@ -93,7 +112,7 @@ h1 {
 }
 
 mat-form-field#title{
-    width: 60%;   
+    width: 60%;
 }
 
 mat-form-field#category {
@@ -107,6 +126,17 @@ mat-form-field textarea {
 }
 
 
+#editor {
+    height: 300px;
+}
+
+#uploadImage {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* ----------------------------- */
 /* ------View in post-feed------ */
 
@@ -114,7 +144,7 @@ mat-form-field textarea {
     display: flex;
     width: 100%;
     height: 100%;
-    /* border: solid 2px red; */
+    border: solid 2px red;
     flex-direction: row;
     position: relative
 }
@@ -145,11 +175,15 @@ mat-form-field textarea {
     width: 100%;
     /* border: solid 1px pink; */
     font-size: small;
-    
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .link-spanner{
-    position:absolute; 
+    position:absolute;
     width:100%;
     height:100%;
     top:0;
@@ -196,6 +230,14 @@ mat-form-field textarea {
     z-index: 0;
 }
 
+.toolButtons {
+    display: flex;
+    flex-direction: column;
+    /* border: solid 1px orange; */
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
 button {
     position: relative;
     z-index: 2;
@@ -204,6 +246,12 @@ button {
 button:hover {
     background-color: grey;
 }
+
+.mat-flat-button {
+    height: 35px;
+    font-size: 10px;
+}
+
 
 .mat-upvoted {
     color: red

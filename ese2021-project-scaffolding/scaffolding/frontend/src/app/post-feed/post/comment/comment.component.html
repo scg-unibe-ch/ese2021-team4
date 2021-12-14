@@ -1,4 +1,17 @@
-<mat-card>
+<div id="comment">
+  <div id="commentHeader">
+    <p> Posted &#183; by {{authorName}} &#183; {{comment.timeSince}} ago
+      <span class="example-spacer"></span>
+      <button mat-flat-button color="warn" (click)="confirmDeleteComment()" *ngIf="user?.userId === comment.userId || user?.isAdmin">
+        Delete Comment
+      </button>
+    </p>
+    
+  </div>
+  <div id="commentText" [innerHTML]="comment.description"></div>
+</div>
+
+<!-- <mat-card>
   <div>
     <mat-card-subtitle>
       {{comment.createdAt.toDateString()}}, {{comment.createdAt.toLocaleTimeString()}}<br>
@@ -10,4 +23,4 @@
     </button>
 
   </div>
-</mat-card>
+</mat-card> -->

@@ -5,7 +5,6 @@ import {UserService} from 'src/app/services/user.service';
 import {environment} from 'src/environments/environment';
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Comment} from 'src/app/models/comment.model';
 import {Category, CategoryFinder} from "../../models/category.model";
 import {ToastrService} from "ngx-toastr";
@@ -118,8 +117,6 @@ export class PostComponent implements OnInit {
 
       if(isOnlyImage){
         this.post.images.push(files[i]);
-
-        console.log(oneImage);
         img.width= window.innerWidth * 0.6;
         oneImage?.appendChild(img);
 
@@ -151,9 +148,6 @@ export class PostComponent implements OnInit {
         // }
       }
     }
-    const description = this.post.description;
-    this.post.description = '';
-    this.post.description = description;
   }
 
   ngOnInit(): void {
@@ -235,7 +229,7 @@ export class PostComponent implements OnInit {
     if(oneImage != undefined){
       oneImage.innerHTML = '';
     }
-
+    this.validDescription();
   }
 
   loadPicturesToPost(){
@@ -266,7 +260,6 @@ export class PostComponent implements OnInit {
   }
 
   loadPicturesToPreview(){
-    // console.log("load");
     this.httpClient.get(environment.endpointURL + "post/" + this.postId + "/getImageIds",
     {responseType: 'text', headers: {'Content-Type': 'json/application'}}).subscribe((imgIds: any) => {
       if(imgIds != ""){
@@ -322,12 +315,10 @@ export class PostComponent implements OnInit {
 
   validDescription(): boolean {
     this.showDescriptionError = false;
-    console.log(this.showDescriptionError);
     if(this.post.description == null){
       this.post.description = '';
     }
     if(this.post.description == '' && this.post.images.length == 0){
-      console.log('about to set true');
       this.showDescriptionError = true;
       return false;
     }
@@ -352,7 +343,6 @@ export class PostComponent implements OnInit {
       this.errorMessage = "";
       this.router.navigate(['/postfeed']);
     if(this.user != null){ //user might not be instantiated, this is taken care of by the html
-      console.log("post create");
       this.httpClient.post(environment.endpointURL + "post", {
       title: this.post.title,
       description: this.post.description,
@@ -577,12 +567,8 @@ export class PostComponent implements OnInit {
   }
 
   countRows(): void {
-    // console.log(this.post.title);
     const width = window.innerWidth * 0.9 * 0.45;
-    // console.log(width);
-    this.rows= Math.floor(this.getTextWidth(this.post.title) / width) + 1 ;
-    // console.log(this.rows);
-    // console.log(this.getTextWidth(this.post.title));
+    this.rows= Math.floor(this.getTextWidth(this.post.title) / width) + 1;
   }
 
   getTextWidth(text : string): number {
@@ -602,7 +588,7 @@ export class PostComponent implements OnInit {
       input.setAttribute('multiple', '');
       input.setAttribute('accept', 'image/*');
       input.click();
-      input.onchange = (e) => {this.onFileSelected(e, false);};
+      input.onchange = (e) => this.onFileSelected(e, false);
     })
   }
 

@@ -101,7 +101,7 @@
 
         <mat-tab-group dynamicHeight>
           <mat-tab label="Post">
-            <mat-hint *ngIf="showDescriptionError" style="color: red">Please write something or upload a picture.</mat-hint>
+            <mat-error *ngIf="showDescriptionError" style="color: red">Please write something or upload a picture.</mat-error>
             <div id="editor">
             <quill-editor
               [(ngModel)]="post.description"

@@ -22,7 +22,7 @@
               </span>
               <span class="toolButtons">
                 <span *ngIf="user?.userId === post.userId || user?.isAdmin">
-                  <button  mat-flat-button color="primary" (click)="editMode = true; loadPicturesToPost()">
+                  <button  mat-flat-button color="primary" (click)="editMode = true; this.post.images = []; loadPicturesToPost();">
                     <span class="iconify" data-icon="ant-design:edit-filled" data-width="16" data-height="16"></span>Edit Post
                   </button>
                   <button mat-flat-button color="warn" (click)="confirmDeleting(post)">
@@ -46,7 +46,8 @@
           </span>
         </div>
         <div id="postDescription" [innerHTML]="post.description"></div>
-        <div id="image"></div>
+        <div *ngIf="post.imageOnly" id="image" style="display: flex; flex-direction: column; align-items: center;"></div>
+        <div *ngIf="!post.imageOnly" id="image"></div>
 
         <div id="comments">
           <hr>

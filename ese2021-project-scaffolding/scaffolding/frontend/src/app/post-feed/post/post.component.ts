@@ -167,7 +167,6 @@ export class PostComponent implements OnInit {
       this.checkVoteStatus();
 
       if (this.loadPicture){
-        // console.log("jetzt laden");
         this.loadPicturesToPreview();
       }
 
@@ -232,7 +231,7 @@ export class PostComponent implements OnInit {
     if(oneImage != undefined){
       oneImage.innerHTML = '';
     }
-
+    this.updatePost(this.post);
   }
 
   loadPicturesToPost(){
@@ -250,7 +249,11 @@ export class PostComponent implements OnInit {
             const img = document.createElement("img");
             const picture: File = new File([image], "test");
             img.src = URL.createObjectURL(picture);
-            img.height = 200;
+            if(this.post.imageOnly){
+              img.width = window.innerWidth * 0.7 - 20;
+            } else {
+              img.height = window.innerHeight * 0.7 * 0.6 - 20;
+            }
             this.post.images.push(picture);
             img.onload = function() {
               URL.revokeObjectURL(img.src);
@@ -278,8 +281,7 @@ export class PostComponent implements OnInit {
             const img = document.createElement("img");
             const picture: File = new File([image], "test");
             img.src = URL.createObjectURL(picture);
-            img.width = window.innerWidth * 0.7 * 0.8 - 10; //numbers come from preview width, content width
-            // img.height = 300;
+            img.width = window.innerWidth * 0.7 * 0.8 - 20; //numbers come from preview width, content width
             this.post.images.push(picture);
             img.onload = function() {
               URL.revokeObjectURL(img.src);
@@ -305,10 +307,9 @@ export class PostComponent implements OnInit {
     }
     else {
       this.errorMessage = "";
-      this.router.navigate(['/postfeed']);
-      this.post.nrOfImages = this.post.images.length;
       this.updatePost(this.post);
-    }
+      this.router.navigate(['/postfeed']);
+      }
   }
 
   findCategory(): Category{
@@ -359,7 +360,7 @@ export class PostComponent implements OnInit {
       tags: this.findCategory(),
       upvotes: post.upvotes,
       downvotes: post.downvotes,
-      nrOfImages: post.nrOfImages,
+      nrOfImages: post.images.length,
       nrOfComments: post.nrOfComments,
       flags: post.flags
     }).subscribe((post: any) => {

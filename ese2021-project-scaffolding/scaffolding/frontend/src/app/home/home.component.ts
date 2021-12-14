@@ -21,6 +21,14 @@ export class HomeComponent implements OnInit {
   words : String[] = [ "favourite spots", "secret tips", "magic moments", "traditional restaurants", "lovely views", "tasty brunch", "fancy bars", "cozy coffeeshops"];
   current = this.words[this.index];
 
+  weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+ 
+  forecastDescs : String[] = [];
+  forecastImgs : String[] = [];
+  forecastDay : String[] = ['','','','','','',''];
+  forecastTempMin : Number[] = [];
+  forecastTempMax : Number[] = [];
+
   constructor(
     public httpClient: HttpClient,
     public userService: UserService
@@ -33,13 +41,13 @@ export class HomeComponent implements OnInit {
     this.user = userService.getUser();
   }
 
-  //on change animate vo unger
   ngOnInit(): void {
     this.index = Math.floor(Math.random()*this.words.length);
     this.checkUserStatus();
     setInterval(() => {
       this.setSlogan();
     }, this.timeout);
+    this.displayWeather();
   }
 
   setSlogan(): void {
@@ -68,5 +76,25 @@ export class HomeComponent implements OnInit {
 
     this.userService.setLoggedIn(false);
     this.userService.setUser(undefined);
+  }
+
+  displayWeather(): void {
+    fetch("http://api.openweathermap.org/data/2.5/onecall?lat=46.94809&lon=7.44744&units=metric&lang=en&appid=d13b9c393d5f9b8fbd28fcdb4eccb75e").then(res => res.json()).then((res: any) => {
+      this.forecastDescs.push(res.current.weather[0].description);
+      this.forecastImgs.push("http://openweathermap.org/img/w/" + res.current.weather[0].icon + ".png"); 
+      this.forecastTempMax.push(Math.round(res.current.temp));
+      this.forecastTempMin.push(0);
+      this.forecastDay[0] = this.weekdays[new Date(res.daily[0].dt * 1000).getDay()];
+      var i = 1; 
+      while(i < Math.min(6, res.daily.length)){
+        this.forecastDescs.push(res.daily[i].weather[0].description);
+        this.forecastImgs.push("http://openweathermap.org/img/w/" + res.daily[i].weather[0].icon + ".png"); 
+        this.forecastTempMax.push(Math.round(res.daily[i].temp.max));
+        this.forecastTempMin.push(Math.round(res.daily[i].temp.min));
+        this.forecastDay[i] = this.weekdays[new Date(res.daily[i].dt * 1000).getDay()];
+        i++;
+      };  
+      console.log(this.forecastDay[0])
+    });
   }
 }

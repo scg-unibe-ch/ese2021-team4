@@ -14,7 +14,7 @@ export class Comment {
     this.timeSince = this.calculateTimeSince(this.createdAt);
 
   }
-  
+
   calculateTimeSince(date : Date) : String {
     var seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
 

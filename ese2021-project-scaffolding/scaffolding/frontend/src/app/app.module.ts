@@ -40,7 +40,6 @@ import { OrderFeedComponent } from './fan-shop/order-feed/order-feed.component';
 import { UserListComponent } from './admin-dashboard/user-list/user-list.component';
 import {ConfirmBoxConfigModule, NgxAwesomePopupModule} from "@costlydeveloper/ngx-awesome-popup";
 import { QuillModule } from 'ngx-quill';
-import {timeout} from "rxjs/operators";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -109,7 +108,7 @@ const routes: Routes = [
     NgxStripeModule.forRoot('pk_test_51K0pOrIFU9ZBSiczIlnqN7V1M1A7mf0vb6KDUJR01ajD8j3Lfht3SPgImeSnweRtNr29wjknKCEn2gGd4Zwha6Bx00VKqhuUP6'),
     MatRadioModule,
     MatButtonToggleModule,
-    QuillModule.forRoot({}) //add global config here
+    QuillModule.forRoot({})
   ],
   providers: [
     {

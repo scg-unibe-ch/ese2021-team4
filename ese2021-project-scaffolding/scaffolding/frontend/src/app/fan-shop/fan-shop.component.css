@@ -6,7 +6,6 @@ mat-grid-tile {
 }
 
 mat-grid-list {
-  border: 5px solid turquoise;
   margin-top: 20px;
   height: 100%;
   width: 70%;
@@ -91,8 +90,6 @@ mat-button-toggle:hover {
   height: 100%;
   width: 100%;
   border-radius: 10px;
-  background-color: pink;
-  border: 2px solid green
 }
 
 #product:hover {

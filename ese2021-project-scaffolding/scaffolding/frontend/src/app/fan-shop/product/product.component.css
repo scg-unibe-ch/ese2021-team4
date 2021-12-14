@@ -83,14 +83,11 @@
 }
 
 #productDescription {
-  border: solid 2px yellow;
   height: auto;
-  /* width: 100%; */
   padding: 20px;
 }
 
 #container {
-  border: solid 2px turquoise;
   width: 90vw;
   height: 100%;
   display: flex;
@@ -128,7 +125,6 @@ mat-form-field textarea {
   display: flex;
   width: 100%;
   height: 200px;
-  border: solid 2px brown;
   flex-direction: row;
   position: relative
 }
@@ -136,7 +132,6 @@ mat-form-field textarea {
 #score {
   height: 35%;
   width: 10%;
-  border: solid 2px blue;
   display: flex;
   flex-direction: column-reverse;
   justify-content: flex-start;
@@ -147,16 +142,14 @@ mat-form-field textarea {
 #content {
   padding: 5px;
   display: flex;
-  height: 30%;
+  height: 150%;
   width: 80%;
-  border: solid 2px yellow;
   background-color: rgb(155, 155, 155);
   flex-direction: column;
 }
 
 .productInfo {
   width: 100%;
-  border: solid 1px pink;
   font-size: small;
   margin-bottom: 20px;
   display: flex;
@@ -186,7 +179,6 @@ mat-form-field textarea {
   text-overflow: ellipsis;
   content: "";
   position: relative;
-  border: solid 1px orange;
 }
 
 #description::before {

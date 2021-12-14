@@ -9,7 +9,7 @@ export class ConfirmationAsker {
 
     // Choose layout color type
     confirmBox.setConfig({
-      LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
+      LayoutType: DialogLayoutDisplay.NONE// SUCCESS | INFO | NONE | DANGER | WARNING
     });
     return await confirmBox.openConfirmBox$().toPromise().then(resp => resp.ClickedButtonID == 'yes')
   }
@@ -22,7 +22,7 @@ export class ConfirmationAsker {
 
     // Choose layout color type
     confirmBox.setConfig({
-      LayoutType: DialogLayoutDisplay.WARNING// SUCCESS | INFO | NONE | DANGER | WARNING
+      LayoutType: DialogLayoutDisplay.NONE// SUCCESS | INFO | NONE | DANGER | WARNING
     });
     return await confirmBox.openConfirmBox$().toPromise().then(resp => resp.ClickedButtonID == 'yes')
   }

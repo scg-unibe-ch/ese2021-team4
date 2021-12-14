@@ -409,7 +409,7 @@ export class PostComponent implements OnInit {
   deletePost(post: Post): void {
     if(this.user?.userId == post.userId || this.user?.isAdmin){
       this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {});
-      this.router.navigate(['/postfeed']);
+      this.router.navigate([this.originURL]);
     }
   }
 

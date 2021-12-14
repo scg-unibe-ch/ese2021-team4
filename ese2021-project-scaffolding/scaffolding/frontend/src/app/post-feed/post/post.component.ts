@@ -248,7 +248,7 @@ export class PostComponent implements OnInit {
             const picture: File = new File([image], "test");
             img.src = URL.createObjectURL(picture);
             if(this.post.imageOnly){
-              img.width = window.innerWidth * 0.7 - 20;
+              img.width = window.innerWidth * 0.6 - 20;
             } else {
               img.height = window.innerHeight * 0.7 * 0.6 - 20;
             }

@@ -34,7 +34,7 @@
         <div id="buyProduct" >
         <span style="display: inline-block" style="padding: 8px; border: 1px solid black">{{product.price}} CHF</span>
         <mat-card-actions>
-        <button mat-flat-button color="primary" (click) = "checkLoggedIn()" *ngIf="user?.isAdmin" style="display: inline-block">
+        <button mat-flat-button color="primary" (click) = "checkLoggedIn()" *ngIf="!user?.isAdmin" style="display: inline-block">
           <span class="iconify" data-icon="mdi:cart" data-width="16" data-height="16"></span> Buy now
         </button >
         </mat-card-actions></div>

@@ -1,4 +1,4 @@
-<div *ngIf=!redirecting>
+<div *ngIf=!redirecting class="background">
   <mat-card>
     <app-product [productId]="productId"
                  [preview]="true"></app-product>
@@ -47,7 +47,6 @@
     <mat-form-field>
       <input matInput type="text" placeholder="city" name="city" [(ngModel)]="orderCity">
     </mat-form-field><br>
-    <br>
 
     <span style="color: red">{{missingPhoneNumber}}</span>
     <mat-form-field>
@@ -55,10 +54,9 @@
       <mat-hint style="color: red" *ngIf="phoneNrMessage!=''">{{phoneNrMessage}}</mat-hint>
     </mat-form-field>
     <br>
-
+    <mat-hint style="color: red"> {{errorMessage}} </mat-hint>
   </mat-card>
-  <mat-hint style="color: red"> {{errorMessage}} </mat-hint>
-  <br>
+
   <br>
   <p>
     <button mat-flat-button color="primary" (click)="confirmOrder()" > Confirm Order </button>

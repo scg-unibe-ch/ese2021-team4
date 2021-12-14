@@ -44,10 +44,10 @@
               <span class="toolButtons">
                 <span *ngIf="user?.isAdmin">
                   <button  mat-flat-button color="primary" (click)="editMode = true; loadPicturesToProduct()">
-                    <span class="iconify" data-icon="ant-design:edit-filled" data-width="16" data-height="16"></span>Edit Post
+                    <span class="iconify" data-icon="ant-design:edit-filled" data-width="16" data-height="16"></span>Edit Product
                   </button>
                   <button mat-flat-button color="warn" (click)="confirmDeleting(product)">
-                    <span class="iconify"  data-icon="bi:trash-fill" data-width="16" data-height="16"></span>Delete Post
+                    <span class="iconify"  data-icon="bi:trash-fill" data-width="16" data-height="16"></span>Delete Product
                   </button>
                 </span>
               </span>
@@ -135,7 +135,7 @@
   <div id="container">
     <!-- TITLE -->
     <h1>
-      {{existsInBackend ? 'Edit your' : 'Submit a'}} Product
+      {{existsInBackend ? 'Edit this' : 'Submit a'}} Product
     </h1>
     <form>
       <mat-form-field appearance="fill" id="title">
@@ -179,7 +179,7 @@
 <div *ngIf="!missingProduct">
 <div *ngIf="preview" id="preview">
   <a [routerLink]="['/fan-shop/product', product.productId]"> <span class="link-spanner"></span> </a>
-  <div id="score">
+  <div id="score" > {{product.price}} CHF
   </div>
 
   <div id="content">
@@ -194,9 +194,6 @@
     </span>
     <span id="description">
       {{product.noHtmlDescription}}
-    </span>
-    <span id="suffix">
-      <button mat-icon-button disableRipple="true"> {{product.price}} CHF </button>
     </span>
   </div>
 </div>

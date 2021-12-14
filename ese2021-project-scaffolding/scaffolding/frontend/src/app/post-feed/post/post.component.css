@@ -112,7 +112,7 @@ h1 {
 }
 
 mat-form-field#title{
-    width: 60%;   
+    width: 60%;
 }
 
 mat-form-field#category {
@@ -144,7 +144,7 @@ mat-form-field textarea {
     display: flex;
     width: 100%;
     height: 100%;
-    /* border: solid 2px red; */
+    border: solid 2px red;
     flex-direction: row;
     position: relative
 }
@@ -183,7 +183,7 @@ mat-form-field textarea {
 }
 
 .link-spanner{
-    position:absolute; 
+    position:absolute;
     width:100%;
     height:100%;
     top:0;

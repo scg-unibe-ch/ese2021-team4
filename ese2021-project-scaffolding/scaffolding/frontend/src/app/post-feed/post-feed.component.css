@@ -1,7 +1,7 @@
 mat-grid-tile {
     background: rgb(255, 255, 255);
     border-radius: 10px;
-    
+
 }
 
 mat-grid-list {
@@ -37,7 +37,7 @@ mat-button-toggle-group {
 }
 
 mat-button-toggle:hover {
-    background-color: rgb(168, 148, 148);    
+    background-color: rgb(168, 148, 148);
 }
 
 .mat-button-toggle-checked {
@@ -71,9 +71,9 @@ mat-button-toggle:hover {
 }
 
 
-.background::before {    
+.background::before {
     content: "";
-    background-image: url("../../assets/images/kornhausbruecke.jpg");
+    background-image: url("../../assets/images/bibliothek.jpeg");
     background-size: cover;
     position: absolute;
     background-attachment: fixed;

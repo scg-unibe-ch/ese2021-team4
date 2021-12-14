@@ -29,7 +29,7 @@
 
 .background::before {
   content: "";
-  background-image: url("../../../assets/images/bibliothek.jpeg");
+  background-image: url("../../../assets/images/kornhausbruecke.jpg");
   background-size: cover;
   position: absolute;
   background-attachment: fixed;
@@ -57,15 +57,15 @@
 }
 
 #productHeader {
-  /* border: solid 2px pink; */
-  /* position: relative; */
+  border: solid 2px pink;
+  position: relative;
   min-height: 20vh;
   display: flex;
   flex-direction: row;
 }
 
 #postScore {
-  /* border: solid 2px palevioletred; */
+  border: solid 2px palevioletred;
   width: 10%;
   display: flex;
   flex-direction: column;
@@ -74,7 +74,7 @@
 }
 
 #productTitle {
-  /* border: solid 2px black; */
+  border: solid 2px black;
   width: 90%;
   display: flex;
   justify-content: center;
@@ -83,14 +83,14 @@
 }
 
 #productDescription {
-  /* border: solid 2px yellow; */
+  border: solid 2px yellow;
   height: auto;
   /* width: 100%; */
   padding: 20px;
 }
 
 #container {
-  /* border: solid 2px turquoise; */
+  border: solid 2px turquoise;
   width: 90vw;
   height: 100%;
   display: flex;
@@ -128,7 +128,7 @@ mat-form-field textarea {
   display: flex;
   width: 100%;
   height: 100%;
-  /* border: solid 2px red; */
+  border: solid 2px red;
   flex-direction: row;
   position: relative
 }
@@ -136,13 +136,13 @@ mat-form-field textarea {
 #score {
   height: 100%;
   width: 10%;
-  /* border: solid 2px blue; */
+  border: solid 2px blue;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   font-size: 20px;
-  margin-top: 5px;
+  margin-top: 20px;
 }
 
 #content {
@@ -150,14 +150,14 @@ mat-form-field textarea {
   display: flex;
   height: 100%;
   width: 80%;
-  /* border: solid 2px yellow; */
+  border: solid 2px yellow;
   background-color: rgb(155, 155, 155);
   flex-direction: column;
 }
 
 .productInfo {
   width: 100%;
-  /* border: solid 1px pink; */
+  border: solid 1px pink;
   font-size: small;
   margin-bottom: 20px;
   display: flex;
@@ -187,7 +187,7 @@ mat-form-field textarea {
   text-overflow: ellipsis;
   content: "";
   position: relative;
-  /* border: solid 1px orange; */
+  border: solid 1px orange;
 }
 
 #description::before {

@@ -89,11 +89,10 @@
     <quill-editor [(ngModel)]="product.description" placeholder="Text (optional)" [style]="editorStyle" [modules]="config" (onEditorCreated)="getEditorInstance($event)"></quill-editor>
     <span id="image"></span>
 
-
-    <button (click)="deleteImages()">delete all images attached to this product</button>
-
-    <button mat-flat-button (click)="existsInBackend ? save() : createProduct()">{{existsInBackend ? 'Save Product':'CreateProduct'}}</button>
-    <!-- {{post.description}} -->
+    <div class=buttons>
+      <button mat-flat-button (click)="deleteImages()">delete all images attached to this product</button>
+      <button mat-flat-button (click)="existsInBackend ? save() : createProduct()">{{existsInBackend ? 'Save Product':'CreateProduct'}}</button>
+    </div>
 
   </div>
 </div>

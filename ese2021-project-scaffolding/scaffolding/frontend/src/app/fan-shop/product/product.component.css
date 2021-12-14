@@ -191,6 +191,13 @@ mat-form-field textarea {
   background: linear-gradient(transparent 100px, #fff7ee);
 }
 
+.buttons {
+  display: flex;
+  align-items: center;
+  height: 10vh;
+  justify-content: center;
+}
+
 #suffix {
   /* border: solid 1px green; */
   margin-bottom: 10px;

@@ -555,7 +555,7 @@ export class PostComponent implements OnInit {
 
   countRows(): void {
     // console.log(this.post.title);
-    const width = window.innerWidth * 0.9 * 0.45
+    const width = window.innerWidth * 0.9 * 0.45;
     // console.log(width);
     this.rows= Math.floor(this.getTextWidth(this.post.title) / width) + 1 ;
     // console.log(this.rows);

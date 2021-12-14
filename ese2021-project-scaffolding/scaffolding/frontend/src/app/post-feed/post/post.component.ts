@@ -100,9 +100,7 @@ export class PostComponent implements OnInit {
     this.activatedRoute.url.subscribe(url => {
       if(url != undefined){
         this.originURL = url[0].path
-        // url.forEach(segment => this.originURL += '/' + segment)
       }
-      console.log(this.originURL)
     });
 
     // Listen for changes
@@ -305,6 +303,7 @@ export class PostComponent implements OnInit {
     if(this.validPostCreationInput()){
       this.updatePost(this.post);
       this.editMode = false;
+      this.loadPost()
       }
   }
 

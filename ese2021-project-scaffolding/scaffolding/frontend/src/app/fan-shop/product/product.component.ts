@@ -161,7 +161,7 @@ export class ProductComponent implements OnInit {
           this.httpClient.get(environment.endpointURL + "product/" + "getSingleImage/" + imageId,
             {responseType: 'blob', headers: {'Content-Type': 'multipart/formData'}}).subscribe((image: any) =>{
             const img = document.createElement("img");
-            const picture: File = new File([image], "test");
+            const picture: File = new File([image], "uploadedProduct");
             img.src = URL.createObjectURL(picture);
             img.height = 200;
             this.product.images.push(picture);
@@ -265,7 +265,9 @@ export class ProductComponent implements OnInit {
     }).subscribe((post: any) => {
       const formData = new FormData();
       for (let i=0; i < this.product.images.length; i++){
-        formData.append("file"+i, this.product.images[i]);
+        if(this.product.images[i].name != "uploadedProduct"){
+          formData.append("file"+i, this.product.images[i]);
+        }
       }
       this.httpClient.post(environment.endpointURL + "product/" + product.productId + "/image", formData).subscribe((post: any) => {
       });

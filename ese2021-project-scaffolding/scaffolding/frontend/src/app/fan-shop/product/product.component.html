@@ -1,35 +1,5 @@
-<div *ngIf="missingProduct">This product does not exist anymore.</div>
 
-
-
-
-<!--
-  <div *ngIf="!preview">
-    <div *ngIf="!editMode">
-      <mat-card>
-        <mat-card-header>
-          <div mat-card-avatar></div>
-          <mat-card-title>{{product.title}}</mat-card-title>
-          <mat-card-subtitle>{{product.tags}}</mat-card-subtitle>
-          <mat-card-subtitle>Price: {{product.price}} CHF </mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <div [innerHTML]="product.description"></div>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-flat-button color="primary" (click) = "checkLoggedIn()" *ngIf="!user?.isAdmin">Buy now</button >
-          <span *ngIf="user?.isAdmin">
-            <button  mat-flat-button color="primary" (click)="editMode = true; loadPicturesToProduct()">Edit Product</button>
-            <button mat-flat-button color="warn" (click)="confirmDelet(product)">Delete Product</button>
-          </span>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-  </div>-->
-
-
-
-<div *ngIf="!preview" class="background">
+<div *ngIf="!preview && !orderFormView" class="background">
   <!-- POST  -->
   <div id="scrollProduct">
     <div *ngIf="!editMode" id="wholeProduct">
@@ -186,13 +156,13 @@
 
 
 <div *ngIf="!missingProduct">
-<div *ngIf="preview" id="preview">
+<div *ngIf="preview && !orderFormView" id="preview">
   <a [routerLink]="['/fan-shop/product', product.productId]"> <span class="link-spanner"></span> </a>
   <div id="score" > {{product.price}} CHF
   </div>
 
   <div id="content">
-    <span id="postInfo">
+    <span id="productInfo">
         <p> Posted in &#183; <span style="border: 1px solid black; border-radius: 4px; font-weight: 500;">{{product.tags}}</span>
         </p>
     </span>
@@ -201,10 +171,14 @@
         {{product.title}}
       </h3>
     </span>
-    <span id="description">
-      {{product.noHtmlDescription}}
-    </span>
   </div>
 </div>
+
 </div>
+<div *ngIf="orderFormView" id="orderFormView">
+  <a [routerLink]="['/fan-shop/product', product.productId]"> <span class="link-spanner"></span> </a>
+  <span style="border-right: 1px solid black; padding-right: 10px">{{product.title}}</span>
+  <span style="padding-left: 5px"> {{product.price}} CHF</span>
+</div>
+
 

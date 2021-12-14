@@ -59,6 +59,9 @@ export class ProductComponent implements OnInit {
   preview: boolean = false;
 
   @Input()
+  orderFormView: boolean = false;
+
+  @Input()
   productId: number = 0;
 
   product: Product = new Product(0, '', '', 0, Category.Bern, []);

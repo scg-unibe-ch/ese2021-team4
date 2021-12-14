@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="665e9aa3-6cd1-4315-843c-4790b6472fcb" name="Default Changelist" comment="paid button for admins">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/order-form/order-form.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/order-form/order-form.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/order-form/order-form.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/fan-shop/order-form/order-form.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/post-feed/post-feed.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ese2021-project-scaffolding/scaffolding/frontend/src/app/post-feed/post-feed.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +50,7 @@
       <workItem from="1638993760832" duration="336000" />
       <workItem from="1639151340238" duration="1514000" />
       <workItem from="1639380182770" duration="1433000" />
+      <workItem from="1639467356930" duration="333000" />
     </task>
     <task id="LOCAL-00001" summary="started layout for products">
       <created>1637761671615</created>

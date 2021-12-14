@@ -190,13 +190,33 @@ export class ProductComponent implements OnInit {
   }
 
   save(){
-    if(this.isValidFormFill()){
+    if (!this.isValidFormFill()){
+      this.setErrorMessage();
+    }
+
+    else {
+      this.errorMessage = "";
       this.router.navigate(['/fan-shop']);
       this.updateProduct(this.product);
     }
   }
 
-  isValidFormFill() {
+  setErrorMessage(): void{
+    if (this.product.title==''){
+      this.errorMessage= "Set a title";
+    }
+    else if (this.product.price == 0 || !isNaN(+this.product.price)){
+      this.errorMessage = "Set a price";
+    }
+    else if (this.findCategory()==Category.Bern){
+      this.errorMessage = "Set a category";
+    }
+    else if(this.product.images.length == 0 && this.product.description == '') {
+      this.errorMessage = "Make a description or upload an image";
+    }
+  }
+
+  isValidFormFill(): boolean {
     return this.product.title != '' && this.findCategory()!= Category.Bern && this.product.price != 0 && !isNaN(+this.product.price);
   }
 
@@ -205,7 +225,11 @@ export class ProductComponent implements OnInit {
   }
 
   createProduct(): void {
-    if(this.isValidFormFill()){
+    if(!this.isValidFormFill()) {
+    this.setErrorMessage();
+    }
+    else {
+      this.errorMessage="";
       this.router.navigate(['/fan-shop']);
         this.httpClient.post(environment.endpointURL + "product", {
           title: this.product.title,

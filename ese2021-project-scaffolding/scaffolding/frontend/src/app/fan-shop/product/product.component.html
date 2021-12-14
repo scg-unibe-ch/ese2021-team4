@@ -22,21 +22,22 @@
                 </span>
               </span>
             </span>
-            <span class="title">
-              <h3>
+            <span>
+              <span style="font-weight: bold; font-size: 20px">
                 {{product.title}}
-              </h3>
+              </span>
             </span>
           </span>
         </div>
         <div id="productDescription" [innerHTML]="product.description"></div>
-        <div id="image"></div>
-        <span id="productPrice">{{product.price}} CHF</span>
+        <div id="image" style="padding-left: 20px"></div>
+        <div id="buyProduct" >
+        <span style="display: inline-block" style="padding: 8px; border: 1px solid black">{{product.price}} CHF</span>
         <mat-card-actions>
-        <button mat-flat-button color="primary" (click) = "checkLoggedIn()" *ngIf="!user?.isAdmin">Buy now</button >
-        </mat-card-actions>
+        <button mat-flat-button color="primary" (click) = "checkLoggedIn()" *ngIf="user?.isAdmin" style="display: inline-block">
+          Buy now </button >
+        </mat-card-actions></div>
       </div>
-
     </div>
 
 

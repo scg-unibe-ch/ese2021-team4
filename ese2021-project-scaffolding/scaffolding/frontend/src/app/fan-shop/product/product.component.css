@@ -57,15 +57,14 @@
 }
 
 #productHeader {
-  border: solid 2px pink;
   position: relative;
-  min-height: 20vh;
+  min-height: 15vh;
   display: flex;
   flex-direction: row;
+  padding-left: 20px;
 }
 
-#postScore {
-  border: solid 2px palevioletred;
+#productScore {
   width: 10%;
   display: flex;
   flex-direction: column;
@@ -74,12 +73,15 @@
 }
 
 #productTitle {
-  border: solid 2px black;
   width: 90%;
   display: flex;
   justify-content: center;
   flex-direction: column;
+}
+
+#buyProduct{
   padding-left: 20px;
+  padding-top: 30px;
 }
 
 #productDescription {

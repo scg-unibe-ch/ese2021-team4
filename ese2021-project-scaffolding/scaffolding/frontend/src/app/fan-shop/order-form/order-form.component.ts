@@ -38,6 +38,15 @@ export class OrderFormComponent implements OnInit {
   redirecting: boolean = false;
 
   loggedIn: boolean | undefined;
+  errorMessage="";
+  missingFirstName="";
+  missingLastName="";
+  missingStreet="";
+  missingHouseNr="";
+  missingZipCode="";
+  missingCity="";
+  missingPhoneNumber="";
+
 
   constructor(
     public toastr: ToastrService,
@@ -86,10 +95,10 @@ export class OrderFormComponent implements OnInit {
 
   confirmOrder(): void {
     if(!this.formIsFilled()){
-      document.getElementById('emptyFields')!.style.visibility='visible';
+      this.checkMissingDetails()
     }
     else{
-
+      this.resetErrorMessage()
       ConfirmationAsker.confirmTitle('You are about to place an order.', 'Do you want to proceed?')
         .then(confirmed => {
           if(confirmed){
@@ -127,10 +136,11 @@ export class OrderFormComponent implements OnInit {
   }
 
   createOrderStripe(): void {
-    if(!this.formIsFilled()){
-      document.getElementById('emptyFields')!.style.visibility='visible';
+    if(!this.formIsFilled()) {
+      this.checkMissingDetails()
     }
     else {
+      this.resetErrorMessage()
       this.httpClient.post(environment.endpointURL + "order/stripe", {
         status: "Pending",
         productId: this.productId,
@@ -168,7 +178,7 @@ export class OrderFormComponent implements OnInit {
 
   updatePhoneNrMessage() {
     if(isNaN(+this.orderPhoneNr)){
-      this.phoneNrMessage = 'Please enter a Number'
+      this.phoneNrMessage = 'Please enter a number'
     } else {
       this.phoneNrMessage = ''
     }
@@ -176,7 +186,7 @@ export class OrderFormComponent implements OnInit {
 
   updateHouseNrMessage() {
     if(isNaN(+this.orderHouseNr)){
-      this.houseNrMessage = 'Please enter a Number'
+      this.houseNrMessage = 'Please enter a number'
     } else {
       this.houseNrMessage = ''
     }
@@ -184,7 +194,7 @@ export class OrderFormComponent implements OnInit {
 
   updateZipCodeMessage() {
     if(isNaN(+this.orderZipCode)){
-      this.zipCodeMessage = 'Please enter a Number'
+      this.zipCodeMessage = 'Please enter a number'
     } else {
       this.zipCodeMessage = ''
     }
@@ -192,5 +202,21 @@ export class OrderFormComponent implements OnInit {
 
   isValidFormFill(): boolean {
     return !(isNaN(+this.orderHouseNr) || isNaN(+this.orderZipCode) || isNaN(+this.orderPhoneNr))
+  }
+
+  checkMissingDetails(): void{
+    this.errorMessage="Please fill in the missing address details."
+    this.missingFirstName = this.orderFirstName == "" ? "*" : "";
+    this.missingLastName = this.orderLastName == "" ? "*" : "";
+    this.missingStreet = this.orderStreet == "" ? "*" : "";
+    this.missingHouseNr = this.orderHouseNr== 0 ? "*" : "";
+    this.missingZipCode = this.orderZipCode == 0 ? "*" : "";
+    this.missingCity = this.orderCity == "" ? "*" : "";
+    this.missingPhoneNumber = this.orderPhoneNr == "" ? "*" : "";
+  }
+
+  resetErrorMessage(){
+    this.missingFirstName = this. missingLastName = this. missingStreet = this.missingHouseNr =
+      this.missingZipCode = this. missingCity = this.missingPhoneNumber = this.errorMessage = "";
   }
 }

@@ -1,5 +1,5 @@
 <mat-card>
-  <mat-tab-group>
+  <mat-tab-group mat-align-tabs="center">
     <mat-tab label="Profile information">
       <div class="background">
         <div class="container" color="accent">
@@ -70,6 +70,7 @@
     <mat-tab label="Upvoted"><app-post-feed [feedType]="'upvoted'"></app-post-feed></mat-tab>
     <mat-tab label="Downvoted"><app-post-feed [feedType]="'downvoted'"></app-post-feed></mat-tab>
     <mat-tab label="Commented"><app-post-feed [feedType]="'commented'"></app-post-feed></mat-tab>
+     <!--Admins can't order Products, They dont have their own order feed-->
     <mat-tab label="Orders" *ngIf="!user?.isAdmin"><app-order-feed [feedType]="'user'"></app-order-feed></mat-tab>
   </mat-tab-group>
 </mat-card>

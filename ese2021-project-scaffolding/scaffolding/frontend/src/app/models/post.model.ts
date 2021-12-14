@@ -5,6 +5,7 @@ export class Post {
     public neededRowspan: number;
     public timeSince: String;
     public noHtmlDescription: String;
+    public imageOnly:boolean;
 
     constructor(
         public postId: number,
@@ -22,16 +23,22 @@ export class Post {
         public flags: number,
     ) {
         //calculate needed rows for displaying in post-feed
+        this.imageOnly = this.description == '' && nrOfImages == 1;
         this.timeSince = this.calculateTimeSince(this.createdAt);
         this.noHtmlDescription = this.removeTags(this.description);
         this.neededRowspan = this.calculateNeededRowspan();
     }
 
     calculateNeededRowspan() : number {
-        var titleLines = Math.min(2, Math.ceil(this.title.length / 100));
-        var descriptionLines = Math.min(2 ,Math.ceil(this.noHtmlDescription.length / 100));
-        var minimumRows = 1;
-        return titleLines + descriptionLines + minimumRows;
+        if (!this.imageOnly){
+            var titleLines = Math.min(2, Math.ceil(this.title.length / 100));
+            var descriptionLines = Math.min(2 ,Math.ceil(this.noHtmlDescription.length / 100));
+            var minimumRows = 1;
+            return titleLines + descriptionLines + minimumRows;
+        } else {
+            return 8;
+        }
+        
     }
 
     removeTags(description : String) : String {

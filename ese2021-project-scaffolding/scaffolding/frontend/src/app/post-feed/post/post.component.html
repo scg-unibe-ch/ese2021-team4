@@ -46,8 +46,8 @@
           </span>
         </div>
         <div id="postDescription" [innerHTML]="post.description"></div>
-        <div *ngIf="post.imageOnly" id="image" style="display: flex; flex-direction: column; align-items: center;"></div>
-        <div *ngIf="!post.imageOnly" id="image"></div>
+        <div *ngIf="post.imageOnly" id="image" style="display: flex; flex-direction: column; align-items: center; padding-left: 20px" ></div>
+        <div *ngIf="!post.imageOnly" id="image" style="padding-left: 20px"></div>
 
         <div id="comments">
           <div id="commentsContainer">

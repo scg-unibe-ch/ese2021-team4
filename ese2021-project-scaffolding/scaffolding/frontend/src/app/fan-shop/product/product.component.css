@@ -168,6 +168,7 @@ mat-form-field textarea {
 }
 
 .title h3{
+  padding: 7px;
   font-weight: bold;
   word-wrap: break-word;
   font-size: 20px;

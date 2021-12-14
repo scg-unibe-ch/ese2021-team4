@@ -93,6 +93,12 @@ img {
     border-radius: 10px;
 }
 
+.buttons {
+    display: flex;
+    align-items: center;
+    height: 10vh;
+}
+
 h1 {
     margin-top: 10px;
     text-decoration: underline;

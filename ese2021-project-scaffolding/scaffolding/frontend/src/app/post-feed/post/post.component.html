@@ -137,12 +137,12 @@
         </mat-tab-group>
         <span id="image"></span>
 
+        <div class=buttons>
+          <button mat-flat-button (click)="deleteImages()">delete all images attached to this post</button>
 
-        <button mat-flat-button (click)="deleteImages()">delete all images attached to this post</button>
-
-        <button mat-flat-button type="button" (click)="existsInBackend ? save() : createPost()">{{existsInBackend ? 'Save Post':'CreatePost'}}</button>
-        <mat-hint style="color:red">{{errorMessage}}</mat-hint>
-        <!-- {{post.description}} -->
+          <button mat-flat-button type="button" (click)="existsInBackend ? save() : createPost()">{{existsInBackend ? 'Save Post':'CreatePost'}}</button>
+          <mat-hint style="color:red">{{errorMessage}}</mat-hint>
+        </div>
         </form>
 
       </div>

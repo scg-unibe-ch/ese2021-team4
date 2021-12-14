@@ -231,7 +231,7 @@ export class PostFeedComponent implements OnInit {
   }
 
   shouldShowPostButton(): boolean {
-    const result =this.feedType != 'flagged' && this.feedType != 'upvoted' && this.feedType != 'downvoted' && this.feedType != 'commented';
+    const result =this.feedType != 'flagged' && this.feedType != 'upvoted' && this.feedType != 'downvoted' && this.feedType != 'created' && this.feedType != 'commented';
     return result;
   }
 }

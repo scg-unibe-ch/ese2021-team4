@@ -82,6 +82,8 @@ export class PostComponent implements OnInit {
   showCategoryError = false;
   showDescriptionError = false;
 
+  originURL: string = '';
+
 
   constructor(
     private router: Router,
@@ -93,6 +95,11 @@ export class PostComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       if(!isNaN(+params.id)) {
         this.postId = +params.id;
+      }
+    });
+    this.activatedRoute.url.subscribe(url => {
+      if(url != undefined){
+        this.originURL = url[0].path
       }
     });
 
@@ -294,9 +301,9 @@ export class PostComponent implements OnInit {
 
   save(){
     if(this.validPostCreationInput()){
-      this.errorMessage = "";
       this.updatePost(this.post);
-      this.router.navigate(['/postfeed']);
+      this.editMode = false;
+      this.loadPost()
       }
   }
 

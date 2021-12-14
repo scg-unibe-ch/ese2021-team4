@@ -38,14 +38,11 @@ export class PostComponent implements OnInit {
   rows: number = 1;
 
   quill : Quill | undefined;
-  // editor : Quill
   editorStyle = {
-    // height: '100px',
     backgroundColor: "#9c9c9c"
   };
 
   config :QuillModules= {
-    // theme: 'snow',
     toolbar: [
         ['bold', 'italic', 'underline', 'strike',{ 'header': 1 }, 'blockquote'],
         [{ 'list': 'ordered'}, { 'list': 'bullet' }],
@@ -338,7 +335,7 @@ export class PostComponent implements OnInit {
     if(this.validPostCreationInput()){
       this.errorMessage = "";
       this.router.navigate(['/postfeed']);
-    if(this.user != null){ //user might not be instantiated, this is taken care of by the html
+    if(this.user != null){
       this.httpClient.post(environment.endpointURL + "post", {
       title: this.post.title,
       description: this.post.description,

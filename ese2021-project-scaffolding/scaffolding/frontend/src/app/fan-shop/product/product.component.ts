@@ -29,7 +29,6 @@ export class ProductComponent implements OnInit {
   rows: number = 1;
 
   quill : Quill | undefined;
-  // editor : Quill
   editorStyle = {
     height: '300px',
     backgroundColor: "#9c9c9c"
@@ -50,7 +49,7 @@ export class ProductComponent implements OnInit {
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
       [{ 'script': 'sub'}, { 'script': 'super' }],
       ['link'],
-      ['clean'] //clear formattig
+      ['clean'] //clear formatting
     ],
   };
 

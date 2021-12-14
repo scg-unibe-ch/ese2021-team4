@@ -254,7 +254,7 @@ export class PostComponent implements OnInit {
           this.httpClient.get(environment.endpointURL + "post/" + "getSingleImage/" + imageId,
            {responseType: 'blob', headers: {'Content-Type': 'multipart/formData'}}).subscribe((image: any) =>{
             const img = document.createElement("img");
-            const picture: File = new File([image], "test");
+            const picture: File = new File([image], "uploadedImg");
             img.src = URL.createObjectURL(picture);
             if(this.post.imageOnly){
               img.width = window.innerWidth * 0.6 - 20;
@@ -285,7 +285,7 @@ export class PostComponent implements OnInit {
           this.httpClient.get(environment.endpointURL + "post/" + "getSingleImage/" + imageId,
            {responseType: 'blob', headers: {'Content-Type': 'multipart/formData'}}).subscribe((image: any) =>{
             const img = document.createElement("img");
-            const picture: File = new File([image], "test");
+            const picture: File = new File([image], "uploadedImg");
             img.src = URL.createObjectURL(picture);
             img.width = window.innerWidth * 0.7 * 0.8 - 20; //numbers come from preview width, content width
             this.post.images.push(picture);
@@ -387,10 +387,13 @@ export class PostComponent implements OnInit {
       flags: post.flags
     }).subscribe((post: any) => {
       const formData = new FormData();
-      for (let i=0; i < post.nrOfImages; i++){
-        formData.append("file"+i, this.post.images[i]);
+      for (let i=0; i < this.post.images.length; i++){
+        if(this.post.images[i].name != "uploadedImg"){
+          formData.append("file"+i, this.post.images[i]);
+        }
       }
-      this.httpClient.post(environment.endpointURL + "post/" + post.postId + "/image", formData).subscribe((post: any) => {});
+      this.httpClient.post(environment.endpointURL + "post/" + post.postId + "/image", formData).subscribe((post: any) => {
+      });
       this.update.emit(this.post);
     }, error => {console.log(error)});
   }

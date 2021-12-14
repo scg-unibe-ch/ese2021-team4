@@ -1,5 +1,5 @@
 <div *ngIf=!redirecting class="background">
-  <mat-card>
+  <mat-card id="orderFormProduct">
     <app-product [productId]="productId"
                  [orderFormView]="true" [preview]="false"></app-product>
   </mat-card>
@@ -7,10 +7,10 @@
   <mat-card>
     <h3>Payment Options</h3>
     <mat-radio-group [(ngModel)]="paymentType">
-      <mat-radio-button class="example-margin" value="invoice">Invoice</mat-radio-button>
+      <mat-radio-button class="example-margin" value="invoice" style="margin-right:15px">Invoice</mat-radio-button>
       <mat-radio-button class="example-margin" value="stripe">Stripe</mat-radio-button>
     </mat-radio-group>
-
+    <br><br>
     <h3>Shipping Details</h3>
     <span style="color: red">{{missingFirstName}}</span>
     <mat-form-field>

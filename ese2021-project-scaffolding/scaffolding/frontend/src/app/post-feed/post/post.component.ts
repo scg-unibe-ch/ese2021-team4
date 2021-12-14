@@ -5,7 +5,6 @@ import {UserService} from 'src/app/services/user.service';
 import {environment} from 'src/environments/environment';
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Comment} from 'src/app/models/comment.model';
 import {Category, CategoryFinder} from "../../models/category.model";
 import {ToastrService} from "ngx-toastr";
@@ -43,7 +42,7 @@ export class PostComponent implements OnInit {
   editorStyle = {
     // height: '100px',
     backgroundColor: "#9c9c9c"
-  }
+  };
 
   config :QuillModules= {
     // theme: 'snow',
@@ -54,7 +53,7 @@ export class PostComponent implements OnInit {
         ['link', 'image', 'video'], //media
         ['clean'] //clear formatting
       ],
-  }
+  };
 
   configComment :QuillModules= {
     toolbar: [
@@ -63,7 +62,7 @@ export class PostComponent implements OnInit {
         ['link'],
         ['clean'] //clear formattig
       ],
-  }
+  };
 
   @Input()
   post: Post = new Post(0, '', 0, '', Category.Bern, 0, 0, new Date(), [], [], 0, 0, 0);
@@ -80,6 +79,8 @@ export class PostComponent implements OnInit {
 
   selectCategory=this.post.tags.toString();
   errorMessage = "";
+  showCategoryError = false;
+  showDescriptionError = false;
 
 
   constructor(
@@ -116,8 +117,6 @@ export class PostComponent implements OnInit {
 
       if(isOnlyImage){
         this.post.images.push(files[i]);
-
-        console.log(oneImage);
         img.width= window.innerWidth * 0.6;
         oneImage?.appendChild(img);
 
@@ -148,8 +147,6 @@ export class PostComponent implements OnInit {
         //   this.quill?.insertEmbed(range?.index, 'image', base64data )
         // }
       }
-
-
     }
   }
 
@@ -232,6 +229,7 @@ export class PostComponent implements OnInit {
       oneImage.innerHTML = '';
     }
     this.updatePost(this.post);
+    this.validDescription();
   }
 
   loadPicturesToPost(){
@@ -266,7 +264,6 @@ export class PostComponent implements OnInit {
   }
 
   loadPicturesToPreview(){
-    // console.log("load");
     this.httpClient.get(environment.endpointURL + "post/" + this.postId + "/getImageIds",
     {responseType: 'text', headers: {'Content-Type': 'json/application'}}).subscribe((imgIds: any) => {
       if(imgIds != ""){
@@ -296,41 +293,58 @@ export class PostComponent implements OnInit {
 
 
   save(){
-    if (this.post.title==''){
-      this.errorMessage= "Set a title";
-    }
-    else if (this.findCategory()==Category.Bern){
-      this.errorMessage = "Set a category"
-    }
-    else if(this.post.images.length == 0 && this.post.description == '') {
-      this.errorMessage = "Make a description or upload an image"
-    }
-    else {
+    if(this.validPostCreationInput()){
       this.errorMessage = "";
       this.updatePost(this.post);
       this.router.navigate(['/postfeed']);
       }
   }
 
+  validPostCreationInput(): boolean {
+    let valid = true;
+    // separate checks to make sure all methods are called
+    if (this.post.title == '') {
+      valid = false;
+    }
+    if (!this.validCategory()) {
+      valid = false;
+    }
+    if (!this.validDescription()) {
+      valid = false;
+    }
+    return valid;
+  }
+
+  validDescription(): boolean {
+    this.showDescriptionError = false;
+    if(this.post.description == null){
+      this.post.description = '';
+    }
+    if(this.post.description == '' && this.post.images.length == 0){
+      this.showDescriptionError = true;
+      return false;
+    }
+    return true;
+  }
+  validCategory(): boolean {
+    this.showCategoryError = false;
+    if(this.findCategory() == Category.Bern){
+      this.showCategoryError = true;
+      return false;
+    }
+    return true;
+  }
+
+
   findCategory(): Category{
     return CategoryFinder.findCategory(this.selectCategory)
   }
 
   createPost(): void {
-    if (this.post.title==''){
-      this.errorMessage= "Set a title";
-    }
-    else if (this.findCategory()==Category.Bern){
-      this.errorMessage = "Set a category"
-    }
-    else if(this.post.images.length == 0 && this.post.description == '') {
-      this.errorMessage = "Make a description or upload an image"
-    }
-    else {
+    if(this.validPostCreationInput()){
       this.errorMessage = "";
       this.router.navigate(['/postfeed']);
     if(this.user != null){ //user might not be instantiated, this is taken care of by the html
-      console.log("post create");
       this.httpClient.post(environment.endpointURL + "post", {
       title: this.post.title,
       description: this.post.description,
@@ -555,12 +569,8 @@ export class PostComponent implements OnInit {
   }
 
   countRows(): void {
-    // console.log(this.post.title);
     const width = window.innerWidth * 0.9 * 0.45;
-    // console.log(width);
-    this.rows= Math.floor(this.getTextWidth(this.post.title) / width) + 1 ;
-    // console.log(this.rows);
-    // console.log(this.getTextWidth(this.post.title));
+    this.rows= Math.floor(this.getTextWidth(this.post.title) / width) + 1;
   }
 
   getTextWidth(text : string): number {

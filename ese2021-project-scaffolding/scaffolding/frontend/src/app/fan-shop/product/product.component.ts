@@ -5,7 +5,6 @@ import {UserService} from 'src/app/services/user.service';
 import {environment} from 'src/environments/environment';
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {AngularEditorConfig} from '@kolkov/angular-editor';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Category, CategoryFinder} from "../../models/category.model";
 import {ConfirmationAsker} from "../../models/confirmation-asker";
@@ -59,12 +58,18 @@ export class ProductComponent implements OnInit {
   preview: boolean = false;
 
   @Input()
+  orderFormView: boolean = false;
+
+  @Input()
   productId: number = 0;
 
   product: Product = new Product(0, '', '', 0, Category.Bern, []);
   selectCategory=this.product.tags.toString();
   missingProduct: boolean = false;
-  errorMessage = "";
+
+  showPriceError: boolean = false;
+  showCategoryError: boolean = false;
+  showTitleError: boolean = false;
 
   constructor(
     private router: Router,
@@ -190,34 +195,41 @@ export class ProductComponent implements OnInit {
   }
 
   save(){
-    if (!this.isValidFormFill()){
-      this.setErrorMessage();
-    }
-
-    else {
-      this.errorMessage = "";
+    if(this.isValidFormFill()){
       this.router.navigate(['/fan-shop']);
       this.updateProduct(this.product);
     }
   }
 
-  setErrorMessage(): void{
-    if (this.product.title==''){
-      this.errorMessage= "Set a title";
-    }
-    else if (this.product.price == 0 || !isNaN(+this.product.price)){
-      this.errorMessage = "Set a price";
-    }
-    else if (this.findCategory()==Category.Bern){
-      this.errorMessage = "Set a category";
-    }
-    else if(this.product.images.length == 0 && this.product.description == '') {
-      this.errorMessage = "Make a description or upload an image";
-    }
+  invalidPrice(): boolean {
+    this.showPriceError = false;
+    this.showPriceError = isNaN(this.product.price) || this.product.price == 0;
+    return this.showPriceError;
+  }
+
+  invalidCategory(): boolean {
+    this.showCategoryError = this.findCategory()==Category.Bern;
+    return this.showCategoryError;
+  }
+
+  invalidTitle(): boolean {
+    this.showTitleError = (this.product.title == '');
+    return this.showTitleError
   }
 
   isValidFormFill(): boolean {
-    return this.product.title != '' && this.findCategory()!= Category.Bern && this.product.price != 0 && !isNaN(+this.product.price);
+    let valid = true;
+    if(this.invalidTitle()){
+      valid = false
+    }
+    if(this.invalidCategory()){
+      valid = false
+    }
+    if(this.invalidPrice()){
+      valid = false
+    }
+    return valid
+
   }
 
   findCategory(): Category{
@@ -225,11 +237,7 @@ export class ProductComponent implements OnInit {
   }
 
   createProduct(): void {
-    if(!this.isValidFormFill()) {
-    this.setErrorMessage();
-    }
-    else {
-      this.errorMessage="";
+    if(this.isValidFormFill()){
       this.router.navigate(['/fan-shop']);
         this.httpClient.post(environment.endpointURL + "product", {
           title: this.product.title,
@@ -291,12 +299,8 @@ export class ProductComponent implements OnInit {
   }
 
   countRows(): void {
-    // console.log(this.post.title);
-    const width = window.innerWidth * 0.9 * 0.45
-    // console.log(width);
+    const width = window.innerWidth * 0.9 * 0.45;
     this.rows= Math.floor(this.getTextWidth(this.product.title) / width) + 1 ;
-    // console.log(this.rows);
-    // console.log(this.getTextWidth(this.post.title));
   }
 
   getTextWidth(text : string): number {

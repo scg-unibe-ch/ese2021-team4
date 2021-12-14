@@ -2,7 +2,7 @@
   <!-- POST  -->
   <div id="scrollPost">
     <div *ngIf="!editMode" id="wholePost">
-      <a [routerLink]="['/postfeed']"> <span class="link-spanner"></span> </a>
+      <a [routerLink]="['/' + originURL]"> <span class="link-spanner"></span> </a>
       <div  id="viewPost">
         <div id="postHeader">
           <span id="postScore">
@@ -57,7 +57,7 @@
           <br><button mat-flat-button color="accent" (click)="createComment()" *ngIf="loggedIn">Comment</button><br>
           </div>
         </div>
-        
+
         <div *ngFor="let comment of post.comments">
           <app-comment [comment]="comment"
                       (delete)="deleteComment($event)">
@@ -140,7 +140,7 @@
 
         <button mat-flat-button (click)="deleteImages()">delete all images attached to this post</button>
 
-        <button mat-flat-button (click)="existsInBackend ? save() : createPost()">{{existsInBackend ? 'Save Post':'CreatePost'}}</button>
+        <button mat-flat-button type="button" (click)="existsInBackend ? save() : createPost()">{{existsInBackend ? 'Save Post':'CreatePost'}}</button>
         <mat-hint style="color:red">{{errorMessage}}</mat-hint>
         <!-- {{post.description}} -->
         </form>

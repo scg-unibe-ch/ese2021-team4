@@ -19,7 +19,7 @@ export class Product {
     var titleLines = Math.min(2, Math.ceil(this.title.length / 100));
     var descriptionLines = Math.min(2 ,Math.ceil(this.noHtmlDescription.length / 100));
     var minimumRows = 1;
-    return titleLines + descriptionLines + minimumRows;
+    return 2;
   }
 
   removeTags(description : String) : String {

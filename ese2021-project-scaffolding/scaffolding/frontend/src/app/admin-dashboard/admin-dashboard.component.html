@@ -1,4 +1,4 @@
-<h1>Welcome, {{user?.username}}!</h1>
+<div style="display: flex; justify-content: center; margin: 5px"><h1>Welcome, {{user?.username}}!</h1></div>
 <mat-tab-group mat-align-tabs="center">
   <mat-tab label="Flagged Posts"><app-post-feed [feedType]="'flagged'"></app-post-feed></mat-tab>
   <mat-tab label="Orders"><app-order-feed [feedType]="'admin'"></app-order-feed></mat-tab>

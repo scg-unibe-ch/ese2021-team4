@@ -138,13 +138,22 @@
       {{existsInBackend ? 'Edit this' : 'Submit a'}} Product
     </h1>
     <form>
+
       <mat-form-field appearance="fill" id="title">
-        <textarea placeholder="Title" rows="{{rows}}" matInput #message maxlength="300" (ngModelChange)="countRows()" [(ngModel)]="product.title" [ngModelOptions]="{standalone: true}"></textarea>
+        <mat-label>Title</mat-label>
+        <textarea placeholder="Title" rows="{{rows}}" matInput #message maxlength="300"
+                  (ngModelChange)="countRows()"
+                  [(ngModel)]="product.title"
+                  [ngModelOptions]="{standalone: true}"></textarea>
         <mat-hint matSuffix>{{message.value.length}} / 300</mat-hint>
       </mat-form-field>
+
       <mat-form-field appearance="fill" id="price">
-        <textarea placeholder="Price" rows="{{rows}}" matInput #message maxlength="300" (ngModelChange)="countRows()" [(ngModel)]="product.price" [ngModelOptions]="{standalone: true}"></textarea>
-        <mat-hint matSuffix>{{message.value.length}} / 300</mat-hint>
+        <mat-label>Price CHF</mat-label>
+        <textarea title= "Price" placeholder="Price" rows="{{rows}}" matInput
+                  (ngModelChange)="countRows()"
+                  [(ngModel)]="product.price"
+                  [ngModelOptions]="{standalone: true}"></textarea>
       </mat-form-field>
       <!-- Categories -->
       <mat-form-field appearance="fill" id="category">

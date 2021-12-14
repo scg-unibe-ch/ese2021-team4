@@ -47,7 +47,7 @@
         </div>
         <div id="postDescription" [innerHTML]="post.description"></div>
         <div id="image"></div>
-        
+
         <div id="comments">
           <hr>
           <p style="margin-left: 20px; margin-bottom: 0; margin-top: 20px;">Commenting as {{authorName}}</p>
@@ -64,8 +64,8 @@
         </div>
       </div>
     </div>
-    
-    
+
+
     <!-- POST EDITOR -->
     <div *ngIf="editMode">
 
@@ -76,8 +76,8 @@
         </h1>
         <form>
           <mat-form-field appearance="fill" id="title">
-            <textarea placeholder="Title" rows="{{rows}}" matInput #message maxlength="300" (ngModelChange)="countRows()" [(ngModel)]="post.title" [ngModelOptions]="{standalone: true}"></textarea>
-            <mat-hint matSuffix>{{message.value.length}} / 300</mat-hint>
+            <textarea placeholder="Title" rows="{{rows}}" matInput #message maxlength="300" (ngModelChange)="countRows()" [(ngModel)]="post.title" [ngModelOptions]="{standalone: true}" required></textarea>
+            <mat-error style="color: red" *ngIf="post.title==''">Please set a title.</mat-error>
           </mat-form-field>
           <!-- Categories -->
           <mat-form-field appearance="fill" id="category">
@@ -119,7 +119,7 @@
         </mat-tab-group>
         <span id="image"></span>
 
-        
+
         <button (click)="deleteImages()">delete all images attached to this post</button>
 
         <button mat-flat-button (click)="existsInBackend ? save() : createPost()">{{existsInBackend ? 'Save Post':'CreatePost'}}</button>
